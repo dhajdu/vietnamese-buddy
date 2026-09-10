@@ -20,8 +20,16 @@ export async function proxy(request: NextRequest) {
       },
     },
   )
-  const { data: { user } } = await supabase.auth.getUser()
   const { pathname } = request.nextUrl
+  // Supabase falls back to the Site URL (the root) when a confirmation link's
+  // redirect isn't allow-listed. Forward a stray ?code= to the callback so the
+  // code is exchanged instead of dropped by the login redirect below.
+  if (pathname === '/' && request.nextUrl.searchParams.has('code')) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/auth/callback'
+    return NextResponse.redirect(url)
+  }
+  const { data: { user } } = await supabase.auth.getUser()
   const isPublic = PUBLIC.some(p => pathname === p || pathname.startsWith(p + '/'))
   if (!user && !isPublic) {
     const url = request.nextUrl.clone()
