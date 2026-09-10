@@ -7,12 +7,22 @@ export async function GET(request: Request) {
   // In Next.js 16, URL searchParams on a Request are synchronous —
   // only page/layout searchParams props are async. Direct URL parsing is fine.
   const code = url.searchParams.get('code')
-  const next = url.searchParams.get('next') ?? '/dashboard'
+  const next = url.searchParams.get('next') ?? '/'
   const origin = url.origin
+
+  const tokenHash = url.searchParams.get('token_hash')
+  const type = url.searchParams.get('type')
 
   if (code) {
     const supabase = await createClient()
     const { error } = await supabase.auth.exchangeCodeForSession(code)
+    if (!error) {
+      return NextResponse.redirect(`${origin}${next}`)
+    }
+  } else if (tokenHash && type) {
+    const supabase = await createClient()
+    const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type: type as 'signup' | 'email' | 'recovery' | 'magiclink' })
+    if (error) console.error('auth callback verifyOtp failed:', error.message)
     if (!error) {
       return NextResponse.redirect(`${origin}${next}`)
     }

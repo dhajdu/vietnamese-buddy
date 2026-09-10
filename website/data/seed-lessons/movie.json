@@ -1,0 +1,126 @@
+{
+  "title": "Rủ nhau coi phim",
+  "situation": "You and someone you like are deciding whether to watch a movie at home or at the theater, then reacting to it together.",
+  "phrases": [
+    {
+      "vietnamese": "Tối nay coi phim hông?",
+      "english": "Want to watch a movie tonight?",
+      "explanation": "In the South the verb for watching a movie or TV is 'coi', not the textbook 'xem'. 'Xem phim' is perfectly correct and Northerners say it, but in Saigon it sounds stiff. 'Hông' is the spoken Southern form of 'không' closing the yes/no question. No pronouns at all is fine between people who are already close."
+    },
+    {
+      "vietnamese": "Em muốn coi phim gì?",
+      "english": "What movie do you want to watch?",
+      "explanation": "'Phim gì' (movie what) stays at the end of the sentence. 'Anh' and 'em' are the natural pair when a man is talking to a woman or someone younger in a dating or close-friend context. Asking the other person to pick first is the polite move."
+    },
+    {
+      "vietnamese": "Coi ở nhà hay ra rạp?",
+      "english": "Watch at home or go to the theater?",
+      "explanation": "'Hay' in the middle of a sentence means 'or' in a question. 'Ra rạp' (go out to the cinema) is the everyday phrase; 'rạp' is short for 'rạp chiếu phim'. This 'hay' is different from the adjective 'hay' (good, entertaining) you will see in the next phrase."
+    },
+    {
+      "vietnamese": "Phim này hay lắm nè.",
+      "english": "This movie is really good.",
+      "explanation": "For movies, books and music, 'hay' means good or entertaining; 'ngon' is only for food. 'Lắm' after an adjective means 'very'. The Southern particle 'nè' at the end pulls the listener in, like 'hey, look at this'. It is the sound of someone genuinely recommending something."
+    },
+    {
+      "vietnamese": "Anh đặt vé rồi nha.",
+      "english": "I've already booked the tickets.",
+      "explanation": "'Đặt vé' means to book tickets, and 'rồi' marks that it is done. 'Nha' here is not a question; it softly informs and checks that the other person is okay with it, like 'just so you know'. Booking through an app before going is standard in Saigon, so this is a line you will actually say."
+    },
+    {
+      "vietnamese": "Suất mấy giờ vậy?",
+      "english": "What time is the showing?",
+      "explanation": "'Suất' is a showtime or screening slot. 'Vậy' at the end of a question is a very Southern touch that makes it sound curious and casual rather than demanding; Northerners would use 'thế'. Drop 'vậy' and the question sounds a little abrupt."
+    },
+    {
+      "vietnamese": "Mua bắp rang với nước nha.",
+      "english": "Let's get popcorn and drinks.",
+      "explanation": "'Bắp rang' is popcorn in the South ('bắp' is Southern for corn; Northerners say 'ngô'). 'Với' means 'and' or 'with' in speech, more natural than 'và'. 'Nha' turns the sentence into a friendly suggestion."
+    },
+    {
+      "vietnamese": "Phim có phụ đề tiếng Anh hông?",
+      "english": "Does the movie have English subtitles?",
+      "explanation": "Essential for a learner. 'Có… hông' wraps the noun to ask whether something exists or is available. Most foreign films in Saigon cinemas are subtitled in Vietnamese, so also ask 'phim lồng tiếng hả?' (is it dubbed?) if you see a kids' film."
+    },
+    {
+      "vietnamese": "Mình vừa coi vừa ăn nha.",
+      "english": "Let's eat while we watch.",
+      "explanation": "The 'vừa… vừa…' pattern for doing two things at once. 'Mình' means 'we, the two of us' here. This is the classic home-movie-night line and shows up again in the grammar section."
+    },
+    {
+      "vietnamese": "Tắt đèn đi, coi cho đã.",
+      "english": "Turn the lights off, let's watch properly.",
+      "explanation": "'Đi' after a verb is a gentle imperative ('go on, do it'). 'Cho đã' is very Southern slang: 'đã' means satisfying or to the fullest, so 'coi cho đã' is 'watch until it feels good'. You will hear 'ăn cho đã' and 'ngủ cho đã' too."
+    },
+    {
+      "vietnamese": "Đoạn đó ghê quá!",
+      "english": "That part was so scary!",
+      "explanation": "'Đoạn' is a scene or section. In Southern speech 'ghê' means scary, creepy or gross, and 'quá' after an adjective means 'so' or 'too'. Said while grabbing someone's arm during a horror movie, this is exactly the right register."
+    },
+    {
+      "vietnamese": "Em thấy phim sao?",
+      "english": "What did you think of the movie?",
+      "explanation": "'Thấy' here means 'find, think of', not 'see'. 'Sao' at the end asks 'how?' in a casual way. This is the natural post-movie question; the formal 'em nghĩ thế nào về bộ phim' would sound like a film review."
+    },
+    {
+      "vietnamese": "Phim dở quá, phí tiền.",
+      "english": "The movie was bad, a waste of money.",
+      "explanation": "'Dở' is the everyday opposite of 'hay': bad, boring, poorly made. 'Phí tiền' (waste of money) is a very common complaint. Direct and blunt, but normal between friends; add 'ha' at the end to invite the other person to agree."
+    },
+    {
+      "vietnamese": "Coi tập tiếp theo hông?",
+      "english": "Watch the next episode?",
+      "explanation": "'Tập' is an episode of a series. 'Tiếp theo' means next. This is the late-night question that keeps you both on the couch. The answer is usually 'coi đi' (let's) or 'thôi, mai coi' (no, tomorrow)."
+    }
+  ],
+  "vocabulary": [
+    { "vietnamese": "coi phim", "english": "to watch a movie (Southern; standard xem phim)" },
+    { "vietnamese": "hông", "english": "no / not (Southern spoken form of không)" },
+    { "vietnamese": "rạp", "english": "cinema, movie theater" },
+    { "vietnamese": "hay", "english": "good, entertaining (film, song, book); also or in questions" },
+    { "vietnamese": "dở", "english": "bad, boring (film, performance)" },
+    { "vietnamese": "nè", "english": "attention particle, hey / look" },
+    { "vietnamese": "nha", "english": "softening particle, okay? / just so you know" },
+    { "vietnamese": "vậy", "english": "casual question-ending particle (Southern for thế)" },
+    { "vietnamese": "đặt vé", "english": "to book tickets" },
+    { "vietnamese": "suất", "english": "showtime, screening slot" },
+    { "vietnamese": "bắp rang", "english": "popcorn" },
+    { "vietnamese": "phụ đề", "english": "subtitles" },
+    { "vietnamese": "vừa… vừa…", "english": "both… and… / doing two things at once" },
+    { "vietnamese": "tắt đèn", "english": "to turn off the lights" },
+    { "vietnamese": "đã", "english": "satisfying, to the fullest (slang)" },
+    { "vietnamese": "đoạn", "english": "scene, part, section" },
+    { "vietnamese": "ghê", "english": "scary, creepy (Southern)" },
+    { "vietnamese": "phí tiền", "english": "waste of money" },
+    { "vietnamese": "tập", "english": "episode" },
+    { "vietnamese": "cảm động", "english": "moving, touching" }
+  ],
+  "grammar": {
+    "title": "Vừa… vừa… : doing two things at once",
+    "pattern": "[subject] + vừa + [action/quality A] + vừa + [action/quality B]",
+    "explanation": "'Vừa A vừa B' says that A and B happen together or are both true at the same time. With verbs it means doing two things simultaneously ('vừa coi vừa ăn', eating while watching). With adjectives it stacks two qualities ('vừa hay vừa cảm động', both good and moving). The subject comes first and each 'vừa' sits right before its verb or adjective; you do not need 'và'. Native speakers reach for it constantly in casual speech, often with a hint of humor or complaint (someone texting while watching, a film that is both long and boring). It is a different word from 'vừa' meaning 'just now' ('anh vừa tới', I just arrived) and from 'vừa' meaning 'to fit'; context makes it clear, and the doubled form always means 'both… and…'."
+    ,
+    "examples": [
+      {
+        "vietnamese": "Mình vừa coi phim vừa ăn bắp rang nha.",
+        "english": "Let's eat popcorn while we watch the movie.",
+        "explanation": "Two actions happening at once. 'Nha' at the end keeps it a warm suggestion. This is the most common everyday use of the pattern."
+      },
+      {
+        "vietnamese": "Đừng vừa coi vừa bấm điện thoại.",
+        "english": "Don't watch and scroll your phone at the same time.",
+        "explanation": "'Đừng' (don't) plus the pattern makes a playful complaint. 'Bấm điện thoại' (pressing the phone) is the everyday way to say using your phone."
+      },
+      {
+        "vietnamese": "Phim này vừa hay vừa cảm động.",
+        "english": "This movie is both good and moving.",
+        "explanation": "With adjectives the pattern stacks two qualities. Natural when recommending a film; it sounds much smoother than 'hay và cảm động'."
+      },
+      {
+        "vietnamese": "Em vừa coi vừa khóc luôn đó.",
+        "english": "She was crying the whole time she watched.",
+        "explanation": "'Luôn' adds 'even, outright' and 'đó' adds emphasis, both very Southern. Teasing someone gently about crying at a movie is exactly the tone this sentence carries."
+      }
+    ]
+  }
+}

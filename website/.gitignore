@@ -42,3 +42,6 @@ next-env.d.ts
 
 # keep the committed example visible (the .env* rule above would hide it)
 !.env.local.example
+
+# Supabase CLI link state
+supabase/.temp/

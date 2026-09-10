@@ -1,0 +1,126 @@
+{
+  "title": "Rủ đi ăn tối",
+  "situation": "You want to ask someone you like out to dinner, pick a place together, and handle the bill.",
+  "phrases": [
+    {
+      "vietnamese": "Tối nay em rảnh hông?",
+      "english": "Are you free tonight?",
+      "explanation": "The natural opener before any invitation. In Saigon speech 'không' softens to 'hông' (and often just 'hôn' in fast speech). 'Không' is what you will see in textbooks and hear in Hanoi; 'hông' is what you will actually hear in a Ho Chi Minh City café. Using it instantly makes you sound local and casual. 'Anh' for the man and 'em' for the woman (or younger person) is the standard pairing for flirting or dating."
+    },
+    {
+      "vietnamese": "Anh muốn rủ em đi ăn tối nè.",
+      "english": "I want to ask you out to dinner.",
+      "explanation": "'Rủ' is the everyday verb for inviting a friend to do something together, much warmer than the formal 'mời'. The particle 'nè' at the end is very Southern: it draws attention to what you just said, a bit like 'hey, listen' or 'you know'. It makes a direct sentence feel friendly rather than blunt."
+    },
+    {
+      "vietnamese": "Đi ăn với anh nha?",
+      "english": "Come eat with me, okay?",
+      "explanation": "Short, warm and very common. 'Nha' is the Southern softener that turns a command into a gentle request or suggestion; Northerners say 'nhé'. Without 'nha' the phrase would sound like an order. This is how you say it when you already feel comfortable with the person."
+    },
+    {
+      "vietnamese": "Em thích ăn gì?",
+      "english": "What do you like to eat?",
+      "explanation": "Letting the other person choose is polite and expected. Note the word order: 'thích ăn gì', literally 'like eat what'. Vietnamese question words stay in place at the end; do not move 'gì' to the front like English 'what'."
+    },
+    {
+      "vietnamese": "Hay là mình đi ăn lẩu đi?",
+      "english": "How about we go eat hot pot?",
+      "explanation": "'Hay là' opens a soft suggestion ('or maybe, how about'), and the final 'đi' nudges the other person toward agreeing. 'Mình' here means 'we (you and me)', which feels close and inclusive. Hot pot ('lẩu') is a classic shared dinner in Saigon, so this is a very realistic line."
+    },
+    {
+      "vietnamese": "Mấy giờ em xong việc?",
+      "english": "What time do you finish work?",
+      "explanation": "'Mấy giờ' (what time) goes at the front here because you are asking about a time for planning. 'Xong việc' (done with work) is more natural in speech than 'tan làm' or 'tan sở', which sound a bit official."
+    },
+    {
+      "vietnamese": "Anh qua đón em nha.",
+      "english": "I'll come pick you up.",
+      "explanation": "In Saigon picking someone up on a motorbike is the normal way a date starts. 'Qua' (come over) plus 'đón' (pick up) is the set phrase. 'Nha' again makes it a friendly offer rather than a statement of fact; it invites the other person to say yes."
+    },
+    {
+      "vietnamese": "Quán đó ngon lắm đó.",
+      "english": "That place is really good.",
+      "explanation": "'Quán' is any casual eatery, from a street stall to a small restaurant; 'nhà hàng' is only for fancier places. The final 'đó' is a Southern particle that adds emphasis, like 'trust me' or 'I'm telling you'. Two 'đó' in one sentence is completely normal: the first means 'that', the second is the particle."
+    },
+    {
+      "vietnamese": "Bữa nay anh mời.",
+      "english": "Today it's my treat.",
+      "explanation": "'Bữa nay' is the Southern way to say 'today' (the standard 'hôm nay' is understood but sounds more formal down south). 'Mời' here means 'to treat', not 'to invite'. Saying this at the start of the meal is a warm, confident gesture; saying it while grabbing the bill is how you actually win the fight over paying."
+    },
+    {
+      "vietnamese": "Em ăn cay được hông?",
+      "english": "Can you handle spicy food?",
+      "explanation": "'Được' after a verb means 'able to', and 'hông' closes the yes/no question. This is the question to ask before ordering anything with chili. The answer will often be 'được' (yes I can) or 'hông được' (no I can't)."
+    },
+    {
+      "vietnamese": "Ăn no chưa?",
+      "english": "Are you full?",
+      "explanation": "Vietnamese people ask this constantly; it is a way of showing care, not just checking. 'Chưa' at the end asks 'yet?', so the literal meaning is 'eaten full yet?'. Reply 'no rồi' (full already) or 'chưa' (not yet)."
+    },
+    {
+      "vietnamese": "Tính tiền chị ơi!",
+      "english": "The bill, please!",
+      "explanation": "'Tính tiền' (calculate the money) is how you ask for the check anywhere in Saigon; 'thanh toán' sounds like a bank. 'Chị ơi' or 'anh ơi' or 'em ơi' calls the server, depending on their apparent age relative to you. Calling out across the room is normal, not rude."
+    },
+    {
+      "vietnamese": "Để anh trả tiền cho.",
+      "english": "Let me pay.",
+      "explanation": "'Để anh' (let me) is the natural way to offer to do something. 'Trả tiền' is the everyday verb for paying. The trailing 'cho' softens the offer and makes it sound like a favor rather than a demand. Expect a polite protest; that is part of the ritual."
+    },
+    {
+      "vietnamese": "Bữa sau đi nữa nha.",
+      "english": "Let's do this again next time.",
+      "explanation": "'Bữa sau' is Southern for 'next time' (standard 'lần sau'). 'Nữa' means 'again' and 'nha' makes it a warm suggestion. This is the line that signals the date went well and you want a second one."
+    }
+  ],
+  "vocabulary": [
+    { "vietnamese": "hông", "english": "no / not (Southern spoken form of không)" },
+    { "vietnamese": "rảnh", "english": "free, available" },
+    { "vietnamese": "rủ", "english": "to invite someone along (casual)" },
+    { "vietnamese": "đi ăn tối", "english": "to go out for dinner" },
+    { "vietnamese": "nha", "english": "softening particle, okay? (Southern for nhé)" },
+    { "vietnamese": "nè", "english": "attention particle, hey / you know" },
+    { "vietnamese": "đó", "english": "emphasis particle, I'm telling you" },
+    { "vietnamese": "hay là", "english": "how about / or maybe" },
+    { "vietnamese": "lẩu", "english": "hot pot" },
+    { "vietnamese": "xong việc", "english": "finished with work" },
+    { "vietnamese": "đón", "english": "to pick someone up" },
+    { "vietnamese": "quán", "english": "casual eatery, small restaurant" },
+    { "vietnamese": "ngon", "english": "delicious" },
+    { "vietnamese": "bữa nay", "english": "today (Southern)" },
+    { "vietnamese": "mời", "english": "to treat someone (pay for them)" },
+    { "vietnamese": "cay", "english": "spicy" },
+    { "vietnamese": "no", "english": "full (after eating)" },
+    { "vietnamese": "tính tiền", "english": "to ask for the bill" },
+    { "vietnamese": "trả tiền", "english": "to pay" },
+    { "vietnamese": "bữa sau", "english": "next time (Southern)" }
+  ],
+  "grammar": {
+    "title": "Hay là… : making a soft suggestion",
+    "pattern": "Hay là + [suggestion] + (đi / nha)?",
+    "explanation": "'Hay là' literally means 'or is it that', and native speakers use it to float an idea without pushing. It is the go-to structure when you want the other person to feel they can say no: choosing a restaurant, changing a plan, or offering an alternative. It usually sits at the front of the sentence and is often closed with 'đi' (a gentle push) or 'nha' (a warm check-in). Compare 'Mình đi ăn lẩu' (we're going to eat hot pot, sounds decided) with 'Hay là mình đi ăn lẩu đi?' (how about hot pot?, sounds open). Southern speakers use it constantly in dating and among friends because it keeps things relaxed. If someone says 'hay là' to you, they are inviting your opinion, so answer with 'ừ, được' (sure) or offer your own 'hay là…'."
+    ,
+    "examples": [
+      {
+        "vietnamese": "Hay là mình đi ăn lẩu đi?",
+        "english": "How about we go for hot pot?",
+        "explanation": "The classic form: 'hay là' opens the idea, 'đi' at the end nudges toward yes. Said with a rising tone, it sounds friendly and easy to decline."
+      },
+      {
+        "vietnamese": "Hay là để tối mai đi, em rảnh hơn?",
+        "english": "Or maybe make it tomorrow night, you'd be freer?",
+        "explanation": "Use this when the first plan doesn't work. 'Để' here means 'leave it until', and adding the reason ('em rảnh hơn') shows you are thinking about the other person's schedule."
+      },
+      {
+        "vietnamese": "Hay là anh đặt bàn trước nha?",
+        "english": "How about I book a table first?",
+        "explanation": "Offering to do something yourself. 'Nha' instead of 'đi' makes it a warm check-in rather than a push; it is asking permission as much as suggesting."
+      },
+      {
+        "vietnamese": "Hay là ăn ở nhà, anh nấu cho?",
+        "english": "Or maybe eat at home, I'll cook?",
+        "explanation": "Two short clauses joined without a connector, which is very natural in speech. 'Cho' at the end means you are doing it for the other person, which makes the offer sweeter."
+      }
+    ]
+  }
+}

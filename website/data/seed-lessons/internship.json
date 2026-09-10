@@ -1,0 +1,126 @@
+{
+  "title": "Bàn chuyện thực tập",
+  "situation": "You are talking with a student who works two jobs while studying data analytics, and you want to offer them an internship at your company.",
+  "phrases": [
+    {
+      "vietnamese": "Em đang làm hai việc một lúc hả?",
+      "english": "You're working two jobs at the same time?",
+      "explanation": "'Hai việc một lúc' is two jobs at once. 'Hả' at the end is a Southern way to confirm something you just heard, with mild surprise or admiration; it is softer than 'à' and much more common in Saigon. Use 'anh' or 'chị' for yourself and 'em' for the student if you are older or senior; if you are close in age, 'mình' and 'bạn' is a safe neutral choice."
+    },
+    {
+      "vietnamese": "Em đang học phân tích dữ liệu hả?",
+      "english": "You're studying data analytics, right?",
+      "explanation": "'Phân tích dữ liệu' is the standard term for data analytics, though many young people in Saigon will just say 'data' in English. Repeating 'hả' shows you are listening and interested; it keeps the conversation flowing without sounding like an interview."
+    },
+    {
+      "vietnamese": "Lịch của em chắc bận lắm ha.",
+      "english": "Your schedule must be really busy, huh.",
+      "explanation": "'Chắc' means 'probably, I guess', and 'ha' at the end asks the listener to agree ('right?'). This is empathy before business: acknowledging their workload before you bring up the internship. 'Lịch' (schedule) is enough in speech; 'lịch trình' sounds like a travel itinerary."
+    },
+    {
+      "vietnamese": "Bên anh đang cần thực tập sinh.",
+      "english": "My company is looking for an intern.",
+      "explanation": "'Bên anh' (my side) is how Vietnamese speakers casually refer to their own company or team without naming it. It sounds natural and modest. 'Thực tập sinh' is intern; 'thực tập' alone is the internship or the act of interning."
+    },
+    {
+      "vietnamese": "Em có hứng thú hông?",
+      "english": "Are you interested?",
+      "explanation": "'Có hứng thú' is the polite, slightly professional way to say interested. This is the Southern 'hông' in a semi-formal setting: it is still fine with a student, and swapping in 'không' would sound a bit distant. If you were talking to a senior manager you would keep 'không'. Tone is warm but respectful."
+    },
+    {
+      "vietnamese": "Thực tập bán thời gian cũng được.",
+      "english": "A part-time internship is fine too.",
+      "explanation": "'Bán thời gian' is part-time (in speech you will also hear 'part-time' in English). 'Cũng được' means 'is also okay', a flexible, low-pressure phrase. Offering flexibility up front matters when the person already has two jobs."
+    },
+    {
+      "vietnamese": "Em rành Excel với SQL hông?",
+      "english": "Are you comfortable with Excel and SQL?",
+      "explanation": "'Rành' is a Southern word for being skilled at or familiar with something; the standard 'thành thạo' sounds like a CV. 'Với' for 'and' is the spoken choice. Asking about tools is normal in a casual pre-interview chat and does not sound like a test."
+    },
+    {
+      "vietnamese": "Nếu em sắp xếp được thì mình bắt đầu tháng sau.",
+      "english": "If you can arrange it, we'll start next month.",
+      "explanation": "'Sắp xếp' is to arrange or fit into a schedule; 'sắp xếp được' means able to make it work. 'Nếu… thì…' is the if-then pattern taught below. 'Mình' here means 'we' and keeps it collaborative rather than top-down."
+    },
+    {
+      "vietnamese": "Có lương hỗ trợ, hông nhiều nhưng có.",
+      "english": "There's a stipend, not a lot, but there is one.",
+      "explanation": "'Lương hỗ trợ' (support salary) is the usual term for an internship stipend. The honest 'hông nhiều nhưng có' is a very Vietnamese way to manage expectations without embarrassment. Notice 'hông' used as 'not' before an adjective, exactly as 'không' would be."
+    },
+    {
+      "vietnamese": "Em làm ca tối ở đâu vậy?",
+      "english": "Where do you work your evening shift?",
+      "explanation": "'Ca tối' is the evening shift; 'ca sáng' is the morning shift. 'Vậy' softens the question so it sounds like friendly curiosity rather than a background check. This shows you care about their real constraints before setting hours."
+    },
+    {
+      "vietnamese": "Anh sẽ nói chuyện với sếp trước.",
+      "english": "I'll talk to my boss first.",
+      "explanation": "'Sếp' (from French chef) is the everyday word for boss; 'giám đốc' or 'quản lý' are titles, not what you say in conversation. 'Trước' at the end means 'first, beforehand'. This sets an honest expectation that you cannot promise on the spot."
+    },
+    {
+      "vietnamese": "Em suy nghĩ rồi trả lời anh nha.",
+      "english": "Think it over and let me know.",
+      "explanation": "'Suy nghĩ' is to think it over, 'rồi' links the two actions in order, and 'trả lời' means reply. 'Nha' makes it a gentle request with no deadline pressure. This is the phrase that closes the conversation politely and leaves the decision with them."
+    },
+    {
+      "vietnamese": "Gửi CV cho anh qua Zalo nha.",
+      "english": "Send me your CV on Zalo.",
+      "explanation": "Zalo is the messaging app everyone in Vietnam uses for work as well as friends, so this is completely normal even in a professional context. 'Gửi… cho anh' is 'send… to me'; 'qua' means 'via'. English 'CV' is used as-is."
+    },
+    {
+      "vietnamese": "Đừng ráng quá, giữ sức khỏe nha.",
+      "english": "Don't push yourself too hard, take care of your health.",
+      "explanation": "'Ráng' is the Southern word for trying hard or pushing through (Northerners say 'cố gắng'). 'Giữ sức khỏe' (keep your health) is a warm, caring sign-off that older Vietnamese use with younger people. Ending a work conversation with care like this is expected and builds trust."
+    }
+  ],
+  "vocabulary": [
+    { "vietnamese": "thực tập", "english": "internship, to intern" },
+    { "vietnamese": "thực tập sinh", "english": "intern" },
+    { "vietnamese": "hai việc", "english": "two jobs" },
+    { "vietnamese": "phân tích dữ liệu", "english": "data analytics" },
+    { "vietnamese": "hả", "english": "confirming particle, huh? / right? (Southern)" },
+    { "vietnamese": "ha", "english": "agreement-seeking particle, right?" },
+    { "vietnamese": "hông", "english": "no / not (Southern spoken form of không)" },
+    { "vietnamese": "lịch", "english": "schedule" },
+    { "vietnamese": "bận", "english": "busy" },
+    { "vietnamese": "bên anh", "english": "my side, my company" },
+    { "vietnamese": "hứng thú", "english": "interested, interest" },
+    { "vietnamese": "bán thời gian", "english": "part-time" },
+    { "vietnamese": "rành", "english": "skilled at, familiar with (Southern)" },
+    { "vietnamese": "sắp xếp", "english": "to arrange, to fit into a schedule" },
+    { "vietnamese": "lương hỗ trợ", "english": "stipend" },
+    { "vietnamese": "ca tối", "english": "evening shift" },
+    { "vietnamese": "sếp", "english": "boss" },
+    { "vietnamese": "suy nghĩ", "english": "to think it over" },
+    { "vietnamese": "ráng", "english": "to try hard, to push through (Southern)" },
+    { "vietnamese": "nếu… thì…", "english": "if… then…" }
+  ],
+  "grammar": {
+    "title": "Nếu… thì… : if… then…",
+    "pattern": "Nếu + [condition] + thì + [result]",
+    "explanation": "'Nếu' introduces the condition and 'thì' introduces what follows from it. Unlike English, 'thì' is normally kept even though 'then' is usually dropped; leaving 'thì' out is possible but makes the sentence sound clipped. The subject can appear in either clause or both, and in speech the condition clause is often very short. Native speakers use this pattern constantly for making arrangements, setting expectations and offering reassurance ('if X is a problem, then we'll do Y'). In a work conversation it is the polite way to lay out options without pressuring anyone, because each option is framed as depending on the other person's situation. Combine it with 'hông' for a negative condition ('nếu hông rành thì…') and with 'nha' at the end to keep the tone friendly."
+    ,
+    "examples": [
+      {
+        "vietnamese": "Nếu em sắp xếp được thì mình bắt đầu tháng sau.",
+        "english": "If you can arrange it, we'll start next month.",
+        "explanation": "The core offer of the lesson. Condition first, result second, and 'mình' keeps the plan shared rather than imposed."
+      },
+      {
+        "vietnamese": "Nếu bận quá thì em nói anh, mình đổi lịch.",
+        "english": "If it gets too busy, tell me and we'll change the schedule.",
+        "explanation": "A reassurance for someone with two jobs. 'Nói anh' (tell me) is short and natural; 'đổi lịch' means reschedule. This is how you show flexibility in Vietnamese."
+      },
+      {
+        "vietnamese": "Nếu em hông rành SQL thì bên anh sẽ hướng dẫn.",
+        "english": "If you're not confident with SQL, my team will train you.",
+        "explanation": "Negative condition with Southern 'hông' and 'rành'. 'Hướng dẫn' means to guide or train. Framing it this way lowers the pressure and makes the offer feel safe to accept."
+      },
+      {
+        "vietnamese": "Nếu làm tốt thì sau này có cơ hội vào chính thức.",
+        "english": "If you do well, there's a chance to become full-time later.",
+        "explanation": "Setting an expectation without promising. 'Vào chính thức' (go official) is the everyday phrase for converting to a permanent position; 'sau này' means later on."
+      }
+    ]
+  }
+}

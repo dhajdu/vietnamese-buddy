@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vietnamese Daily Build Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#F6F7F3; --surface:#FFFFFF; --ink:#1B211C; --ink-2:#4A544C; --ink-3:#7C867E;
+    --line:#DDE2DB; --accent:#1F6B4F; --accent-soft:#E3EFE8; --vn:#8A4B12; --vn-soft:#F6EBDD;
+    --code-bg:#EEF1EC; --warn:#9A5B00; --warn-soft:#FBF1DC;
+    --display:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --body:"Newsreader",Georgia,"Times New Roman",serif;
+    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#141915; --surface:#1B211C; --ink:#EDF0EA; --ink-2:#B7C0B8; --ink-3:#7F8A81;
+      --line:#2C352E; --accent:#6FC49C; --accent-soft:#1E3128; --vn:#E0A365; --vn-soft:#33271A;
+      --code-bg:#20281F; --warn:#E0A94A; --warn-soft:#332A17;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#141915; --surface:#1B211C; --ink:#EDF0EA; --ink-2:#B7C0B8; --ink-3:#7F8A81;
+    --line:#2C352E; --accent:#6FC49C; --accent-soft:#1E3128; --vn:#E0A365; --vn-soft:#33271A;
+    --code-bg:#20281F; --warn:#E0A94A; --warn-soft:#332A17;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:18px;line-height:1.55}
+  a{color:var(--accent)}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:240px minmax(0,1fr);gap:56px}
+  @media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr);gap:0}}
+  header.masthead{grid-column:1/-1;padding:56px 0 32px;border-bottom:1px solid var(--line);margin-bottom:40px}
+  .eyebrow{font-family:var(--display);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 12px}
+  h1{font-family:var(--display);font-weight:700;font-size:clamp(34px,5vw,54px);line-height:1.05;margin:0 0 16px;text-wrap:balance;letter-spacing:-.02em}
+  .lede{font-size:21px;color:var(--ink-2);max-width:64ch;margin:0}
+  .meta{display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:24px;font-family:var(--display);font-size:13px;color:var(--ink-3)}
+  .meta b{color:var(--ink-2);font-weight:500}
+  nav.toc{position:sticky;top:24px;align-self:start;font-family:var(--display);font-size:13.5px}
+  @media (max-width:900px){nav.toc{position:static;margin-bottom:32px;padding-bottom:24px;border-bottom:1px solid var(--line)}}
+  nav.toc ol{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+  nav.toc a{color:var(--ink-2);text-decoration:none;display:block;padding:4px 0 4px 12px;border-left:2px solid transparent}
+  nav.toc a:hover{color:var(--ink);border-left-color:var(--line)}
+  nav.toc .n{color:var(--ink-3);display:inline-block;width:26px;font-variant-numeric:tabular-nums}
+  main{min-width:0;max-width:72ch}
+  section{margin:0 0 64px}
+  h2{font-family:var(--display);font-weight:700;font-size:28px;line-height:1.15;margin:0 0 6px;letter-spacing:-.015em;text-wrap:balance}
+  h2 .n{color:var(--ink-3);font-weight:500;margin-right:10px;font-variant-numeric:tabular-nums}
+  h3{font-family:var(--display);font-weight:600;font-size:17px;margin:32px 0 10px}
+  h4{font-family:var(--display);font-weight:600;font-size:14.5px;margin:22px 0 6px;color:var(--ink-2)}
+  p{margin:0 0 16px}
+  ul,ol{padding-left:22px;margin:0 0 16px}
+  li{margin:0 0 6px}
+  li::marker{color:var(--ink-3)}
+  .sub{color:var(--ink-2);font-size:17px;margin-bottom:20px}
+  .vn{font-family:var(--display);font-weight:500;color:var(--vn)}
+  code{font-family:var(--mono);font-size:.82em;background:var(--code-bg);padding:1px 6px;border-radius:4px}
+  pre{font-family:var(--mono);font-size:13.5px;line-height:1.55;background:var(--code-bg);border:1px solid var(--line);border-radius:6px;padding:16px 18px;overflow-x:auto;margin:0 0 20px}
+  pre code{background:none;padding:0;font-size:inherit}
+  .tbl{overflow-x:auto;margin:0 0 20px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+  table{border-collapse:collapse;width:100%;font-size:15.5px}
+  th,td{text-align:left;vertical-align:top;padding:10px 14px;border-bottom:1px solid var(--line)}
+  th{font-family:var(--display);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:600;background:var(--bg)}
+  tr:last-child td{border-bottom:0}
+  td code{white-space:nowrap}
+  .callout{border-left:3px solid var(--accent);background:var(--accent-soft);padding:14px 18px;border-radius:0 6px 6px 0;margin:0 0 20px}
+  .callout.vnq{border-left-color:var(--vn);background:var(--vn-soft)}
+  .callout.warn{border-left-color:var(--warn);background:var(--warn-soft)}
+  .callout p:last-child{margin-bottom:0}
+  .callout .k{font-family:var(--display);font-size:12px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;display:block;margin-bottom:6px;color:var(--ink-2)}
+  .loop{list-style:none;padding:0;margin:0 0 20px;counter-reset:step;display:grid;gap:0;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+  .loop li{margin:0;padding:12px 16px 12px 56px;position:relative;border-bottom:1px solid var(--line);counter-increment:step}
+  .loop li:last-child{border-bottom:0}
+  .loop li::before{content:counter(step);position:absolute;left:16px;top:11px;font-family:var(--display);font-weight:600;font-size:13px;color:var(--accent);background:var(--accent-soft);width:26px;height:26px;border-radius:50%;display:grid;place-items:center}
+  .loop b{font-family:var(--display);font-weight:600;font-size:15.5px}
+  .loop span{display:block;color:var(--ink-2);font-size:16px}
+  .phase{border:1px solid var(--line);border-radius:6px;background:var(--surface);padding:18px 20px;margin:0 0 14px}
+  .phase h3{margin:0 0 4px;display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+  .phase h3 small{font-family:var(--display);font-weight:500;font-size:12.5px;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase}
+  .phase .goal{color:var(--ink-2);margin-bottom:10px;font-size:16.5px}
+  .phase ul{margin-bottom:8px}
+  .phase .done{font-family:var(--display);font-size:13.5px;color:var(--accent);margin:0}
+  .phase .done::before{content:"Done when ";color:var(--ink-3)}
+  .tokens{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:0 0 20px}
+  .tok{border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface);font-family:var(--display);font-size:12.5px}
+  .tok .sw{height:40px}
+  .tok div:last-child{padding:8px 10px}
+  .tok b{display:block;font-weight:600}
+  .tok code{background:none;padding:0;color:var(--ink-3);font-size:11.5px}
+  .tree{font-family:var(--mono);font-size:13px;line-height:1.5}
+  footer{grid-column:1/-1;border-top:1px solid var(--line);padding:24px 0 56px;font-family:var(--display);font-size:13px;color:var(--ink-3)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media (max-width:700px){.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <p class="eyebrow">Build plan</p>
+  <h1>Vietnamese Daily</h1>
+  <p class="lede">A situation-driven Vietnamese tutor for a high-beginner living in Ho Chi Minh City. Type what you expect to talk about today, get a lesson in real Southern Vietnamese, and let the vocabulary and streak accumulate into a curriculum you never had to pick.</p>
+  <div class="meta">
+    <span><b>Owner</b> Dave Hajdu</span>
+    <span><b>Date</b> 10 Sep 2026</span>
+    <span><b>Status</b> Ready to build</span>
+    <span><b>Stack</b> Next.js · TypeScript · Tailwind · Supabase · Vercel · OpenAI</span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Contents">
+  <ol>
+    <li><a href="#principle"><span class="n">1</span>Product principle</a></li>
+    <li><a href="#loop"><span class="n">2</span>The core loop</a></li>
+    <li><a href="#stack"><span class="n">3</span>Stack and decisions</a></li>
+    <li><a href="#structure"><span class="n">4</span>Project structure</a></li>
+    <li><a href="#data"><span class="n">5</span>Data model</a></li>
+    <li><a href="#generation"><span class="n">6</span>Lesson generation</a></li>
+    <li><a href="#vocab"><span class="n">7</span>Vocabulary and flashcards</a></li>
+    <li><a href="#streak"><span class="n">8</span>Streak and activity</a></li>
+    <li><a href="#screens"><span class="n">9</span>Screens</a></li>
+    <li><a href="#design"><span class="n">10</span>Design system</a></li>
+    <li><a href="#phases"><span class="n">11</span>Build phases</a></li>
+    <li><a href="#seed"><span class="n">12</span>Seed lessons</a></li>
+    <li><a href="#accept"><span class="n">13</span>Acceptance criteria</a></li>
+    <li><a href="#risks"><span class="n">14</span>Risks and decisions</a></li>
+    <li><a href="#notnow"><span class="n">15</span>Not in the MVP</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<section id="principle">
+  <h2><span class="n">1</span>Product principle</h2>
+  <p class="sub">The app has no curriculum. The learner's day is the curriculum.</p>
+  <p>Every other Vietnamese app teaches a fixed sequence: greetings, numbers, colours, family. This one asks one question each morning, <em>what situation do you want to practice today?</em>, and generates a lesson for exactly that. The order of topics is whatever life in Saigon throws at the learner: a Grab driver, a date, an internship conversation, ordering <span class="vn">bún thịt nướng</span>.</p>
+  <p>The long-term value comes from the second half: every phrase and word from those disconnected days lands in one persistent vocabulary store with a status, a streak keeps the habit alive, and flashcards turn today's lesson into tomorrow's recall. Disconnected situations become cumulative learning.</p>
+  <div class="callout vnq">
+    <span class="k">Language stance</span>
+    <p>Southern, spoken, current. <span class="vn">coi phim</span> over <span class="vn">xem phim</span>. <span class="vn">hông</span> explained next to <span class="vn">không</span>. Particles (<span class="vn">nha, ha, nè, đó, vậy</span>) taught as social meaning, not grammar trivia. <span class="vn">anh / em</span> used when the situation calls for it. If the AI output reads like a textbook, the prompt is wrong, not the learner.</p>
+  </div>
+</section>
+
+<section id="loop">
+  <h2><span class="n">2</span>The core loop</h2>
+  <p class="sub">Everything in the MVP exists to make these eight steps work end to end, every day.</p>
+  <ol class="loop">
+    <li><b>Enter a situation</b><span>Plain English, one text box. "I'm asking a coworker to dinner after work."</span></li>
+    <li><b>Generate the lesson</b><span>Server-side call to the model with a strict JSON schema. Validated with Zod before anything is saved.</span></li>
+    <li><b>Save the lesson</b><span>Full JSON stored in <code>lessons.lesson_json</code>, with title, situation, and grammar topic denormalised for lists.</span></li>
+    <li><b>Extract and dedupe vocabulary</b><span>Each vocabulary item is normalised and upserted into the user's <code>vocabulary</code> table. Duplicates link to the existing row.</span></li>
+    <li><b>Create flashcards</b><span>Two decks per lesson: phrase cards and vocabulary cards. Vocabulary cards for already-known words are skipped.</span></li>
+    <li><b>Review cards</b><span>Flip, Know it, Review again, Next. Each answer updates card status and the vocabulary row it points to.</span></li>
+    <li><b>Update progress</b><span>Today's <code>daily_activity</code> row is upserted. Streak is recomputed from activity dates in Asia/Ho_Chi_Minh.</span></li>
+    <li><b>Come back tomorrow</b><span>Home shows the streak, vocabulary count, today's review count, and recent lessons. Repeat.</span></li>
+  </ol>
+  <p>Phases 1 to 3 in <a href="#phases">section 11</a> build nothing outside this loop. The product should feel useful after the first lesson and the first review.</p>
+</section>
+
+<section id="stack">
+  <h2><span class="n">3</span>Stack and decisions</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Layer</th><th>Choice</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td>Framework</td><td>Next.js 16 App Router (already scaffolded in <code>website/</code>), TypeScript strict</td><td>Server Actions keep the AI call and all writes server-side without a separate API layer. Vercel-native.</td></tr>
+      <tr><td>Styling</td><td>Tailwind CSS v4 with tokens in <code>globals.css</code></td><td>Spec asks for Tailwind. Tokens defined once as CSS variables so the design system in section 10 is the single source.</td></tr>
+      <tr><td>Database and auth</td><td>Supabase (Postgres, Auth, RLS)</td><td>Email magic-link login is a few lines. RLS on every table means the server code never has to remember to filter by user.</td></tr>
+      <tr><td>AI</td><td>OpenAI via the Vercel AI SDK, <code>generateObject</code> with a Zod schema</td><td>Structured output with schema enforcement at the API level plus a second validation pass locally. The provider is one string, so swapping to Claude or the AI Gateway later is a config change.</td></tr>
+      <tr><td>Validation</td><td>Zod at every boundary</td><td>AI output, form input, and seed JSON all pass through the same <code>LessonSchema</code>.</td></tr>
+      <tr><td>Hosting</td><td>Vercel, deployed by PR merge to <code>main</code></td><td>Fluid Compute, Node runtime, 300s default timeout covers a slow generation.</td></tr>
+      <tr><td>Timezone</td><td>Asia/Ho_Chi_Minh, stored per user, defaulted</td><td>Streaks break at the wrong time if computed in UTC. Local date is derived server-side with <code>Intl.DateTimeFormat</code>.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout warn">
+    <span class="k">One flag, once</span>
+    <p>The spec names OpenAI. I recommend wiring it through the AI SDK's provider abstraction rather than the raw OpenAI client, so model choice is a single env var (<code>AI_MODEL=openai/gpt-4.1</code>). Same cost, same behaviour, and the Vietnamese quality comparison between models becomes a one-line experiment later.</p>
+  </div>
+</section>
+
+<section id="structure">
+  <h2><span class="n">4</span>Project structure</h2>
+  <p>Builds on the scaffold already in <code>website/</code> (Next 16, Tailwind v4, Supabase SSR clients, AI SDK, vitest). Every feature lives in <code>lib/</code> as plain functions that Server Actions call, so the AI, vocabulary, and streak logic can be unit-tested without a browser.</p>
+<pre class="tree">vietnamese-buddy/website/          (existing create-next-app scaffold)
+├── app/
+│   ├── (auth)/login/page.tsx        magic-link form
+│   ├── (app)/
+│   │   ├── layout.tsx               nav: Home · Lessons · Flashcards · Vocabulary · Progress
+│   │   ├── page.tsx                 Home
+│   │   ├── lessons/page.tsx         History list
+│   │   ├── lessons/[id]/page.tsx    Lesson view (phrases, vocab, grammar)
+│   │   ├── flashcards/page.tsx      Deck picker + review session
+│   │   ├── vocabulary/page.tsx      Search, filter, mark known/learning
+│   │   └── progress/page.tsx        Stats + 30-day calendar
+│   ├── auth/callback/route.ts       Supabase code exchange
+│   └── globals.css                  Tailwind + design tokens
+├── components/                      Nav, LessonCard, PhraseTable, Flashcard, StatTile, ActivityCalendar
+├── lib/
+│   ├── ai/prompt.ts                 system prompt (verbatim from spec, plus guardrails)
+│   ├── ai/schema.ts                 LessonSchema (Zod) + inferred Lesson type
+│   ├── ai/generate.ts               generateLesson(situation) → validated Lesson
+│   ├── lessons/actions.ts           createLesson, regenerateLesson, completeLesson
+│   ├── vocabulary/normalize.ts      normalizeVietnamese()
+│   ├── vocabulary/upsert.ts         upsertVocabularyForLesson()
+│   ├── flashcards/create.ts         createFlashcardsForLesson()
+│   ├── flashcards/actions.ts        reviewCard(cardId, result)
+│   ├── activity/streak.ts           localDate(), computeStreak()
+│   ├── activity/actions.ts          recordActivity(kind)
+│   └── supabase/{server,client,admin}.ts
+├── supabase/
+│   ├── migrations/0xx_vietnamese_daily.sql   tables, indexes, RLS (alongside starter migrations)
+│   └── seed.sql                     three sample lessons for the dev user
+├── data/seed-lessons/               dinner.json · movie.json · internship.json
+├── proxy.ts                         session refresh + auth gate (Next 16)
+├── .env.example
+└── README.md</pre>
+</section>
+
+<section id="data">
+  <h2><span class="n">5</span>Data model</h2>
+  <p class="sub">Six tables. Every user-owned table has RLS with <code>user_id = auth.uid()</code> for all four operations.</p>
+
+  <h3>profiles</h3>
+  <p>One row per auth user, created by a trigger on <code>auth.users</code>. Holds <code>timezone</code> (default <code>Asia/Ho_Chi_Minh</code>) and <code>display_name</code>. Streak snapshots are computed, not stored, until scale demands otherwise.</p>
+
+  <h3>lessons</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><code>id</code></td><td>uuid pk</td><td></td></tr>
+      <tr><td><code>user_id</code></td><td>uuid fk profiles</td><td></td></tr>
+      <tr><td><code>situation</code></td><td>text</td><td>The learner's own words, unedited</td></tr>
+      <tr><td><code>title</code></td><td>text</td><td>From the model</td></tr>
+      <tr><td><code>grammar_topic</code></td><td>text</td><td>Denormalised from <code>lesson_json.grammar.title</code> for the history list</td></tr>
+      <tr><td><code>lesson_json</code></td><td>jsonb</td><td>Full validated lesson</td></tr>
+      <tr><td><code>parent_lesson_id</code></td><td>uuid null</td><td>Set when this is a regeneration or variant. The original is never overwritten.</td></tr>
+      <tr><td><code>source</code></td><td>text</td><td><code>ai</code> or <code>seed</code></td></tr>
+      <tr><td><code>completed_at</code></td><td>timestamptz null</td><td>Set by "Mark complete"</td></tr>
+      <tr><td><code>created_at</code></td><td>timestamptz</td><td></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>vocabulary</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><code>id</code></td><td>uuid pk</td><td></td></tr>
+      <tr><td><code>user_id</code></td><td>uuid fk</td><td></td></tr>
+      <tr><td><code>vietnamese</code></td><td>text</td><td>Display form, as first seen</td></tr>
+      <tr><td><code>normalized</code></td><td>text</td><td>Dedupe key, see section 7. <b>Unique on (user_id, normalized)</b></td></tr>
+      <tr><td><code>english</code></td><td>text</td><td></td></tr>
+      <tr><td><code>status</code></td><td>enum</td><td><code>new</code> · <code>learning</code> · <code>known</code></td></tr>
+      <tr><td><code>first_seen_at</code></td><td>timestamptz</td><td></td></tr>
+      <tr><td><code>last_reviewed_at</code></td><td>timestamptz null</td><td></td></tr>
+      <tr><td><code>review_count</code></td><td>int</td><td></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>lesson_vocabulary</h3>
+  <p>Join table, pk <code>(lesson_id, vocabulary_id)</code>. The first lesson linked to a word is "the lesson that introduced it" (ordered by lesson <code>created_at</code>).</p>
+
+  <h3>flashcards</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><code>id</code></td><td>uuid pk</td><td></td></tr>
+      <tr><td><code>user_id</code>, <code>lesson_id</code></td><td>uuid fk</td><td></td></tr>
+      <tr><td><code>vocabulary_id</code></td><td>uuid fk null</td><td>Set for vocab cards so a review updates the word too</td></tr>
+      <tr><td><code>type</code></td><td>enum</td><td><code>phrase</code> · <code>vocabulary</code></td></tr>
+      <tr><td><code>front</code></td><td>text</td><td>Vietnamese</td></tr>
+      <tr><td><code>back</code></td><td>jsonb</td><td><code>{ english, explanation? }</code></td></tr>
+      <tr><td><code>status</code></td><td>enum</td><td><code>new</code> · <code>review</code> · <code>known</code></td></tr>
+      <tr><td><code>review_count</code>, <code>last_reviewed_at</code></td><td></td><td></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>daily_activity</h3>
+  <p>pk <code>(user_id, activity_date)</code> where <code>activity_date</code> is a <code>date</code> in the user's local timezone. Columns <code>lesson_created</code>, <code>cards_reviewed</code> (int), <code>lesson_completed</code> (bool). A day counts toward the streak if any of the three is truthy.</p>
+
+  <h4>Indexes</h4>
+  <ul>
+    <li><code>lessons (user_id, created_at desc)</code> for history and home</li>
+    <li><code>vocabulary (user_id, status)</code> for filters and counters</li>
+    <li><code>flashcards (user_id, status)</code> for "today's review count"</li>
+    <li><code>daily_activity (user_id, activity_date desc)</code> for streak</li>
+  </ul>
+</section>
+
+<section id="generation">
+  <h2><span class="n">6</span>Lesson generation</h2>
+  <p class="sub">One server function, one schema, no client-side keys.</p>
+
+  <h3>System prompt</h3>
+  <p>The spec's prompt is used verbatim as the core. Three guardrails are appended, each fixing a failure mode observed in first drafts of this kind of prompt:</p>
+  <ul>
+    <li><b>Counts are hard.</b> 10 to 15 phrases, 12 to 20 vocabulary items, 3 to 5 grammar examples. The schema enforces them and the prompt states them so the model doesn't argue with the validator.</li>
+    <li><b>Grammar exclusion list.</b> The "avoid" list (<span class="vn">chưa / rồi</span>, negation, word order) and the "prefer" list (<span class="vn">vừa… vừa…, hay là, để, nếu… thì, càng… càng, chắc, từng, mới</span>, particles, classifiers, topic-comment, subject dropping) go in the prompt as-is. Optionally pass the learner's last five grammar topics so the model avoids repeats.</li>
+    <li><b>Vocabulary must come from the phrases.</b> Every vocabulary item should appear in at least one phrase or example. This is stated in the prompt and spot-checked in validation (soft warning, not rejection).</li>
+  </ul>
+
+  <h3>Schema</h3>
+<pre><code>const Phrase = z.object({
+  vietnamese: z.string().min(1),
+  english: z.string().min(1),
+  explanation: z.string().min(20),
+});
+const Vocab = z.object({ vietnamese: z.string().min(1), english: z.string().min(1) });
+const Example = Phrase;
+
+export const LessonSchema = z.object({
+  title: z.string().min(3).max(80),
+  situation: z.string().min(3),
+  phrases: z.array(Phrase).min(10).max(15),
+  vocabulary: z.array(Vocab).min(12).max(20),
+  grammar: z.object({
+    title: z.string().min(3),
+    pattern: z.string().min(2),
+    explanation: z.string().min(40),
+    examples: z.array(Example).min(3).max(5),
+  }),
+});
+export type Lesson = z.infer&lt;typeof LessonSchema&gt;;</code></pre>
+
+  <h3>generateLesson(situation, options)</h3>
+  <ol>
+    <li>Reject empty or &gt;500 char input. Trim.</li>
+    <li>Call <code>generateObject</code> with the schema, <code>temperature: 0.7</code>, and a 60s abort.</li>
+    <li>Run <code>LessonSchema.safeParse</code> again on the result (belt and braces: some providers return near-misses).</li>
+    <li>Post-checks: dedupe vocabulary within the lesson by normalized form; strip trailing punctuation from vocabulary; ensure <code>situation</code> echoes the input.</li>
+    <li>On validation failure, retry once with the Zod error message appended to the user turn. On second failure, surface a plain error: "The lesson came back malformed. Try again or rephrase the situation."</li>
+    <li>Return the typed <code>Lesson</code>. The action, not this function, writes to the database.</li>
+  </ol>
+
+  <h3>createLesson action</h3>
+  <p>Wraps the above in one transaction-shaped sequence: insert lesson, upsert vocabulary, insert join rows, insert flashcards, record activity, revalidate <code>/</code> and <code>/lessons</code>, redirect to the lesson. If a later step fails the lesson is deleted so the learner never sees a half-built one.</p>
+
+  <h3>Regenerate and modify</h3>
+  <p>From a lesson page: "Regenerate" reruns with the same situation, "Adjust" opens a small textarea for a tweak ("make it more casual", "focus on the payment part"). Both create a <em>new</em> lesson row with <code>parent_lesson_id</code> set. The history page shows variants nested under the original.</p>
+</section>
+
+<section id="vocab">
+  <h2><span class="n">7</span>Vocabulary and flashcards</h2>
+
+  <h3>Normalisation</h3>
+  <p>Vietnamese dedupe fails on trivial differences: <span class="vn">Coi phim</span> vs <span class="vn">coi phim</span>, composed vs decomposed diacritics, a trailing "?" the model left on. The key is:</p>
+<pre><code>export function normalizeVietnamese(s: string) {
+  return s
+    .normalize("NFC")                // one codepoint form for ế, ờ, ậ…
+    .toLowerCase()
+    .replace(/[.,!?;:"'()\[\]…]+$/g, "") // trailing punctuation
+    .replace(/^[.,!?;:"'()\[\]…]+/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}</code></pre>
+  <p>Diacritics are <b>kept</b>. <span class="vn">ma</span>, <span class="vn">má</span>, <span class="vn">mà</span> and <span class="vn">mã</span> are different words and must stay different rows. Parenthetical glosses the model sometimes adds ("hông (Southern)") are stripped by a pre-pass that removes bracketed suffixes before normalising.</p>
+
+  <h3>Upsert</h3>
+  <p>For each vocabulary item: compute <code>normalized</code>, <code>insert … on conflict (user_id, normalized) do nothing returning id</code>, fall back to a select on conflict, then insert the join row. New rows get <code>status = 'new'</code>. Existing rows are untouched, so a word the learner already marked known stays known. The action returns the count of genuinely new words for the "new vocabulary" figure on the history page.</p>
+
+  <h3>Flashcard creation</h3>
+  <ul>
+    <li>One phrase card per phrase. Back: english + explanation.</li>
+    <li>One vocabulary card per vocabulary row that was newly created <em>or</em> whose status is not <code>known</code>. Known words don't get re-carded.</li>
+    <li>Cards start as <code>new</code>.</li>
+  </ul>
+
+  <h3>Review session</h3>
+  <p>Deck picker: "This lesson", "All due", per-lesson. A session loads cards ordered <code>review</code> first, then <code>new</code>, then <code>known</code> last. The four controls map to:</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Control</th><th>Card</th><th>Linked vocabulary</th></tr></thead>
+    <tbody>
+      <tr><td>Flip</td><td>Client-side only</td><td></td></tr>
+      <tr><td>Know it</td><td><code>status = known</code>, count +1, reviewed now</td><td><code>status = known</code>, count +1, reviewed now</td></tr>
+      <tr><td>Review again</td><td><code>status = review</code>, count +1</td><td><code>status = learning</code>, count +1</td></tr>
+      <tr><td>Next card</td><td>No change, moves on</td><td></td></tr>
+    </tbody>
+  </table></div>
+  <p>Every "Know it" or "Review again" increments <code>daily_activity.cards_reviewed</code>. "Today's review count" on Home is the number of cards with status <code>review</code> plus cards with status <code>new</code> from lessons created before today, capped for display.</p>
+
+  <h3>Vocabulary page</h3>
+  <p>Server-rendered list with a search box (matches on <code>vietnamese</code> and <code>english</code>, case-insensitive, diacritic-sensitive), a status filter (All · New · Learning · Known), and a column showing the introducing lesson as a link. A three-state toggle on each row sets status directly. The header shows the running counter: <b>Vocabulary learned: 187 words</b> where "learned" means introduced, with a smaller "132 known" beside it.</p>
+</section>
+
+<section id="streak">
+  <h2><span class="n">8</span>Streak and activity</h2>
+  <p>Local date first, everything else follows:</p>
+<pre><code>export function localDate(tz = "Asia/Ho_Chi_Minh", now = new Date()) {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: tz,
+    year: "numeric", month: "2-digit", day: "2-digit" }).format(now); // "2026-09-10"
+}</code></pre>
+  <p><code>recordActivity(kind)</code> upserts today's row and sets the relevant column. <code>computeStreak(dates)</code> takes the user's distinct active dates descending and walks back from today (or yesterday, so an unbroken streak doesn't show 0 before the learner has done anything today). Longest streak is the longest consecutive run over all dates. Total learning days is the row count. All three are computed on request; the table is small.</p>
+  <p>The 30-day calendar on Progress is a 5×6 grid of local dates, each cell shaded by whether the day had activity, with a tooltip listing what happened.</p>
+</section>
+
+<section id="screens">
+  <h2><span class="n">9</span>Screens</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Route</th><th>What's on it</th><th>Data</th></tr></thead>
+    <tbody>
+      <tr><td><code>/login</code></td><td>Email field, "Send magic link". Confirmation state. No password.</td><td>Supabase Auth OTP</td></tr>
+      <tr><td><code>/</code> Home</td><td>Wordmark "Vietnamese Daily". Question. Large textarea with the spec placeholder. "Create Lesson". Four stat tiles: streak, total vocabulary, words mastered, today's review count. Recent lessons (last 5).</td><td>profile, counts, lessons</td></tr>
+      <tr><td><code>/lessons</code></td><td>History table: date, situation, grammar topic, phrases, new words. Variants grouped under their parent.</td><td>lessons + join counts</td></tr>
+      <tr><td><code>/lessons/[id]</code></td><td>Title, situation. Three cards: Useful Phrases (table, Vietnamese first and large), Vocabulary (two-column list), Grammar (pattern, explanation, examples). Actions: Review this lesson's cards, Mark complete, Regenerate, Adjust.</td><td>lesson_json</td></tr>
+      <tr><td><code>/flashcards</code></td><td>Deck picker, then a single centred card with flip and the three buttons. Progress bar for the session. End state with counts.</td><td>flashcards</td></tr>
+      <tr><td><code>/vocabulary</code></td><td>Counter, search, status filter, list with introducing lesson and a status toggle.</td><td>vocabulary + first lesson</td></tr>
+      <tr><td><code>/progress</code></td><td>Current streak, longest streak, total learning days, lessons completed, phrases learned, vocabulary introduced, vocabulary mastered. 30-day calendar.</td><td>daily_activity, counts</td></tr>
+    </tbody>
+  </table></div>
+  <p>Navigation is a top bar on desktop and a five-item bottom bar on mobile: Home · Lessons · Flashcards · Vocabulary · Progress.</p>
+</section>
+
+<section id="design">
+  <h2><span class="n">10</span>Design system</h2>
+  <p class="sub">Clean, adult, and quiet. Vietnamese is the hero; English is the caption.</p>
+  <p>Tokens live in <code>app/globals.css</code> as CSS variables and are exposed to Tailwind through <code>@theme</code>. Nothing in components uses a raw hex.</p>
+  <div class="tokens">
+    <div class="tok"><div class="sw" style="background:#F6F7F3"></div><div><b>bg</b><code>#F6F7F3</code></div></div>
+    <div class="tok"><div class="sw" style="background:#FFFFFF;border-bottom:1px solid #DDE2DB"></div><div><b>surface</b><code>#FFFFFF</code></div></div>
+    <div class="tok"><div class="sw" style="background:#1B211C"></div><div><b>ink</b><code>#1B211C</code></div></div>
+    <div class="tok"><div class="sw" style="background:#4A544C"></div><div><b>ink-2</b><code>#4A544C</code></div></div>
+    <div class="tok"><div class="sw" style="background:#1F6B4F"></div><div><b>accent</b><code>#1F6B4F</code></div></div>
+    <div class="tok"><div class="sw" style="background:#8A4B12"></div><div><b>vietnamese</b><code>#8A4B12</code></div></div>
+    <div class="tok"><div class="sw" style="background:#DDE2DB"></div><div><b>line</b><code>#DDE2DB</code></div></div>
+    <div class="tok"><div class="sw" style="background:#9A5B00"></div><div><b>warn</b><code>#9A5B00</code></div></div>
+  </div>
+  <div class="two">
+    <div>
+      <h4>Type</h4>
+      <ul>
+        <li><b>Be Vietnam Pro</b> for headings, Vietnamese text, and UI. Designed for Vietnamese diacritics, so <span class="vn">ậ ễ ờ</span> render at the right height instead of colliding.</li>
+        <li><b>Newsreader</b> for English body and explanations. Serif keeps the English visibly secondary.</li>
+        <li><b>JetBrains Mono</b> for the grammar pattern line only.</li>
+        <li>Scale: 13 · 15 · 17 · 20 · 24 · 30 · 40. Vietnamese in a phrase row is 20, English is 15, explanation is 15 in ink-2.</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Layout and components</h4>
+      <ul>
+        <li>Content max width 720px. Generous vertical rhythm on an 8px grid.</li>
+        <li>Lesson sections are the only cards: 1px line, 8px radius, no shadow.</li>
+        <li>Stat tiles: number in Be Vietnam Pro 600 with <code>tabular-nums</code>, label in 13px uppercase, letter-spaced.</li>
+        <li>Flashcard: one centred surface, 3:2 ratio, flip on click and Space. Back shows English in serif, explanation below a hairline.</li>
+        <li>Progress: a thin bar, not a ring. The 30-day calendar uses accent at 100% for active days and line colour for empty.</li>
+        <li>Dark theme from the same tokens. No emoji as section markers; the 🔥 in the streak is the one exception and it is a real product convention.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="phases">
+  <h2><span class="n">11</span>Build phases</h2>
+  <p class="sub">Sequential. Each phase ends with something usable.</p>
+
+  <div class="phase">
+    <h3>Foundation <small>Phase 1</small></h3>
+    <p class="goal">A deployed shell with login, schema, tokens, and three seeded lessons readable in the UI.</p>
+    <ul>
+      <li>Use the existing <code>website/</code> scaffold. Add the design-token and ship-flow map to the root <code>CLAUDE.md</code>; replace the placeholder <code>docs/brand/DESIGN.md</code> with the tokens in section 10.</li>
+      <li>Supabase project, <code>001_initial.sql</code> with tables, enums, indexes, RLS, and the profile trigger.</li>
+      <li>Magic-link auth, callback route, session refresh, auth gate on <code>(app)</code>.</li>
+      <li>Design tokens in <code>globals.css</code>, nav, layout, Home shell with static tiles.</li>
+      <li>Three seed lesson JSON files validated by <code>LessonSchema</code>, plus a seed script that runs them through the same pipeline as AI lessons so vocabulary and flashcards exist too.</li>
+      <li>Lesson page renders seeds. Vercel project linked, first deploy via PR to <code>main</code>.</li>
+    </ul>
+    <p class="done">you can log in on the Vercel URL and read all three sample lessons.</p>
+  </div>
+
+  <div class="phase">
+    <h3>The loop <small>Phase 2</small></h3>
+    <p class="goal">Type a situation, get a real lesson, review its cards, watch the numbers move.</p>
+    <ul>
+      <li><code>lib/ai</code>: prompt, schema, <code>generateLesson</code> with retry.</li>
+      <li><code>createLesson</code> action with the full save sequence and rollback.</li>
+      <li>Normalise + upsert vocabulary, join rows, flashcard creation.</li>
+      <li>Flashcards page with the review session and <code>reviewCard</code> action.</li>
+      <li><code>recordActivity</code>, <code>computeStreak</code>, live tiles on Home.</li>
+      <li>Loading state on Create Lesson (generation takes 10 to 25 seconds; show the situation echoed back and a calm progress line, not a spinner alone).</li>
+    </ul>
+    <p class="done">a fresh account can complete steps 1 to 8 of section 2 without touching the database.</p>
+  </div>
+
+  <div class="phase">
+    <h3>Memory <small>Phase 3</small></h3>
+    <p class="goal">The pages that turn days into a curriculum.</p>
+    <ul>
+      <li>History page with counts, variant grouping, reopen.</li>
+      <li>Regenerate and Adjust with <code>parent_lesson_id</code>.</li>
+      <li>Vocabulary page: search, filter, introducing lesson, status toggle.</li>
+      <li>Progress page with all seven stats and the 30-day calendar.</li>
+      <li>Mark complete on a lesson.</li>
+    </ul>
+    <p class="done">every item in the spec's Home, History, Vocabulary, and Progress sections is present.</p>
+  </div>
+
+  <div class="phase">
+    <h3>Polish and ship <small>Phase 4</small></h3>
+    <p class="goal">Production-quality without new features.</p>
+    <ul>
+      <li>Mobile pass on every screen at 375px. Bottom nav. Flashcard thumb reach.</li>
+      <li>Dark theme check on every screen.</li>
+      <li>Empty states: no lessons yet, no cards due, vocabulary empty.</li>
+      <li>Unit tests: <code>normalizeVietnamese</code>, <code>computeStreak</code> (including the yesterday case and a timezone edge at 23:30 ICT), <code>LessonSchema</code> against the three seeds and two malformed fixtures.</li>
+      <li><code>.env.example</code>, README with Supabase and Vercel setup, rate limit of 20 generations per user per day.</li>
+    </ul>
+    <p class="done">README setup works from a clean clone and the app is used for real for three consecutive days.</p>
+  </div>
+</section>
+
+<section id="seed">
+  <h2><span class="n">12</span>Seed lessons</h2>
+  <p>Three hand-checked lessons in <code>data/seed-lessons/</code>, each conforming to <code>LessonSchema</code>, so the UI is fully usable before an API key exists and so the schema has real fixtures.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Situation</th><th>Grammar topic</th><th>Flavour to hit</th></tr></thead>
+    <tbody>
+      <tr><td>Asking someone to dinner</td><td><span class="vn">hay là…</span> (soft suggestion)</td><td><span class="vn">Tối nay đi ăn hông?</span>, <span class="vn">anh / em</span>, particles <span class="vn">nha</span> and <span class="vn">nè</span>, how to sound warm without sounding pushy</td></tr>
+      <tr><td>Watching a movie at home or at the theater</td><td><span class="vn">vừa… vừa…</span></td><td><span class="vn">coi phim</span> not <span class="vn">xem phim</span>, <span class="vn">ở nhà hay ra rạp?</span>, snacks, "boring", "scary", <span class="vn">đó</span> for emphasis</td></tr>
+      <tr><td>Talking to someone working two jobs while studying data analytics about a possible internship</td><td><span class="vn">nếu… thì…</span></td><td>Polite-but-real register, <span class="vn">làm hai việc</span>, <span class="vn">thực tập</span>, asking about schedule and workload, expressing admiration naturally</td></tr>
+    </tbody>
+  </table></div>
+  <p>Seeds are written by a native Southern speaker or reviewed by one before launch. The model can draft them; a human signs off.</p>
+</section>
+
+<section id="accept">
+  <h2><span class="n">13</span>Acceptance criteria</h2>
+  <ul>
+    <li>A new user can log in by email, create a lesson from a plain-English situation, and see it saved in under 30 seconds.</li>
+    <li>Every generated lesson has 10 to 15 phrases, 12 to 20 vocabulary items, and one grammar section with 3 to 5 examples. Anything else is rejected before saving.</li>
+    <li>Creating two lessons that share words produces no duplicate vocabulary rows for that user.</li>
+    <li>"Know it" on a vocabulary card marks the vocabulary row known and it disappears from future decks.</li>
+    <li>Streak increments once per local day regardless of how many lessons or reviews happen, and survives a review at 23:55 ICT followed by one at 00:05 ICT as two days.</li>
+    <li>Regenerating a lesson leaves the original intact and reachable from History.</li>
+    <li>No AI key or service-role key is ever sent to the browser. Verified by grepping the client bundle.</li>
+    <li>The app is readable and operable on a 375px phone and in dark mode.</li>
+  </ul>
+</section>
+
+<section id="risks">
+  <h2><span class="n">14</span>Risks and decisions</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Risk</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr><td>Model drifts to Northern or textbook Vietnamese</td><td>Prompt states Southern explicitly with examples. Add a "sounds textbook" flag on the lesson page that records feedback for prompt tuning later.</td></tr>
+      <tr><td>Generation cost and latency</td><td>Rate limit per user per day. Stream nothing; a single structured call is simpler and the wait is acceptable once a day.</td></tr>
+      <tr><td>Vocabulary dedupe misses variants (<span class="vn">đi ăn</span> vs <span class="vn">đi ăn tối</span>)</td><td>Accept it. Only exact normalised matches dedupe. Anything smarter is spaced-repetition territory and out of scope.</td></tr>
+      <tr><td>Streak logic disagrees with the learner's sense of "today"</td><td>Timezone stored per user, default ICT, editable later. All date maths server-side from one helper.</td></tr>
+      <tr><td>Magic-link deliverability</td><td>Supabase default sender is fine for one user. Custom SMTP is a Phase 5 concern.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Decisions taken in this plan</h3>
+  <ul>
+    <li>Vercel AI SDK over the raw OpenAI client, OpenAI as the default provider.</li>
+    <li>Streak computed on read, not stored.</li>
+    <li>Regenerations are new rows with a parent pointer, never edits.</li>
+    <li>Vocabulary dedupe keeps diacritics and only normalises case, Unicode form, whitespace, and edge punctuation.</li>
+    <li>Cards for already-known words are not created.</li>
+  </ul>
+</section>
+
+<section id="notnow">
+  <h2><span class="n">15</span>Not in the MVP</h2>
+  <p>Named so they don't creep in:</p>
+  <ul>
+    <li>Spaced repetition scheduling (SM-2 or similar). The four-button review is enough for now.</li>
+    <li>Audio, text-to-speech, or pronunciation scoring.</li>
+    <li>Social features, leaderboards, achievements, badges.</li>
+    <li>Multiple login providers. The auth layer allows it; nothing is wired.</li>
+    <li>Multi-language or Northern dialect toggle.</li>
+    <li>Editing a lesson's phrases by hand.</li>
+    <li>Push or email reminders for the streak.</li>
+  </ul>
+</section>
+
+</main>
+
+<footer>Vietnamese Daily build plan · docs/plans/build-plan.html · Markdown twin at docs/plans/build-plan.md</footer>
+</div>
+</body>
+</html>
