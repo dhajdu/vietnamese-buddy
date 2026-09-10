@@ -24,6 +24,8 @@ SUPABASE_SECRET_KEY=<secret-key>            # server-side only — never NEXT_PU
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ANTHROPIC_API_KEY=<anthropic-key>           # server-side only
 AI_MODEL=anthropic/claude-opus-5            # or openai/<model> with OPENAI_API_KEY
+FPT_AI_API_KEY=<fpt-ai-key>                 # Southern Vietnamese voice (console.fpt.ai); optional
+TTS_VOICE=lannhi                            # FPT.AI Southern female; or linhsan
 DEFAULT_TIMEZONE=Asia/Ho_Chi_Minh
 EOF
 ```
@@ -68,6 +70,11 @@ Set the same env vars in Vercel (Project → Settings → Environment Variables)
 3. The lesson is saved; vocabulary is normalised (`lib/vocabulary/normalize.ts`) and deduped per user; flashcards are created (phrase deck + vocabulary deck, skipping words you already know).
 4. You review cards. Know it / Review again update the card and the word.
 5. Today's activity row is upserted in your local timezone and the streak is computed from it.
+6. Every Vietnamese phrase, word, and card has a speaker button. With an FPT.AI key the app synthesises a Southern female voice server-side, caches the mp3 in the public `audio` storage bucket, and pre-warms a lesson's audio right after it is created. Without a key it falls back to the browser's Vietnamese voice.
+
+## Design
+
+Tokens live in `website/app/globals.css`; the spec is `docs/brand/DESIGN.md` with a live twin at `docs/brand/design-system.html`. Palette is ĀRCA Wellness (cream, warm black, one red). Be Vietnam Pro carries the Vietnamese, Playfair Display the English, Inter the UI.
 
 ## Building features
 

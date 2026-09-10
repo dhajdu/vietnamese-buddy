@@ -1,10 +1,14 @@
 // lib/ai/schema.ts
 import { z } from 'zod'
 
+export const TONES = ['casual', 'warm', 'direct', 'playful', 'polite', 'professional'] as const
+export type Tone = (typeof TONES)[number]
+
 const Phrase = z.object({
   vietnamese: z.string().min(1),
   english: z.string().min(1),
   explanation: z.string().min(20),
+  tone: z.enum(TONES).optional(),
 })
 const Vocab = z.object({
   vietnamese: z.string().min(1),

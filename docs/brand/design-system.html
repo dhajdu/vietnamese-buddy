@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vietnamese Daily Design System</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@700;800&family=Playfair+Display:ital,wght@0,400;1,400&family=Inter:wght@400;600&display=swap">
+<style>
+  :root{
+    --red:#AF0D0E;--red-deep:#8F0A0B;--red-bright:#C8191A;
+    --ink:#111111;--ink-warm:#1C1A17;--body:#3D3A37;
+    --cream:#FEF9EF;--cream-warm:#FFF5EA;--white:#FFFFFF;
+    --sand:#EEE6DC;--sand-deep:#E3D7C6;--stone:#9E9A93;--paper:#F4F3F3;
+    --on-dark-line:rgba(255,255,255,.10);--on-dark-soft:rgba(255,255,255,.06);--sand-70:rgba(238,230,220,.7);
+    --ok-bg:#D8F3E8;--ok-ink:#157A5A;--amber-bg:#FAEEDA;--amber-ink:#854F0B;--pink-bg:#FBE6F1;--pink-ink:#B03571;--info-bg:#E2ECFD;--info-ink:#1E4FA3;--err-bg:#FDE4E4;--err-ink:#B0332F;
+    --elevation-2:0 6px 24px rgba(28,26,23,.10);--elevation-dark:0 12px 32px rgba(0,0,0,.4);
+    --vn:"Be Vietnam Pro",system-ui,sans-serif;--serif:"Playfair Display",Georgia,serif;--ui:"Inter","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--cream);color:var(--body);font-family:var(--ui);font-size:15px;line-height:1.6}
+  .wrap{max-width:1100px;margin:0 auto;padding:56px 24px 96px}
+  .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);font-weight:600;margin:0 0 12px}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(36px,5vw,56px);line-height:1.1;letter-spacing:-.01em;margin:0 0 12px;color:var(--ink)}
+  h2{font-family:var(--serif);font-weight:400;font-size:32px;margin:72px 0 8px;color:var(--ink)}
+  h3{font-family:var(--ui);font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin:32px 0 12px}
+  p.lede{font-family:var(--serif);font-size:20px;max-width:64ch;margin:0 0 8px;color:var(--body)}
+  p{max-width:70ch}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+  .sw{border:1px solid var(--sand);border-radius:12px;overflow:hidden;background:var(--white)}
+  .sw i{display:block;height:64px}
+  .sw div{padding:10px 12px;font-size:12px}
+  .sw b{display:block;color:var(--ink);font-weight:600}
+  .sw code{color:var(--stone);font-size:11px}
+  .dark{background:var(--ink-warm);border-radius:12px;padding:28px;color:var(--sand)}
+  .spec{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--sand)}
+  .spec small{font-size:12px;color:var(--stone)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  @media (max-width:760px){.two{grid-template-columns:1fr}.spec{grid-template-columns:1fr}}
+  .card{background:var(--white);border:1px solid var(--sand);border-radius:12px;padding:16px}
+  .pill{display:inline-flex;align-items:center;gap:8px;border-radius:40px;padding:12px 22px;font-weight:600;font-size:15px;font-family:var(--ui)}
+  .pill.red{background:var(--red);color:#fff}
+  .pill.ink{background:var(--ink);color:#fff}
+  .pill.ghost{border:1.5px solid rgba(238,230,220,.35);color:var(--sand)}
+  .pill.quiet{border:1px solid var(--sand);color:var(--body)}
+  .pill.streak{background:var(--red);color:#fff;font-family:var(--vn);font-weight:800;padding:6px 14px 6px 10px;font-size:14px}
+  .chip{display:inline-block;border-radius:40px;padding:5px 11px;font-size:12px;background:var(--cream-warm);color:var(--body);font-weight:600}
+  .tone{display:inline-block;border-radius:40px;padding:2px 9px;font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+  .row-items{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+  .tile{background:var(--white);border:1px solid var(--sand);border-radius:12px;padding:12px}
+  .tile b{display:block;font-family:var(--vn);font-weight:800;font-size:24px;color:var(--ink);letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1}
+  .tile span{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--stone);font-weight:600}
+  .tile.amber{background:var(--amber-bg);border-color:transparent}.tile.amber b{color:var(--amber-ink)}.tile.amber span{color:var(--amber-ink)}
+  .lrow{background:var(--white);border:1px solid var(--sand);border-radius:12px;padding:12px 14px;display:flex;gap:12px;align-items:center}
+  .lrow i{width:6px;align-self:stretch;border-radius:3px}
+  .lrow b{display:block;font-family:var(--vn);font-weight:700;font-size:15px;color:var(--ink)}
+  .lrow small{font-family:var(--serif);color:var(--stone);font-size:13px}
+  .lrow em{margin-left:auto;font-style:normal;font-size:12px;font-weight:600}
+  .phrase{padding:12px 0;border-top:1px solid var(--sand)}
+  .phrase .v{font-family:var(--vn);font-weight:800;font-size:22px;color:var(--ink);letter-spacing:-.02em;line-height:1.15;margin:0}
+  .phrase .g{font-family:var(--serif);font-size:16px;color:var(--body);margin:2px 0 6px}
+  .phrase .x{font-size:14.5px;color:var(--body);margin:0;line-height:1.5}
+  .gram{background:var(--ink-warm);border-radius:12px;padding:16px;color:var(--sand)}
+  .gram .e{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--sand-70);font-weight:600;margin-bottom:8px}
+  .gram .pat{display:inline-block;background:var(--on-dark-soft);color:var(--red-bright);border-radius:8px;padding:6px 10px;font-family:var(--vn);font-weight:700;font-size:15px;margin-bottom:8px}
+  .gram p{font-family:var(--serif);font-size:15px;color:var(--sand-70);margin:0}
+  .fc{background:var(--white);border-radius:20px;padding:36px 24px;text-align:center;box-shadow:var(--elevation-dark);position:relative}
+  .fc .side{position:absolute;top:12px;left:16px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);font-weight:600}
+  .fc .f{font-family:var(--vn);font-weight:800;font-size:34px;color:var(--ink);letter-spacing:-.03em;line-height:1.1}
+  .cal{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;max-width:360px}
+  .cal i{aspect-ratio:1;border-radius:6px;display:block;background:var(--white);border:1px solid var(--sand)}
+  .cal i.s{background:var(--sand-deep);border-color:var(--sand-deep)}.cal i.f{background:var(--ink);border-color:var(--ink)}.cal i.t{background:var(--red);border-color:var(--red)}
+  .input{background:var(--white);border-radius:12px;box-shadow:var(--elevation-2);padding:16px}
+  .input .ph{font-family:var(--serif);color:var(--stone);font-size:17px;min-height:56px}
+  table{border-collapse:collapse;width:100%;font-size:14px;background:var(--white);border:1px solid var(--sand);border-radius:12px;overflow:hidden}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--sand);vertical-align:top}
+  th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);font-weight:600;background:var(--cream-warm)}
+  tr:last-child td{border-bottom:0}
+  .tbl{overflow-x:auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<p class="eyebrow">Design system · v1 · ĀRCA palette</p>
+<h1>Vietnamese Daily</h1>
+<p class="lede">Cream paper, warm black, one red. The Vietnamese language is the hero of every screen; English is the caption. This page is the live twin of <code>docs/brand/DESIGN.md</code>.</p>
+
+<h2>Colour</h2>
+<h3>Brand primitives</h3>
+<div class="grid">
+  <div class="sw"><i style="background:#AF0D0E"></i><div><b>red</b><code>#AF0D0E · one action per view</code></div></div>
+  <div class="sw"><i style="background:#8F0A0B"></i><div><b>red-deep</b><code>#8F0A0B · hover</code></div></div>
+  <div class="sw"><i style="background:#C8191A"></i><div><b>red-bright</b><code>#C8191A · red on dark</code></div></div>
+  <div class="sw"><i style="background:#111111"></i><div><b>ink</b><code>#111111 · Vietnamese, headings</code></div></div>
+  <div class="sw"><i style="background:#1C1A17"></i><div><b>ink-warm</b><code>#1C1A17 · the room</code></div></div>
+  <div class="sw"><i style="background:#3D3A37"></i><div><b>body</b><code>#3D3A37 · English text</code></div></div>
+  <div class="sw"><i style="background:#FEF9EF"></i><div><b>cream</b><code>#FEF9EF · canvas</code></div></div>
+  <div class="sw"><i style="background:#FFF5EA"></i><div><b>cream-warm</b><code>#FFF5EA · tints, chips</code></div></div>
+  <div class="sw"><i style="background:#FFFFFF"></i><div><b>white</b><code>#FFFFFF · cards</code></div></div>
+  <div class="sw"><i style="background:#EEE6DC"></i><div><b>sand</b><code>#EEE6DC · borders, text on dark</code></div></div>
+  <div class="sw"><i style="background:#E3D7C6"></i><div><b>sand-deep</b><code>#E3D7C6 · strong lines</code></div></div>
+  <div class="sw"><i style="background:#9E9A93"></i><div><b>stone</b><code>#9E9A93 · meta</code></div></div>
+</div>
+<h3>Tone and status</h3>
+<div class="grid">
+  <div class="sw"><i style="background:#D8F3E8"></i><div><b>ok</b><code>#D8F3E8 / #157A5A · known, casual</code></div></div>
+  <div class="sw"><i style="background:#FAEEDA"></i><div><b>amber</b><code>#FAEEDA / #854F0B · learning, warm</code></div></div>
+  <div class="sw"><i style="background:#FBE6F1"></i><div><b>pink</b><code>#FBE6F1 / #B03571 · playful</code></div></div>
+  <div class="sw"><i style="background:#E2ECFD"></i><div><b>info</b><code>#E2ECFD / #1E4FA3 · polite, professional</code></div></div>
+  <div class="sw"><i style="background:#FDE4E4"></i><div><b>err</b><code>#FDE4E4 / #B0332F · errors</code></div></div>
+</div>
+<h3>On dark</h3>
+<div class="dark">
+  <div class="row-items">
+    <span style="font-family:var(--vn);font-weight:800;font-size:26px;color:var(--sand);letter-spacing:-.02em">Tối nay đi ăn hông?</span>
+    <span style="font-family:var(--serif);color:var(--sand-70);font-size:17px">Want to grab dinner tonight?</span>
+    <span class="pill red" style="background:var(--red-bright)">Know it ✓</span>
+    <span class="pill ghost">Again</span>
+    <span style="font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--sand-70);font-weight:600">eyebrow on dark</span>
+  </div>
+</div>
+
+<h2>Type</h2>
+<div class="spec"><small>Vietnamese hero · Be Vietnam Pro 800 · 40px</small><div style="font-family:var(--vn);font-weight:800;font-size:40px;color:var(--ink);letter-spacing:-.03em;line-height:1.05">Hôm nay bạn sẽ <span style="color:var(--red)">nói</span> gì?</div></div>
+<div class="spec"><small>Vietnamese phrase · Be Vietnam Pro 800 · 22px</small><div style="font-family:var(--vn);font-weight:800;font-size:22px;color:var(--ink);letter-spacing:-.02em">Anh quẹo lộn rồi đó.</div></div>
+<div class="spec"><small>Vietnamese vocab · Be Vietnam Pro 700 · 16px</small><div style="font-family:var(--vn);font-weight:700;font-size:16px;color:var(--ink)">quẹo &nbsp; <span style="font-family:var(--serif);font-weight:400;color:var(--body)">turn (Southern)</span></div></div>
+<div class="spec"><small>Page title · Playfair 400 · 40px</small><div style="font-family:var(--serif);font-size:40px;color:var(--ink);line-height:1.1">Your lessons</div></div>
+<div class="spec"><small>Section title · Playfair 400 · 24px</small><div style="font-family:var(--serif);font-size:24px;color:var(--ink)">Useful phrases</div></div>
+<div class="spec"><small>English gloss · Playfair 400 · 16px</small><div style="font-family:var(--serif);font-size:16px;color:var(--body)">You turned the wrong way.</div></div>
+<div class="spec"><small>Explanation · Inter 400 · 14.5px</small><div style="font-size:14.5px;color:var(--body)">"Quẹo" is the Southern word for turn (Northern: rẽ). Final "đó" points something out gently, like "just so you know."</div></div>
+<div class="spec"><small>Eyebrow · Inter 600 · 11px</small><div class="eyebrow" style="margin:0">Today's pattern</div></div>
+<div class="spec"><small>Stat · Be Vietnam Pro 800 · 56px</small><div style="font-family:var(--vn);font-weight:800;font-size:56px;color:var(--ink);letter-spacing:-.04em;line-height:1">🔥 7 <span style="font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--stone);font-family:var(--ui);font-weight:600;vertical-align:middle">day streak</span></div></div>
+<div class="spec" style="border-bottom:0"><small>Meta · Inter 400 · 12px</small><div style="font-size:12px;color:var(--stone)">Rủ đi ăn tối · Today · sample</div></div>
+
+<h2>Components</h2>
+<h3>Buttons and chips</h3>
+<div class="row-items">
+  <span class="pill red">Create today's lesson →</span>
+  <span class="pill ink">Mark complete</span>
+  <span class="pill quiet">Regenerate</span>
+  <span class="pill streak">🔥 7</span>
+  <span class="chip">Grab driver</span><span class="chip">Ordering cơm tấm</span>
+  <span class="tone" style="background:var(--ok-bg);color:var(--ok-ink)">casual</span>
+  <span class="tone" style="background:var(--amber-bg);color:var(--amber-ink)">warm</span>
+  <span class="tone" style="background:var(--pink-bg);color:var(--pink-ink)">playful</span>
+  <span class="tone" style="background:var(--info-bg);color:var(--info-ink)">polite</span>
+</div>
+
+<h3>Input card and stat tiles</h3>
+<div class="two">
+  <div class="input">
+    <div class="ph">e.g. I'm meeting my girlfriend's friends at a café in Thảo Điền</div>
+    <div class="row-items" style="margin:6px 0 12px"><span class="chip">Grab driver</span><span class="chip">Weekend plans</span><span class="chip">At the gym</span></div>
+    <span class="pill red" style="display:flex;justify-content:center">Create today's lesson →</span>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;align-content:start">
+    <div class="tile amber"><b>14</b><span>Cards due</span></div>
+    <div class="tile"><b>187</b><span>Words</span></div>
+    <div class="tile"><b>132</b><span>Known</span></div>
+  </div>
+</div>
+
+<h3>Lesson rows</h3>
+<div style="display:grid;gap:8px;max-width:520px">
+  <div class="lrow"><i style="background:var(--ok-ink)"></i><div><b>Nói với tài xế Grab</b><small>Today · để + verb</small></div><em style="color:var(--ok-ink)">✓ reviewed</em></div>
+  <div class="lrow"><i style="background:var(--amber-ink)"></i><div><b>Rủ đi ăn tối</b><small>Yesterday · hay là…</small></div><em style="color:var(--amber-ink)">6 new</em></div>
+  <div class="lrow"><i style="background:var(--red)"></i><div><b>Rủ nhau coi phim</b><small>Mon · vừa… vừa…</small></div><em style="color:var(--red)">3 due</em></div>
+</div>
+
+<h3>Phrase rows and grammar block</h3>
+<div class="two">
+  <div class="card">
+    <div class="phrase" style="border-top:0;padding-top:0"><span class="tone" style="background:var(--ok-bg);color:var(--ok-ink)">casual</span><p class="v">Tối nay em rảnh hông?</p><p class="g">Are you free tonight?</p><p class="x">In Saigon <b>không</b> softens to <b>hông</b>. Using it instantly makes you sound local.</p></div>
+    <div class="phrase"><span class="tone" style="background:var(--amber-bg);color:var(--amber-ink)">warm</span><p class="v">Đi ăn với anh nha?</p><p class="g">Come eat with me, okay?</p><p class="x"><b>Nha</b> turns a command into a gentle request.</p></div>
+  </div>
+  <div class="gram">
+    <div class="e">Today's pattern</div>
+    <div class="pat">hay là + [suggestion] + (đi / nha)?</div>
+    <p>Suggests without pushing. Reach for it wherever you'd say "how about…" or "or maybe…".</p>
+  </div>
+</div>
+
+<h3>Flashcard on the dark room</h3>
+<div class="dark" style="max-width:420px">
+  <div class="fc"><span class="side">Front · phrase</span><div class="f">Đi ăn với anh nha?</div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px"><span class="pill ghost" style="justify-content:center">Again</span><span class="pill red" style="background:var(--red-bright);justify-content:center">Know it ✓</span></div>
+</div>
+
+<h3>Calendar</h3>
+<div class="cal"><i></i><i class="s"></i><i class="s"></i><i></i><i class="s"></i><i class="f"></i><i class="s"></i><i></i><i></i><i class="s"></i><i class="s"></i><i class="f"></i><i></i><i class="s"></i><i class="s"></i><i class="s"></i><i class="f"></i><i></i><i class="s"></i><i class="s"></i><i class="s"></i><i></i><i></i><i class="s"></i><i class="s"></i><i class="f"></i><i class="s"></i><i class="s"></i><i class="s"></i><i class="t"></i></div>
+<p style="font-size:12px;color:var(--stone);margin-top:8px">Empty · studied (sand-deep) · lesson + full review (ink) · today (red)</p>
+
+<h2>Rules</h2>
+<div class="tbl"><table>
+  <thead><tr><th>Rule</th><th>Why</th></tr></thead>
+  <tbody>
+    <tr><td>One red per view</td><td>The eye always knows what to do next. The streak flame and an eyebrow are the only exceptions.</td></tr>
+    <tr><td>Vietnamese is ink and heaviest; English is serif and lighter</td><td>The language you are learning wins every glance. The translation reads as a caption.</td></tr>
+    <tr><td>Never bold Playfair</td><td>ĀRCA's serif voice is regular weight only.</td></tr>
+    <tr><td>Cream canvas, white cards, warm-black rooms</td><td>Three surfaces, always in that order of depth.</td></tr>
+    <tr><td>Pills for actions and chips, 12px for cards</td><td>Two radii keep the surface calm.</td></tr>
+    <tr><td>Tone and status hues are functional only</td><td>Green means known, amber means learning, red means act. Never decoration.</td></tr>
+    <tr><td>One animation: the streak pulse</td><td>Reward the habit, nothing else moves.</td></tr>
+  </tbody>
+</table></div>
+
+</div>
+</body>
+</html>

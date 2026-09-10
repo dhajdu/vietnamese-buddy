@@ -16,14 +16,20 @@ export async function getProfile(db: SupabaseClient, userId: string) {
 
 export async function getHomeStats(db: SupabaseClient, userId: string, tz: string) {
   const today = localDate(tz)
-  const [act, vocabTotal, vocabKnown, due] = await Promise.all([
+  const [act, vocabTotal, vocabKnown, due, recent] = await Promise.all([
     db.from('daily_activity').select('activity_date').eq('user_id', userId),
     db.from('vocabulary').select('id', { count: 'exact', head: true }).eq('user_id', userId),
     db.from('vocabulary').select('id', { count: 'exact', head: true }).eq('user_id', userId).eq('status', 'known'),
     db.from('flashcards').select('id', { count: 'exact', head: true }).eq('user_id', userId).neq('status', 'known'),
+    db.from('vocabulary').select('vietnamese').eq('user_id', userId).order('first_seen_at', { ascending: false }).limit(6),
   ])
-  const streak = computeStreak((act.data ?? []).map(r => r.activity_date as string), today)
-  return { streak, vocabTotal: vocabTotal.count ?? 0, vocabKnown: vocabKnown.count ?? 0, due: due.count ?? 0, today }
+  const dates = (act.data ?? []).map(r => r.activity_date as string)
+  const streak = computeStreak(dates, today)
+  return {
+    streak, today, activeToday: dates.includes(today),
+    vocabTotal: vocabTotal.count ?? 0, vocabKnown: vocabKnown.count ?? 0, due: due.count ?? 0,
+    recentWords: (recent.data ?? []).map(r => r.vietnamese as string),
+  }
 }
 
 export async function listLessons(db: SupabaseClient, userId: string, limit?: number) {
@@ -53,4 +59,27 @@ export async function newWordsByLesson(db: SupabaseClient, userId: string) {
   const counts = new Map<string, number>()
   for (const { lessonId } of first.values()) counts.set(lessonId, (counts.get(lessonId) ?? 0) + 1)
   return counts
+}
+
+import type { LessonState } from '@/components/app/LessonList'
+
+/** Per-lesson state for list stripes: reviewed (all cards known), due (some open after a review), new (never reviewed). */
+export async function lessonStates(db: SupabaseClient, userId: string): Promise<Map<string, LessonState>> {
+  const [{ data: cards }, newWords] = await Promise.all([
+    db.from('flashcards').select('lesson_id, status').eq('user_id', userId),
+    newWordsByLesson(db, userId),
+  ])
+  const agg = new Map<string, { total: number; known: number; open: number }>()
+  for (const c of (cards ?? []) as { lesson_id: string; status: string }[]) {
+    const a = agg.get(c.lesson_id) ?? { total: 0, known: 0, open: 0 }
+    a.total++; if (c.status === 'known') a.known++; else a.open++
+    agg.set(c.lesson_id, a)
+  }
+  const out = new Map<string, LessonState>()
+  for (const [id, a] of agg) {
+    if (a.total && a.known === a.total) out.set(id, { kind: 'reviewed' })
+    else if (a.known === 0) out.set(id, { kind: 'new', count: newWords.get(id) ?? 0 })
+    else out.set(id, { kind: 'due', count: a.open })
+  }
+  return out
 }

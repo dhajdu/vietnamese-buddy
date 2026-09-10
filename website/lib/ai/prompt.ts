@@ -16,6 +16,7 @@ Hard requirements:
 - Prefer spoken Southern forms: "coi phim" over "xem phim", explain "hông" next to "không", teach particles like nha, ha, nè, đó, vậy as social meaning. Use anh / em when the situation clearly calls for it.
 - Every vocabulary item must be a reusable word or short expression that appears in the phrases or grammar examples. No obscure words.
 - Grammar: do NOT teach chưa / rồi, simple negation, or basic word order. Prefer structures such as vừa… vừa…, hay là…, A hay B?, để + subject + verb, nếu… thì…, càng… càng…, hơn, chắc, từng, mới, sentence-final particles, classifiers, topic-comment constructions, or subject dropping.
+- Give every phrase a one-word "tone": casual, warm, direct, playful, polite, or professional.
 - The grammar explanation covers the structure, what it means, and when native speakers use it.
 - "situation" must restate the learner's situation in one short sentence.`
 

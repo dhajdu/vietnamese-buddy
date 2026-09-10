@@ -3,32 +3,42 @@ import Link from 'next/link'
 import type { LessonRow } from '@/lib/lessons/queries'
 import { formatDate } from '@/lib/lessons/format'
 
-export function LessonList({ lessons, tz, newWords, detailed = false }: {
-  lessons: LessonRow[]; tz: string; newWords?: Map<string, number>; detailed?: boolean
+export type LessonState = { kind: 'reviewed' } | { kind: 'new'; count: number } | { kind: 'due'; count: number } | { kind: 'none' }
+
+const STRIPE: Record<LessonState['kind'], string> = { reviewed: 'bg-ok-ink', new: 'bg-amber-ink', due: 'bg-red', none: 'bg-sand-deep' }
+const TEXT: Record<LessonState['kind'], string> = { reviewed: 'text-ok-ink', new: 'text-amber-ink', due: 'text-red', none: 'text-stone' }
+
+function label(s: LessonState) {
+  if (s.kind === 'reviewed') return '✓ reviewed'
+  if (s.kind === 'new') return `${s.count} new`
+  if (s.kind === 'due') return `${s.count} due`
+  return ''
+}
+
+export function LessonList({ lessons, tz, states, detailed = false }: {
+  lessons: LessonRow[]; tz: string; states?: Map<string, LessonState>; detailed?: boolean
 }) {
-  if (!lessons.length) {
-    return <div className="rounded-card border border-dashed border-line px-4 py-6 text-center text-sm text-ink-3">Your lessons will appear here.</div>
-  }
+  if (!lessons.length) return <div className="rounded-card border border-dashed border-sand px-4 py-6 text-center text-sm text-stone">Your lessons will appear here.</div>
   return (
     <ul className="flex flex-col gap-2">
-      {lessons.map(l => (
-        <li key={l.id} className={l.parent_lesson_id ? 'ml-4' : ''}>
-          <Link href={`/lessons/${l.id}`}
-            className={`card block px-4 py-3 hover:border-ink ${l.parent_lesson_id ? 'border-dashed' : ''}`}>
-            <div className="flex items-baseline justify-between gap-3">
-              <span className="font-display text-[15px] font-semibold">{l.parent_lesson_id ? '↳ ' : ''}{l.title}</span>
-              <span className="shrink-0 text-xs text-ink-3">{formatDate(l.created_at, tz)}{l.source === 'seed' ? ' · sample' : ''}</span>
-            </div>
-            {detailed && (
-              <div className="mt-0.5 text-sm text-ink-2">
-                <span className="vn font-medium text-[13px]">{l.grammar_topic}</span>
-                {' · '}{l.lesson_json.phrases.length} phrases
-                {newWords && <> · {newWords.get(l.id) ?? 0} new words</>}
-              </div>
-            )}
-          </Link>
-        </li>
-      ))}
+      {lessons.map(l => {
+        const s = states?.get(l.id) ?? { kind: 'none' as const }
+        return (
+          <li key={l.id} className={l.parent_lesson_id ? 'ml-4' : ''}>
+            <Link href={`/lessons/${l.id}`} className={`card flex items-center gap-3 px-3.5 py-3 hover:border-ink ${l.parent_lesson_id ? 'border-dashed' : ''}`}>
+              <span className={`w-1.5 self-stretch rounded-[3px] ${STRIPE[s.kind]}`} />
+              <span className="min-w-0 flex-1">
+                <b className="block truncate font-vn text-[15px] font-bold text-ink">{l.parent_lesson_id ? '↳ ' : ''}{l.title}</b>
+                <small className="t-gloss block text-[13px] text-stone">
+                  {formatDate(l.created_at, tz)}{l.source === 'seed' ? ' · sample' : ''} · {l.grammar_topic}
+                  {detailed && <> · {l.lesson_json.phrases.length} phrases</>}
+                </small>
+              </span>
+              <em className={`shrink-0 text-xs font-semibold not-italic ${TEXT[s.kind]}`}>{label(s)}</em>
+            </Link>
+          </li>
+        )
+      })}
     </ul>
   )
 }

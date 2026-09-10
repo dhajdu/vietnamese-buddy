@@ -11,8 +11,8 @@ export default async function SignupPage() {
     <div className="flex min-h-screen items-center justify-center px-6">
       <div className="w-full max-w-sm space-y-6">
         <div className="space-y-2 text-center">
-          <h1 className="font-display text-2xl font-bold tracking-tight">Vietnamese Daily</h1>
-          <p className="text-sm text-ink-2">Create your account.</p>
+          <h1 className="t-title text-3xl">Vietnamese Daily</h1>
+          <p className="t-gloss text-[15px] italic">Create your account.</p>
         </div>
         <SignupForm />
       </div>
