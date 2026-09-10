@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vietnamese Daily Wireframes</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --bg:#F3F4F1; --paper:#FFFFFF; --ink:#1B211C; --ink-2:#5A635C; --ink-3:#8C958E;
+    --line:#B9C0BA; --line-soft:#DDE2DB; --fill:#E9ECE7; --accent:#1F6B4F; --note:#8A4B12; --note-bg:#F6EBDD;
+    --ui:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#151916; --paper:#1D231E; --ink:#EDF0EA; --ink-2:#B3BCB5; --ink-3:#7F8A81;
+      --line:#4A554D; --line-soft:#2E372F; --fill:#262E27; --accent:#6FC49C; --note:#E0A365; --note-bg:#33271A;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#151916; --paper:#1D231E; --ink:#EDF0EA; --ink-2:#B3BCB5; --ink-3:#7F8A81;
+    --line:#4A554D; --line-soft:#2E372F; --fill:#262E27; --accent:#6FC49C; --note:#E0A365; --note-bg:#33271A;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--ui);font-size:15px;line-height:1.5}
+  .wrap{max-width:1280px;margin:0 auto;padding:48px 24px 80px}
+  header{margin-bottom:40px;max-width:70ch}
+  .eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 10px}
+  h1{font-size:clamp(30px,4vw,44px);line-height:1.05;margin:0 0 12px;letter-spacing:-.02em;font-weight:700}
+  header p{color:var(--ink-2);margin:0 0 8px;font-size:16px}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-3);margin-top:16px}
+  .legend span::before{content:"";display:inline-block;width:12px;height:12px;border:1.5px solid var(--line);vertical-align:-2px;margin-right:6px;border-radius:2px}
+  .legend span.a::before{background:var(--ink);border-color:var(--ink)}
+  .legend span.b::before{background:repeating-linear-gradient(45deg,var(--line) 0 2px,transparent 2px 5px)}
+  .legend span.c::before{border-radius:50%;background:var(--note);border-color:var(--note)}
+
+  /* flow */
+  .flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0 0 56px;counter-reset:f}
+  .flow div{border:1.5px solid var(--line);border-radius:6px;padding:12px 14px;background:var(--paper);font-size:13px;position:relative;counter-increment:f}
+  .flow div b{display:block;font-size:14px;margin-bottom:2px}
+  .flow div::before{content:counter(f);font-size:11px;color:var(--ink-3);display:block;margin-bottom:4px;font-family:var(--mono)}
+  .flow div span{color:var(--ink-2)}
+
+  h2{font-size:22px;margin:56px 0 4px;letter-spacing:-.01em}
+  h2 small{font-family:var(--mono);font-weight:400;font-size:12.5px;color:var(--ink-3);margin-left:10px}
+  .desc{color:var(--ink-2);margin:0 0 20px;max-width:70ch}
+  .screen{display:grid;grid-template-columns:auto minmax(0,1fr);gap:32px;align-items:start}
+  @media (max-width:820px){.screen{grid-template-columns:1fr}}
+
+  /* phone frame */
+  .phone{width:375px;max-width:100%;border:2px solid var(--line);border-radius:22px;background:var(--paper);padding:14px 16px 0;position:relative;overflow:hidden;min-height:640px;display:flex;flex-direction:column}
+  .status{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;color:var(--ink-3);margin-bottom:10px}
+  .body{flex:1;display:flex;flex-direction:column;gap:12px;padding-bottom:12px}
+  .bottomnav{display:grid;grid-template-columns:repeat(5,1fr);border-top:1.5px solid var(--line);margin:0 -16px;padding:10px 0 14px;font-size:10px;text-align:center;color:var(--ink-3)}
+  .bottomnav i{display:block;width:18px;height:18px;border:1.5px solid var(--line);border-radius:4px;margin:0 auto 4px}
+  .bottomnav .on{color:var(--ink);font-weight:600}
+  .bottomnav .on i{background:var(--ink);border-color:var(--ink)}
+
+  /* desktop frame */
+  .desk{border:2px solid var(--line);border-radius:10px;background:var(--paper);overflow:hidden;width:100%;max-width:820px}
+  .desk .bar{display:flex;gap:6px;padding:8px 12px;border-bottom:1.5px solid var(--line)}
+  .desk .bar i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--line)}
+  .desk .topnav{display:flex;gap:22px;padding:14px 32px;border-bottom:1.5px solid var(--line-soft);font-size:13px;color:var(--ink-3);align-items:center}
+  .desk .topnav b{color:var(--ink);margin-right:auto;font-size:14px}
+  .desk .topnav .on{color:var(--ink);font-weight:600;border-bottom:2px solid var(--ink);padding-bottom:2px}
+  .desk .content{padding:28px 32px;max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+
+  /* wire primitives */
+  .wm{font-weight:700;font-size:18px;letter-spacing:-.01em}
+  .q{font-size:15px;font-weight:500}
+  .box{border:1.5px solid var(--line);border-radius:6px;padding:10px 12px;font-size:12.5px;color:var(--ink-3);background:var(--paper)}
+  .box.tall{min-height:84px}
+  .btn{border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);border-radius:6px;padding:10px;text-align:center;font-size:13px;font-weight:600}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.sm{padding:7px 10px;font-size:12px}
+  .row{display:flex;gap:8px}
+  .row > *{flex:1}
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .tile{border:1.5px solid var(--line-soft);border-radius:6px;padding:8px 6px;text-align:center}
+  .tile b{display:block;font-size:17px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+  .tile span{font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3)}
+  .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3);font-weight:600;margin:4px 0 -6px}
+  .list{display:flex;flex-direction:column;gap:6px}
+  .item{border:1.5px solid var(--line-soft);border-radius:6px;padding:8px 10px;font-size:12.5px;display:flex;justify-content:space-between;gap:8px}
+  .item small{color:var(--ink-3);white-space:nowrap}
+  .ph{background:repeating-linear-gradient(45deg,var(--line-soft) 0 2px,transparent 2px 6px);border-radius:3px;height:10px}
+  .ph.w60{width:60%} .ph.w40{width:40%} .ph.w80{width:80%}
+  .card{border:1.5px solid var(--line);border-radius:8px;padding:12px}
+  .card h4{margin:0 0 8px;font-size:13px}
+  .vn{font-weight:600;font-size:15px}
+  .en{font-size:12px;color:var(--ink-2)}
+  .ex{font-size:11.5px;color:var(--ink-3);border-top:1px solid var(--line-soft);margin-top:4px;padding-top:4px}
+  .phrase{padding:6px 0;border-bottom:1px solid var(--line-soft)}
+  .phrase:last-child{border-bottom:0}
+  .fc{aspect-ratio:3/2;border:1.5px solid var(--ink);border-radius:10px;display:grid;place-items:center;text-align:center;padding:16px;position:relative}
+  .fc .side{position:absolute;top:8px;left:10px;font-family:var(--mono);font-size:10px;color:var(--ink-3)}
+  .fc .big{font-size:22px;font-weight:600;letter-spacing:-.01em}
+  .prog{height:4px;background:var(--line-soft);border-radius:2px;overflow:hidden}
+  .prog i{display:block;height:100%;width:40%;background:var(--ink)}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{border:1.5px solid var(--line);border-radius:999px;padding:3px 10px;font-size:11.5px;color:var(--ink-2)}
+  .chip.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .tog{display:inline-flex;border:1.5px solid var(--line);border-radius:4px;overflow:hidden;font-size:9.5px}
+  .tog span{padding:2px 6px;color:var(--ink-3)}
+  .tog .on{background:var(--ink);color:var(--paper)}
+  .cal{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
+  .cal i{aspect-ratio:1;border:1.5px solid var(--line-soft);border-radius:3px;display:block}
+  .cal i.on{background:var(--ink);border-color:var(--ink)}
+  .cal i.today{outline:2px solid var(--accent);outline-offset:1px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;font-size:12px}
+  .grid2 span:nth-child(odd){font-weight:600}
+  .grid2 span:nth-child(even){color:var(--ink-2)}
+  .empty{border:1.5px dashed var(--line);border-radius:6px;padding:14px;text-align:center;font-size:12px;color:var(--ink-3)}
+  .fx{position:absolute;inset:0;background:rgba(0,0,0,.02)}
+
+  /* callouts */
+  .callout{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--note);color:#fff;font-size:10.5px;font-weight:700;position:absolute;z-index:2;font-family:var(--mono)}
+  .rel{position:relative}
+  .notes{display:flex;flex-direction:column;gap:10px;max-width:46ch}
+  .notes div{display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:13.5px;color:var(--ink-2)}
+  .notes b{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--note);color:#fff;font-size:10.5px;font-family:var(--mono);margin-top:2px}
+  .notes strong{color:var(--ink);font-weight:600}
+  .states{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:20px}
+  .state{border:1.5px solid var(--line-soft);border-radius:8px;padding:12px;background:var(--paper)}
+  .state h5{margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-3)}
+  .pair{display:grid;grid-template-columns:auto 1fr;gap:32px;align-items:start;margin-top:24px}
+  @media (max-width:820px){.pair{grid-template-columns:1fr}}
+  footer{margin-top:64px;border-top:1px solid var(--line-soft);padding-top:20px;font-size:12.5px;color:var(--ink-3)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Wireframes · low fidelity</p>
+  <h1>Vietnamese Daily, screen by screen</h1>
+  <p>How the app works from the first login to the next morning. Phone frames are 375px, the size every screen is designed for first. Two desktop frames show the same content at 720px content width. Copy is real; boxes stand in for finished styling.</p>
+  <p>Companion to the build plan in <code style="font-family:var(--mono);font-size:12.5px">docs/plans/build-plan.html</code>.</p>
+  <div class="legend"><span class="a">Primary action</span><span>Secondary / input</span><span class="b">Text placeholder</span><span class="c">Annotation</span></div>
+</header>
+
+<h2 style="margin-top:0">One day in the app</h2>
+<p class="desc">The path a learner walks each day. Every screen below sits on this line.</p>
+<div class="flow">
+  <div><b>Log in</b><span>Magic link, once</span></div>
+  <div><b>Home</b><span>Type today's situation</span></div>
+  <div><b>Generating</b><span>10 to 25 seconds</span></div>
+  <div><b>Lesson</b><span>Phrases, vocab, grammar</span></div>
+  <div><b>Flashcards</b><span>Review this lesson's decks</span></div>
+  <div><b>Home again</b><span>Streak +1, counts move</span></div>
+  <div><b>Tomorrow</b><span>New situation, due cards</span></div>
+</div>
+
+<!-- LOGIN -->
+<h2>Login <small>/login</small></h2>
+<p class="desc">No password. One field, one button, one confirmation.</p>
+<div class="screen">
+  <div class="phone rel">
+    <span class="callout" style="top:250px;left:340px">1</span>
+    <div class="status"><span>9:41</span><span>ICT</span></div>
+    <div class="body" style="justify-content:center;gap:16px">
+      <div class="wm" style="text-align:center">Vietnamese Daily</div>
+      <div style="text-align:center;font-size:13px;color:var(--ink-2)">Sign in with your email. We'll send a link.</div>
+      <div class="box">you@example.com</div>
+      <div class="btn">Send magic link</div>
+      <div style="text-align:center;font-size:11px;color:var(--ink-3)">No account needed. The first link creates one.</div>
+    </div>
+  </div>
+  <div class="notes">
+    <div><b>1</b><span><strong>Sent state</strong> replaces the form with "Check your inbox for a link from Vietnamese Daily" and a Resend link after 30 seconds.</span></div>
+    <div><b>·</b><span>Supabase OTP by email. Other providers can be added later without touching this screen's layout.</span></div>
+  </div>
+</div>
+
+<!-- HOME -->
+<h2>Home <small>/</small></h2>
+<p class="desc">The question is the whole screen. Numbers and history sit below the fold of attention, never above the input.</p>
+<div class="screen">
+  <div class="phone rel">
+    <span class="callout" style="top:112px;left:340px">1</span>
+    <span class="callout" style="top:236px;left:340px">2</span>
+    <span class="callout" style="top:318px;left:340px">3</span>
+    <span class="callout" style="top:430px;left:340px">4</span>
+    <div class="status"><span>9:41</span><span>ICT</span></div>
+    <div class="body">
+      <div class="wm">Vietnamese Daily</div>
+      <div class="q">What situation do you want to practice today?</div>
+      <div class="box tall">e.g. I'm talking to someone who works at a restaurant about a possible internship</div>
+      <div class="btn">Create Lesson</div>
+      <div class="tiles">
+        <div class="tile"><b>🔥 7</b><span>Day streak</span></div>
+        <div class="tile"><b>187</b><span>Vocabulary</span></div>
+        <div class="tile"><b>132</b><span>Mastered</span></div>
+        <div class="tile"><b>14</b><span>To review</span></div>
+      </div>
+      <div class="lbl">Recent lessons</div>
+      <div class="list">
+        <div class="item"><span>Asking a coworker to dinner</span><small>Today</small></div>
+        <div class="item"><span>Grab driver, wrong turn</span><small>Yesterday</small></div>
+        <div class="item"><span>Meeting her friends at a café</span><small>Mon</small></div>
+      </div>
+    </div>
+    <div class="bottomnav"><div class="on"><i></i>Home</div><div><i></i>Lessons</div><div><i></i>Cards</div><div><i></i>Vocab</div><div><i></i>Progress</div></div>
+  </div>
+  <div class="notes">
+    <div><b>1</b><span><strong>Textarea</strong> auto-grows to four lines. The placeholder is the spec's exact example. Enter submits; Shift+Enter adds a line.</span></div>
+    <div><b>2</b><span><strong>Create Lesson</strong> is the only filled button on the screen. Disabled until there is text.</span></div>
+    <div><b>3</b><span><strong>Stat tiles</strong> are live: streak, total vocabulary introduced, words marked known, cards due today. The "To review" tile links to Flashcards.</span></div>
+    <div><b>4</b><span><strong>Recent lessons</strong> shows the last five. Tapping reopens the lesson. Below three lessons a "See all" link goes to History.</span></div>
+  </div>
+</div>
+
+<div class="states">
+  <div class="state"><h5>Generating</h5>
+    <div class="box" style="margin-bottom:8px;color:var(--ink)">"Asking a coworker to dinner after work"</div>
+    <div class="prog" style="margin-bottom:8px"><i style="width:55%"></i></div>
+    <div style="font-size:12px;color:var(--ink-2)">Writing phrases a Saigon local would actually say…</div>
+    <div style="font-size:11px;color:var(--ink-3);margin-top:6px">The situation is echoed back so the wait feels owned. Three rotating lines, no spinner alone.</div>
+  </div>
+  <div class="state"><h5>Generation failed</h5>
+    <div style="font-size:12.5px;margin-bottom:8px">The lesson came back malformed. Try again or rephrase the situation.</div>
+    <div class="row"><div class="btn sm">Try again</div><div class="btn sm ghost">Edit situation</div></div>
+  </div>
+  <div class="state"><h5>First run, no lessons</h5>
+    <div class="empty">Your lessons will appear here. Three sample lessons are ready under Lessons if you want to look around first.</div>
+  </div>
+</div>
+
+<div class="pair">
+  <div class="desk">
+    <div class="bar"><i></i><i></i><i></i></div>
+    <div class="topnav"><b>Vietnamese Daily</b><span class="on">Home</span><span>Lessons</span><span>Flashcards</span><span>Vocabulary</span><span>Progress</span></div>
+    <div class="content">
+      <div class="q" style="font-size:20px">What situation do you want to practice today?</div>
+      <div class="box tall" style="min-height:96px">e.g. I'm talking to someone who works at a restaurant about a possible internship</div>
+      <div style="display:flex;justify-content:flex-end"><div class="btn" style="padding:10px 22px">Create Lesson</div></div>
+      <div class="tiles">
+        <div class="tile"><b>🔥 7</b><span>Day streak</span></div>
+        <div class="tile"><b>187</b><span>Vocabulary</span></div>
+        <div class="tile"><b>132</b><span>Mastered</span></div>
+        <div class="tile"><b>14</b><span>To review</span></div>
+      </div>
+      <div class="lbl">Recent lessons</div>
+      <div class="list">
+        <div class="item"><span>Asking a coworker to dinner</span><small>Today · hay là…</small></div>
+        <div class="item"><span>Grab driver, wrong turn</span><small>Yesterday · để + verb</small></div>
+      </div>
+    </div>
+  </div>
+  <div class="notes">
+    <div><b>·</b><span><strong>Desktop</strong> keeps the same order. Content is centred at 640px so the page never fills a wide monitor with a form. Nav moves to a top bar.</span></div>
+  </div>
+</div>
+
+<!-- LESSON -->
+<h2>Lesson <small>/lessons/[id]</small></h2>
+<p class="desc">Three cards in the order the learner reads them: phrases, vocabulary, grammar. Vietnamese is large and first in every row.</p>
+<div class="screen">
+  <div class="phone rel" style="min-height:760px">
+    <span class="callout" style="top:118px;left:340px">1</span>
+    <span class="callout" style="top:210px;left:340px">2</span>
+    <span class="callout" style="top:470px;left:340px">3</span>
+    <span class="callout" style="top:588px;left:340px">4</span>
+    <div class="status"><span>9:41</span><span>ICT</span></div>
+    <div class="body">
+      <div style="font-size:11px;color:var(--ink-3)">← Home</div>
+      <div class="wm" style="font-size:20px">Inviting a coworker to dinner</div>
+      <div class="en">"Asking a coworker to dinner after work"</div>
+      <div class="row"><div class="btn sm">Review 27 cards</div><div class="btn sm ghost">Mark complete</div></div>
+      <div class="card">
+        <h4>Useful phrases <span style="color:var(--ink-3);font-weight:400">· 12</span></h4>
+        <div class="phrase"><div class="vn">Tối nay đi ăn hông?</div><div class="en">Want to grab dinner tonight?</div><div class="ex">Casual, warm. <b>hông</b> is the Southern spoken form of <b>không</b>; using it signals you're not reading from a textbook.</div></div>
+        <div class="phrase"><div class="vn">Hay là mình đi ăn bún thịt nướng nha?</div><div class="en">How about we go for bún thịt nướng?</div><div class="ex"><b>Hay là</b> softens a suggestion; <b>nha</b> adds friendliness and closes the sentence gently.</div></div>
+        <div class="phrase"><div class="vn">Em rảnh hông?</div><div class="en">Are you free?</div><div class="ex">Use <b>em</b> if they're younger or junior; <b>anh/chị</b> if older. Dropping the subject entirely is also natural here.</div></div>
+        <div class="ph w60" style="margin-top:8px"></div><div class="ph w80" style="margin-top:6px"></div>
+      </div>
+      <div class="card">
+        <h4>Vocabulary <span style="color:var(--ink-3);font-weight:400">· 15 · 6 new</span></h4>
+        <div class="grid2"><span class="vn" style="font-size:13px">rảnh</span><span>free (time)</span><span class="vn" style="font-size:13px">hông</span><span>not / no (Southern)</span><span class="vn" style="font-size:13px">bao tiền</span><span>how much</span><span class="vn" style="font-size:13px">ngon</span><span>delicious</span></div>
+        <div class="ph w40" style="margin-top:8px"></div>
+      </div>
+      <div class="card">
+        <h4>Grammar · <span class="vn" style="font-size:13px">hay là…</span></h4>
+        <div class="box" style="font-family:var(--mono);font-size:11.5px;color:var(--ink)">hay là + [suggestion] + (nha / đi)?</div>
+        <div class="en" style="margin-top:6px">Suggests an option without pushing. Native speakers reach for it when they'd say "how about…" or "or maybe…".</div>
+        <div class="phrase" style="margin-top:6px"><div class="vn" style="font-size:13px">Hay là coi phim ở nhà?</div><div class="en">How about a movie at home?</div></div>
+        <div class="ph w80" style="margin-top:6px"></div>
+      </div>
+      <div class="row"><div class="btn sm ghost">Regenerate</div><div class="btn sm ghost">Adjust…</div></div>
+    </div>
+  </div>
+  <div class="notes">
+    <div><b>1</b><span><strong>Two actions on top.</strong> Review starts a session with this lesson's decks. Mark complete records activity and shows a check.</span></div>
+    <div><b>2</b><span><strong>Phrase rows</strong> stack Vietnamese (20px, semibold), English (15px, serif), explanation (15px, muted). On desktop this becomes the three-column table from the spec.</span></div>
+    <div><b>3</b><span><strong>Vocabulary</strong> is a two-column list. "6 new" is the count that didn't already exist in the learner's store.</span></div>
+    <div><b>4</b><span><strong>Grammar</strong> shows the pattern in mono, the explanation, then 3 to 5 examples in the same row style as phrases.</span></div>
+    <div><b>·</b><span><strong>Regenerate</strong> reruns the same situation. <strong>Adjust</strong> opens a one-line field ("make it more casual"). Both create a new lesson linked to this one; nothing here is overwritten.</span></div>
+  </div>
+</div>
+
+<!-- FLASHCARDS -->
+<h2>Flashcards <small>/flashcards</small></h2>
+<p class="desc">Pick a deck, then one card at a time. Four controls, no scoring UI beyond a progress bar.</p>
+<div class="screen">
+  <div style="display:flex;gap:20px;flex-wrap:wrap">
+    <div class="phone rel" style="min-height:560px;width:300px">
+      <div class="status"><span>9:41</span><span>ICT</span></div>
+      <div class="body">
+        <div class="wm" style="font-size:17px">Flashcards</div>
+        <div class="lbl">Due today</div>
+        <div class="item"><span>All due cards</span><small>14</small></div>
+        <div class="lbl">By lesson</div>
+        <div class="list">
+          <div class="item"><span>Inviting a coworker to dinner</span><small>27</small></div>
+          <div class="item"><span>Grab driver, wrong turn</span><small>3 due</small></div>
+          <div class="item"><span>Meeting her friends</span><small>Done</small></div>
+        </div>
+      </div>
+      <div class="bottomnav"><div><i></i>Home</div><div><i></i>Lessons</div><div class="on"><i></i>Cards</div><div><i></i>Vocab</div><div><i></i>Progress</div></div>
+    </div>
+    <div class="phone rel" style="min-height:560px;width:300px">
+      <span class="callout" style="top:96px;left:266px">1</span>
+      <span class="callout" style="top:330px;left:266px">2</span>
+      <div class="status"><span>9:41</span><span>ICT</span></div>
+      <div class="body">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ink-3)"><span>✕ End session</span><span>4 / 27</span></div>
+        <div class="prog"><i style="width:15%"></i></div>
+        <div class="fc"><span class="side">FRONT · phrase</span><div class="big">Tối nay đi ăn hông?</div></div>
+        <div style="text-align:center;font-size:11px;color:var(--ink-3)">Tap or press Space to flip</div>
+        <div class="row"><div class="btn sm ghost">Review again</div><div class="btn sm">Know it</div></div>
+        <div class="btn sm ghost" style="border-color:var(--line);color:var(--ink-3)">Next card</div>
+      </div>
+    </div>
+  </div>
+  <div class="notes">
+    <div><b>1</b><span><strong>Card back</strong> shows the English in serif and, for phrase cards, the nuance line under a hairline. Vocabulary cards show only the meaning.</span></div>
+    <div><b>2</b><span><strong>Know it</strong> is the filled button. It marks the card known and, for vocab cards, the word known. <strong>Review again</strong> keeps it in rotation. <strong>Next</strong> skips without a verdict.</span></div>
+    <div><b>·</b><span>Session order: cards marked Review first, then New, then Known. End state shows "9 known · 3 to review again" and a Back to lesson link.</span></div>
+  </div>
+</div>
+
+<!-- VOCABULARY -->
+<h2>Vocabulary <small>/vocabulary</small></h2>
+<p class="desc">The running store. Search, filter, see where each word came from, change its status by hand.</p>
+<div class="screen">
+  <div class="phone rel">
+    <span class="callout" style="top:96px;left:340px">1</span>
+    <span class="callout" style="top:196px;left:340px">2</span>
+    <span class="callout" style="top:262px;left:340px">3</span>
+    <div class="status"><span>9:41</span><span>ICT</span></div>
+    <div class="body">
+      <div class="wm" style="font-size:17px">Vocabulary learned: 187 words</div>
+      <div class="en">132 known · 41 learning · 14 new</div>
+      <div class="box">Search Vietnamese or English</div>
+      <div class="chips"><span class="chip on">All</span><span class="chip">New</span><span class="chip">Learning</span><span class="chip">Known</span></div>
+      <div class="list">
+        <div class="item" style="flex-direction:column;gap:2px"><div style="display:flex;justify-content:space-between"><span class="vn" style="font-size:14px">rảnh</span><span class="tog"><span>New</span><span class="on">Learning</span><span>Known</span></span></div><div class="en">free (time)</div><small>Inviting a coworker to dinner · Today</small></div>
+        <div class="item" style="flex-direction:column;gap:2px"><div style="display:flex;justify-content:space-between"><span class="vn" style="font-size:14px">hông</span><span class="tog"><span>New</span><span>Learning</span><span class="on">Known</span></span></div><div class="en">not / no (Southern)</div><small>Grab driver, wrong turn · 2 Sep</small></div>
+        <div class="item" style="flex-direction:column;gap:2px"><div style="display:flex;justify-content:space-between"><span class="vn" style="font-size:14px">bao tiền</span><span class="tog"><span class="on">New</span><span>Learning</span><span>Known</span></span></div><div class="en">how much (money)</div><small>Inviting a coworker to dinner · Today</small></div>
+        <div class="item" style="flex-direction:column;gap:2px"><div style="display:flex;justify-content:space-between"><span class="vn" style="font-size:14px">coi phim</span><span class="tog"><span>New</span><span>Learning</span><span class="on">Known</span></span></div><div class="en">watch a movie (Southern)</div><small>Movie night · 28 Aug</small></div>
+        <div class="ph w80"></div><div class="ph w60"></div>
+      </div>
+    </div>
+    <div class="bottomnav"><div><i></i>Home</div><div><i></i>Lessons</div><div><i></i>Cards</div><div class="on"><i></i>Vocab</div><div><i></i>Progress</div></div>
+  </div>
+  <div class="notes">
+    <div><b>1</b><span><strong>Counter</strong> reads "learned" as introduced, with the status breakdown under it. This is the number the product is built to grow.</span></div>
+    <div><b>2</b><span><strong>Search</strong> matches Vietnamese and English, case-insensitive, diacritics respected. Filter chips are single-select.</span></div>
+    <div><b>3</b><span><strong>Status toggle</strong> on every row writes directly. The introducing lesson is a link and shows the date.</span></div>
+  </div>
+</div>
+
+<!-- HISTORY -->
+<h2>Lessons <small>/lessons</small></h2>
+<p class="desc">Every lesson ever made, newest first. Regenerated variants nest under their original.</p>
+<div class="screen">
+  <div class="phone rel">
+    <span class="callout" style="top:230px;left:340px">1</span>
+    <div class="status"><span>9:41</span><span>ICT</span></div>
+    <div class="body">
+      <div class="wm" style="font-size:17px">Lessons</div>
+      <div class="list">
+        <div class="item" style="flex-direction:column;gap:2px"><div style="display:flex;justify-content:space-between"><span style="font-weight:600">Inviting a coworker to dinner</span><small>Today</small></div><div class="en">hay là… · 12 phrases · 6 new words</div></div>
+        <div class="item" style="flex-direction:column;gap:2px;margin-left:16px;border-style:dashed"><div style="display:flex;justify-content:space-between"><span style="font-weight:600">↳ Variant: more casual</span><small>Today</small></div><div class="en">hay là… · 11 phrases · 2 new words</div></div>
+        <div class="item" style="flex-direction:column;gap:2px"><div style="display:flex;justify-content:space-between"><span style="font-weight:600">Grab driver, wrong turn</span><small>Yesterday</small></div><div class="en">để + subject + verb · 13 phrases · 9 new words</div></div>
+        <div class="item" style="flex-direction:column;gap:2px"><div style="display:flex;justify-content:space-between"><span style="font-weight:600">Meeting her friends at a café</span><small>Mon</small></div><div class="en">sentence-final particles · 14 phrases · 11 new words</div></div>
+        <div class="item" style="flex-direction:column;gap:2px"><div style="display:flex;justify-content:space-between"><span style="font-weight:600">Movie night</span><small>28 Aug · sample</small></div><div class="en">vừa… vừa… · 12 phrases · 15 new words</div></div>
+        <div class="ph w80"></div><div class="ph w60"></div>
+      </div>
+    </div>
+    <div class="bottomnav"><div><i></i>Home</div><div class="on"><i></i>Lessons</div><div><i></i>Cards</div><div><i></i>Vocab</div><div><i></i>Progress</div></div>
+  </div>
+  <div class="notes">
+    <div><b>1</b><span><strong>Variants</strong> are indented with a dashed edge and keep their own counts. The original above them is untouched.</span></div>
+    <div><b>·</b><span>Each row carries the five spec fields: date, situation (as title), grammar topic, phrase count, new-word count. Seeds are tagged "sample". Desktop shows this as a table.</span></div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<h2>Progress <small>/progress</small></h2>
+<p class="desc">Seven numbers and a month. Nothing to click.</p>
+<div class="screen">
+  <div class="phone rel">
+    <span class="callout" style="top:360px;left:340px">1</span>
+    <div class="status"><span>9:41</span><span>ICT</span></div>
+    <div class="body">
+      <div class="wm" style="font-size:17px">Progress</div>
+      <div class="tiles" style="grid-template-columns:1fr 1fr 1fr">
+        <div class="tile"><b>🔥 7</b><span>Current streak</span></div>
+        <div class="tile"><b>12</b><span>Longest streak</span></div>
+        <div class="tile"><b>23</b><span>Learning days</span></div>
+      </div>
+      <div class="grid2" style="border:1.5px solid var(--line-soft);border-radius:6px;padding:10px 12px">
+        <span>Lessons completed</span><span>18</span>
+        <span>Phrases learned</span><span>231</span>
+        <span>Vocabulary introduced</span><span>187</span>
+        <span>Vocabulary mastered</span><span>132</span>
+      </div>
+      <div class="lbl">Last 30 days</div>
+      <div class="cal">
+        <i></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i class="on"></i>
+        <i class="on"></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i>
+        <i class="on"></i><i></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on today"></i>
+      </div>
+      <div class="en" style="font-size:11px">Tap a day to see what you did: lesson, cards, completed.</div>
+    </div>
+    <div class="bottomnav"><div><i></i>Home</div><div><i></i>Lessons</div><div><i></i>Cards</div><div><i></i>Vocab</div><div class="on"><i></i>Progress</div></div>
+  </div>
+  <div class="notes">
+    <div><b>1</b><span><strong>Calendar</strong> is 30 cells ending today, filled when the day had any activity. Today is outlined. Dates are the learner's local dates in Asia/Ho_Chi_Minh.</span></div>
+    <div><b>·</b><span>All figures are computed on load from <span style="font-family:var(--mono);font-size:12px">daily_activity</span> and counts. No stored streak to drift.</span></div>
+  </div>
+</div>
+
+<footer>Vietnamese Daily wireframes · docs/plans/wireframes.html · see docs/plans/build-plan.html for the plan these screens implement</footer>
+</div>
+</body>
+</html>

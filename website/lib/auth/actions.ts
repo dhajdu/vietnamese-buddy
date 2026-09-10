@@ -10,7 +10,7 @@ export async function loginWithEmail(formData: FormData) {
 
   const { error } = await supabase.auth.signInWithPassword({ email, password })
   if (error) return { error: error.message }
-  redirect('/dashboard')
+  redirect('/')
 }
 
 export async function signupWithEmail(formData: FormData) {
@@ -21,7 +21,7 @@ export async function signupWithEmail(formData: FormData) {
   const { error } = await supabase.auth.signUp({
     email,
     password,
-    options: { emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback` },
+    options: { emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback?next=/` },
   })
   if (error) return { error: error.message }
   redirect('/check-email')
@@ -42,3 +42,4 @@ export async function resetPassword(formData: FormData) {
   if (error) return { error: error.message }
   return { success: true }
 }
+
