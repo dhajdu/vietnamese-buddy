@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vietnamese Daily Redesign Mockup</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@700;800&family=Playfair+Display:ital,wght@0,400;1,400&family=Inter:wght@400;600&display=swap">
+<style>
+  :root{
+    --red:#AF0D0E;--red-deep:#8F0A0B;--red-bright:#C8191A;
+    --ink:#111111;--ink-warm:#1C1A17;--body:#3D3A37;
+    --cream:#FEF9EF;--cream-warm:#FFF5EA;--white:#FFFFFF;
+    --sand:#EEE6DC;--sand-deep:#E3D7C6;--stone:#9E9A93;--paper:#F4F3F3;
+    --on-dark-line:rgba(255,255,255,.10);--on-dark-soft:rgba(255,255,255,.06);--sand-70:rgba(238,230,220,.7);--sand-35:rgba(238,230,220,.35);
+    --ok-bg:#D8F3E8;--ok-ink:#157A5A;--amber-bg:#FAEEDA;--amber-ink:#854F0B;--pink-bg:#FBE6F1;--pink-ink:#B03571;--info-bg:#E2ECFD;--info-ink:#1E4FA3;
+    --elevation-2:0 6px 24px rgba(28,26,23,.10);--elevation-dark:0 12px 32px rgba(0,0,0,.4);
+    --vn:"Be Vietnam Pro",system-ui,sans-serif;--serif:"Playfair Display",Georgia,serif;--ui:"Inter","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#F1EBDF;color:var(--body);font-family:var(--ui);font-size:15px;line-height:1.5}
+  .wrap{max-width:1320px;margin:0 auto;padding:48px 24px 96px}
+  header.intro{max-width:70ch;margin-bottom:40px}
+  .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);font-weight:600;margin:0 0 10px}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(34px,4.5vw,54px);line-height:1.05;letter-spacing:-.01em;margin:0 0 14px;color:var(--ink)}
+  header p{font-family:var(--serif);font-size:18px;color:var(--body);margin:0 0 8px}
+  h2{font-family:var(--serif);font-weight:400;font-size:28px;margin:64px 0 6px;color:var(--ink)}
+  h2 small{font-family:var(--ui);font-weight:500;font-size:13px;color:var(--stone);margin-left:10px}
+  .desc{font-family:var(--serif);color:var(--body);margin:0 0 20px;max-width:70ch;font-size:17px}
+  .tokens{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin:0 0 8px}
+  .tok{border-radius:12px;overflow:hidden;background:var(--white);font-size:12px;border:1px solid var(--sand)}
+  .tok .sw{height:54px}
+  .tok div:last-child{padding:8px 10px}
+  .tok b{display:block;font-weight:600;color:var(--ink)}
+  .tok code{color:var(--stone);font-size:11px}
+  .why{font-family:var(--serif);color:var(--body);font-size:16px;max-width:70ch}
+
+  .row{display:grid;grid-template-columns:auto minmax(0,1fr);gap:32px;align-items:start}
+  @media (max-width:900px){.row{grid-template-columns:1fr}}
+  .phone{width:390px;max-width:100%;border-radius:36px;background:var(--cream);overflow:hidden;box-shadow:0 30px 60px -30px rgba(28,26,23,.5),0 0 0 8px #111,0 0 0 10px #2b2925;position:relative;min-height:800px;display:flex;flex-direction:column}
+  .status{display:flex;justify-content:space-between;font-size:11px;font-weight:600;padding:14px 22px 0}
+  .desk{border-radius:14px;overflow:hidden;background:var(--cream);box-shadow:0 30px 60px -30px rgba(28,26,23,.5),0 0 0 1px rgba(0,0,0,.08);width:100%;max-width:900px}
+  .notes{display:flex;flex-direction:column;gap:12px;max-width:46ch}
+  .notes div{display:grid;grid-template-columns:24px 1fr;gap:10px;font-family:var(--serif);font-size:16px;color:var(--body)}
+  .notes b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--red);color:#fff;font-size:11px;font-family:var(--ui);margin-top:3px}
+  .notes strong{color:var(--ink);font-family:var(--ui);font-weight:600;font-size:15px}
+
+  /* primitives */
+  .hero{background:var(--ink-warm);color:var(--sand);padding:22px 22px 60px;position:relative}
+  .hero .brand{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+  .wm{font-family:var(--serif);font-size:18px;display:flex;align-items:center;gap:9px;color:var(--sand)}
+  .wm i{width:26px;height:26px;border-radius:7px;background:var(--red);color:#fff;display:grid;place-items:center;font-style:normal;font-family:var(--vn);font-weight:800;font-size:16px;padding-bottom:2px}
+  .streak{display:inline-flex;align-items:center;gap:6px;background:var(--red);color:#fff;border-radius:40px;padding:6px 12px 6px 9px;font-family:var(--vn);font-weight:800;font-size:14px}
+  .hero .greet{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--sand-70);margin:0 0 8px}
+  .hero .q{font-family:var(--vn);font-size:30px;line-height:1.05;letter-spacing:-.03em;font-weight:800;margin:0;color:var(--sand)}
+  .hero .q em{font-style:normal;color:var(--red-bright)}
+  .float{margin:-40px 16px 0;background:var(--white);border-radius:12px;padding:14px;box-shadow:var(--elevation-2);position:relative}
+  .float .in{font-family:var(--serif);font-size:17px;color:var(--stone);min-height:74px;padding:6px 4px;line-height:1.4}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 12px}
+  .chip{border-radius:40px;padding:5px 11px;font-size:12px;font-weight:600;background:var(--cream-warm);color:var(--body)}
+  .cta{background:var(--red);color:#fff;border-radius:40px;padding:14px;text-align:center;font-weight:600;font-size:15px}
+  .content{padding:18px 16px 90px;display:flex;flex-direction:column;gap:16px}
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .tile{background:var(--white);border:1px solid var(--sand);border-radius:12px;padding:12px 10px}
+  .tile b{display:block;font-family:var(--vn);font-size:24px;font-weight:800;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums;color:var(--ink)}
+  .tile span{font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--stone);font-weight:600}
+  .tile.due{background:var(--amber-bg);border-color:transparent}.tile.due b,.tile.due span{color:var(--amber-ink)}
+  .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:var(--red);font-weight:600;margin-bottom:-6px}
+  .lrow{background:var(--white);border:1px solid var(--sand);border-radius:12px;padding:12px 14px;display:flex;gap:12px;align-items:center}
+  .lrow .stripe{width:6px;align-self:stretch;border-radius:3px}
+  .lrow b{display:block;font-family:var(--vn);font-size:15px;font-weight:700;color:var(--ink)}
+  .lrow small{font-family:var(--serif);color:var(--stone);font-size:13px}
+  .lrow .pct{margin-left:auto;font-weight:600;font-size:12px}
+  .bottomnav{position:absolute;left:0;right:0;bottom:0;background:var(--ink-warm);display:grid;grid-template-columns:repeat(5,1fr);padding:12px 8px 20px;color:var(--sand-70);font-size:10px;text-align:center;font-weight:600}
+  .bottomnav i{display:block;width:20px;height:20px;border-radius:6px;border:2px solid currentColor;margin:0 auto 4px}
+  .bottomnav .on{color:var(--red-bright)}
+  .bottomnav .on i{background:var(--red-bright);border-color:var(--red-bright)}
+  .spk{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--cream-warm);color:var(--red);font-size:14px;flex-shrink:0;border:1px solid var(--sand)}
+  .spk.dark{background:var(--on-dark-soft);border-color:var(--on-dark-line);color:var(--sand)}
+
+  /* lesson */
+  .lhero{background:var(--ink-warm);color:var(--sand);padding:20px 22px 26px}
+  .lhero .crumb{font-size:12px;color:var(--sand-70);font-weight:600;margin-bottom:8px}
+  .lhero h3{margin:0 0 6px;font-family:var(--vn);font-size:26px;letter-spacing:-.03em;line-height:1.05;font-weight:800;color:var(--sand);display:flex;align-items:center;gap:10px}
+  .lhero .sit{font-family:var(--serif);font-style:italic;color:var(--sand-70);font-size:15px;margin:0 0 14px}
+  .lhero .btns{display:flex;gap:8px}
+  .lhero .btns div{border-radius:40px;padding:10px 12px;font-weight:600;font-size:13px;flex:1;text-align:center}
+  .lhero .b1{background:var(--red-bright);color:#fff} .lhero .b2{border:1.5px solid var(--sand-35);color:var(--sand)}
+  .sec{background:var(--white);border:1px solid var(--sand);border-radius:12px;padding:14px 16px}
+  .sec h4{margin:0 0 10px;font-family:var(--serif);font-weight:400;font-size:20px;color:var(--ink);display:flex;justify-content:space-between;align-items:baseline}
+  .sec h4 small{font-family:var(--ui);font-size:12px;color:var(--stone)}
+  .ph{padding:12px 0;border-top:1px solid var(--sand)}
+  .ph:first-of-type{border-top:0;padding-top:2px}
+  .ph .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+  .ph .vn{font-family:var(--vn);font-size:22px;font-weight:800;letter-spacing:-.02em;color:var(--ink);line-height:1.15;margin:0}
+  .ph .en{font-family:var(--serif);font-size:16px;color:var(--body);margin:2px 0 6px}
+  .ph .ex{font-size:14.5px;color:var(--body);margin:0;line-height:1.5}
+  .tone{display:inline-block;border-radius:40px;padding:2px 9px;font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+  .tone.casual{background:var(--ok-bg);color:var(--ok-ink)} .tone.warm{background:var(--amber-bg);color:var(--amber-ink)} .tone.playful{background:var(--pink-bg);color:var(--pink-ink)}
+  .gram{background:var(--ink-warm);color:var(--sand);border-radius:12px;padding:16px}
+  .gram .e{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--sand-70);font-weight:600;margin-bottom:8px}
+  .gram .pat{display:inline-block;background:var(--on-dark-soft);color:var(--red-bright);border-radius:8px;padding:6px 10px;font-family:var(--vn);font-weight:700;font-size:15px;margin-bottom:8px}
+  .gram p{font-family:var(--serif);font-size:15px;color:var(--sand-70);margin:0}
+
+  /* flashcard */
+  .fc-wrap{background:var(--ink-warm);min-height:800px;padding:20px 20px 40px;display:flex;flex-direction:column;gap:14px;color:var(--sand)}
+  .fc-top{display:flex;justify-content:space-between;font-size:12px;color:var(--sand-70);font-weight:600}
+  .bar{height:6px;background:var(--on-dark-line);border-radius:3px;overflow:hidden}
+  .bar i{display:block;height:100%;width:38%;background:var(--red-bright);border-radius:3px}
+  .fc{flex:1;background:var(--white);color:var(--ink);border-radius:20px;display:grid;place-items:center;text-align:center;padding:28px;position:relative;min-height:340px;box-shadow:var(--elevation-dark)}
+  .fc .side{position:absolute;top:14px;left:18px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);font-weight:600}
+  .fc .big{font-family:var(--vn);font-size:34px;font-weight:800;letter-spacing:-.03em;color:var(--ink);line-height:1.1}
+  .fc .hint{position:absolute;bottom:16px;font-size:12px;color:var(--stone)}
+  .fc .spk{position:absolute;top:10px;right:12px;width:40px;height:40px;font-size:18px}
+  .fc-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .fc-btns div{border-radius:40px;padding:16px;text-align:center;font-weight:600;font-size:15px}
+  .again{border:1.5px solid var(--sand-35);color:var(--sand)} .know{background:var(--red-bright);color:#fff}
+  .skip{text-align:center;color:var(--sand-70);font-size:13px;font-weight:600}
+  .encour{font-family:var(--serif);font-style:italic;color:var(--sand-70);text-align:center;font-size:15px}
+
+  /* progress */
+  .cal{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}
+  .cal i{aspect-ratio:1;border-radius:6px;background:var(--white);border:1px solid var(--sand);display:block}
+  .cal i.on{background:var(--sand-deep);border-color:var(--sand-deep)} .cal i.hot{background:var(--ink);border-color:var(--ink)} .cal i.today{background:var(--red);border-color:var(--red)}
+  .big-streak{background:var(--ink-warm);color:var(--sand);border-radius:12px;padding:18px;display:flex;align-items:center;gap:16px}
+  .big-streak b{font-family:var(--vn);font-size:56px;font-weight:800;letter-spacing:-.04em;line-height:1;color:var(--sand)}
+  .big-streak span{font-family:var(--serif);font-size:15px;color:var(--sand-70)}
+
+  /* desktop */
+  .desk .top{background:var(--ink-warm);color:var(--sand);display:flex;align-items:center;gap:26px;padding:16px 36px;font-size:14px;font-weight:600}
+  .desk .top .wm{margin-right:auto}
+  .desk .top span{color:var(--sand-70)} .desk .top span.on{color:var(--sand);border-bottom:3px solid var(--red-bright);padding-bottom:3px}
+  .desk .dhero{background:var(--ink-warm);color:var(--sand);padding:40px 36px 84px;display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:end}
+  .desk .dhero .q{font-family:var(--vn);font-size:46px;line-height:1;letter-spacing:-.035em;font-weight:800;margin:0;color:var(--sand)}
+  .desk .dhero .q em{font-style:normal;color:var(--red-bright)}
+  .desk .dhero .greet{font-family:var(--serif);font-style:italic;color:var(--sand-70);font-size:19px;margin:0 0 10px}
+  .desk .dfloat{margin:-56px 36px 0;background:var(--white);border-radius:12px;padding:18px 20px;box-shadow:var(--elevation-2);display:grid;grid-template-columns:1fr auto;gap:16px;align-items:end}
+  .desk .dfloat .in{font-family:var(--serif);font-size:19px;color:var(--stone);min-height:70px;line-height:1.4}
+  .desk .dbody{padding:24px 36px 36px;display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .desk .dtiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;grid-column:1/-1}
+  .desk .list{display:flex;flex-direction:column;gap:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="intro">
+  <p class="eyebrow">Mockup · ĀRCA palette · not yet built</p>
+  <h1>Vietnamese Daily, on ĀRCA</h1>
+  <p>The ĀRCA Wellness colour system applied to the app: cream paper, warm black rooms, and one red for the action that matters. The Vietnamese is set heaviest in Be Vietnam Pro; English sits in Playfair as the caption. A speaker button next to every phrase, word, and card plays it in a Southern woman's voice.</p>
+  <p>Full spec: <code>docs/brand/DESIGN.md</code> and the live twin <code>docs/brand/design-system.html</code>. Nothing here has been applied to the codebase.</p>
+</header>
+
+<h2 style="margin-top:0">Palette <small>from arcawellness.com</small></h2>
+<div class="tokens">
+  <div class="tok"><div class="sw" style="background:#AF0D0E"></div><div><b>red</b><code>#AF0D0E · one action per view</code></div></div>
+  <div class="tok"><div class="sw" style="background:#C8191A"></div><div><b>red-bright</b><code>#C8191A · red on dark</code></div></div>
+  <div class="tok"><div class="sw" style="background:#111111"></div><div><b>ink</b><code>#111111 · Vietnamese text</code></div></div>
+  <div class="tok"><div class="sw" style="background:#1C1A17"></div><div><b>ink-warm</b><code>#1C1A17 · hero, session</code></div></div>
+  <div class="tok"><div class="sw" style="background:#FEF9EF"></div><div><b>cream</b><code>#FEF9EF · canvas</code></div></div>
+  <div class="tok"><div class="sw" style="background:#FFFFFF"></div><div><b>white</b><code>#FFFFFF · cards</code></div></div>
+  <div class="tok"><div class="sw" style="background:#EEE6DC"></div><div><b>sand</b><code>#EEE6DC · text on dark, lines</code></div></div>
+  <div class="tok"><div class="sw" style="background:#9E9A93"></div><div><b>stone</b><code>#9E9A93 · meta</code></div></div>
+</div>
+<p class="why">Rule of the system: cream is the paper, warm black is the room, red is the one thing to do. Vietnamese is ink at weight 800 on light and sand on dark, so it is always the heaviest thing in view. Tone tags borrow ĀRCA's status hues (green casual, amber warm, pink playful) and are the only other colour.</p>
+
+<!-- HOME PHONE -->
+<h2>Today <small>home, phone</small></h2>
+<p class="desc">The question is a headline in the warm-black room. The input floats over the edge as a white card. The streak pill is the only red until you type.</p>
+<div class="row">
+  <div class="phone">
+    <div class="hero">
+      <div class="status" style="padding:0;margin-bottom:16px;color:var(--sand-70)"><span>9:41</span><span>ICT</span></div>
+      <div class="brand"><div class="wm"><i>Đ</i>Vietnamese Daily</div><div class="streak">🔥 7</div></div>
+      <p class="greet">Chào buổi sáng, Dave. Day 8 starts now.</p>
+      <p class="q">What are you going to <em>say</em> today?</p>
+    </div>
+    <div class="float">
+      <div class="in">e.g. I'm meeting my girlfriend's friends at a café in Thảo Điền</div>
+      <div class="chips"><span class="chip">Grab driver</span><span class="chip">Ordering cơm tấm</span><span class="chip">Weekend plans</span><span class="chip">At the gym</span></div>
+      <div class="cta">Create today's lesson →</div>
+    </div>
+    <div class="content">
+      <div class="tiles">
+        <div class="tile due"><b>14</b><span>Cards due</span></div>
+        <div class="tile"><b>187</b><span>Words</span></div>
+        <div class="tile"><b>132</b><span>Known</span></div>
+      </div>
+      <div class="lbl">This week</div>
+      <div class="lrow"><div class="stripe" style="background:var(--ok-ink)"></div><div><b>Nói với tài xế Grab</b><small>Today · để + verb</small></div><div class="pct" style="color:var(--ok-ink)">✓ reviewed</div></div>
+      <div class="lrow"><div class="stripe" style="background:var(--amber-ink)"></div><div><b>Rủ đi ăn tối</b><small>Yesterday · hay là…</small></div><div class="pct" style="color:var(--amber-ink)">6 new</div></div>
+      <div class="lrow"><div class="stripe" style="background:var(--red)"></div><div><b>Rủ nhau coi phim</b><small>Mon · vừa… vừa…</small></div><div class="pct" style="color:var(--red)">3 due</div></div>
+    </div>
+    <div class="bottomnav"><div class="on"><i></i>Today</div><div><i></i>Lessons</div><div><i></i>Cards</div><div><i></i>Words</div><div><i></i>Streak</div></div>
+  </div>
+  <div class="notes">
+    <div><b>1</b><span><strong>Greeting in Vietnamese</strong>, by time of day: chào buổi sáng / chiều / tối. The app speaks the language before you do.</span></div>
+    <div><b>2</b><span><strong>Suggestion chips</strong> from situations you haven't covered. One tap fills the box. No blank page.</span></div>
+    <div><b>3</b><span><strong>Cards-due tile goes amber</strong> above zero. A warm nudge, not a red badge; red is reserved for the button.</span></div>
+    <div><b>4</b><span><strong>Lesson stripes</strong>: green reviewed, amber new words waiting, red cards due. Nav says what you do there: Today, Lessons, Cards, Words, Streak.</span></div>
+  </div>
+</div>
+
+<!-- HOME DESKTOP -->
+<h2>Today <small>desktop</small></h2>
+<p class="desc">Same bones, more air. Question left, streak and a "yesterday you learned" line on the right, calendar in the second column.</p>
+<div class="desk">
+  <div class="top"><div class="wm"><i>Đ</i>Vietnamese Daily</div><span class="on">Today</span><span>Lessons</span><span>Cards</span><span>Words</span><span>Streak</span></div>
+  <div class="dhero">
+    <div><p class="greet">Chào buổi sáng, Dave. Day 8 starts now.</p><p class="q">What are you going to <em>say</em> today?</p></div>
+    <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+      <div class="streak" style="font-size:20px;padding:10px 18px 10px 13px;background:var(--red-bright)">🔥 7 day streak</div>
+      <div style="font-family:var(--serif);font-style:italic;color:var(--sand-70);font-size:16px">Yesterday you learned <b style="color:var(--sand);font-style:normal;font-family:var(--vn)">quẹo</b>, <b style="color:var(--sand);font-style:normal;font-family:var(--vn)">giùm</b>, and 4 more.</div>
+    </div>
+  </div>
+  <div class="dfloat">
+    <div><div class="in">e.g. I'm meeting my girlfriend's friends at a café in Thảo Điền</div><div class="chips"><span class="chip">Grab driver</span><span class="chip">Ordering cơm tấm</span><span class="chip">Weekend plans</span><span class="chip">At the gym</span></div></div>
+    <div class="cta" style="padding:16px 26px">Create today's lesson →</div>
+  </div>
+  <div class="dbody">
+    <div class="dtiles">
+      <div class="tile due"><b>14</b><span>Cards due</span></div>
+      <div class="tile"><b>187</b><span>Words</span></div>
+      <div class="tile"><b>132</b><span>Known</span></div>
+      <div class="tile"><b>23</b><span>Learning days</span></div>
+    </div>
+    <div class="list">
+      <div class="lbl">This week</div>
+      <div class="lrow"><div class="stripe" style="background:var(--ok-ink)"></div><div><b>Nói với tài xế Grab</b><small>Today · để + verb</small></div><div class="pct" style="color:var(--ok-ink)">✓ reviewed</div></div>
+      <div class="lrow"><div class="stripe" style="background:var(--amber-ink)"></div><div><b>Rủ đi ăn tối</b><small>Yesterday · hay là…</small></div><div class="pct" style="color:var(--amber-ink)">6 new</div></div>
+    </div>
+    <div class="list">
+      <div class="lbl">Last 30 days</div>
+      <div class="cal"><i></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i class="hot"></i><i class="on"></i><i></i><i></i><i class="on"></i><i class="on"></i><i class="hot"></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="hot"></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i class="on"></i><i class="on"></i><i class="hot"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="today"></i></div>
+      <div style="font-size:12px;color:var(--stone)">Sand: studied. Ink: lesson + full review. Red: today.</div>
+    </div>
+  </div>
+</div>
+
+<!-- LESSON -->
+<h2>Lesson</h2>
+<p class="desc">Vietnamese phrases in ink at weight 800, each with a tone tag and a speaker button. Grammar sits in its own warm-black block as the day's one idea.</p>
+<div class="row">
+  <div class="phone" style="min-height:900px">
+    <div class="lhero">
+      <div class="status" style="padding:0;margin-bottom:14px;color:var(--sand-70)"><span>9:41</span><span>ICT</span></div>
+      <div class="crumb">← Today</div>
+      <h3>Rủ đi ăn tối <span class="spk dark">▶</span></h3>
+      <p class="sit">"Asking someone you like out to dinner and handling the bill."</p>
+      <div class="btns"><div class="b1">Review 34 cards</div><div class="b2">Mark complete</div></div>
+    </div>
+    <div class="content" style="padding-top:14px">
+      <div class="sec">
+        <h4>Useful phrases <small>14 · ▶ play all</small></h4>
+        <div class="ph"><div class="top"><span class="tone casual">casual</span><span class="spk">▶</span></div><p class="vn">Tối nay em rảnh hông?</p><p class="en">Are you free tonight?</p><p class="ex">In Saigon <b>không</b> softens to <b>hông</b>. Using it instantly makes you sound local.</p></div>
+        <div class="ph"><div class="top"><span class="tone warm">warm</span><span class="spk">▶</span></div><p class="vn">Đi ăn với anh nha?</p><p class="en">Come eat with me, okay?</p><p class="ex"><b>Nha</b> turns a command into a gentle request. Without it this sounds like an order.</p></div>
+        <div class="ph"><div class="top"><span class="tone playful">playful</span><span class="spk">▶</span></div><p class="vn">Hay là mình đi ăn lẩu đi?</p><p class="en">How about hot pot?</p><p class="ex"><b>Hay là</b> opens a soft suggestion; the final <b>đi</b> nudges them to say yes.</p></div>
+      </div>
+      <div class="gram">
+        <div class="e">Today's pattern</div>
+        <div class="pat">hay là + [suggestion] + (đi / nha)?</div>
+        <p>Suggests without pushing. Reach for it wherever you'd say "how about…" or "or maybe…".</p>
+      </div>
+      <div class="sec">
+        <h4>Vocabulary <small>20 · 6 new</small></h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;font-size:14px">
+          <span style="display:flex;align-items:center;gap:8px"><span class="spk" style="width:24px;height:24px;font-size:10px">▶</span><b style="font-family:var(--vn);color:var(--ink)">rảnh</b> <span style="font-family:var(--serif);color:var(--body)">free</span></span>
+          <span style="display:flex;align-items:center;gap:8px"><span class="spk" style="width:24px;height:24px;font-size:10px">▶</span><b style="font-family:var(--vn);color:var(--ink)">rủ</b> <span style="font-family:var(--serif);color:var(--body)">invite</span></span>
+          <span style="display:flex;align-items:center;gap:8px"><span class="spk" style="width:24px;height:24px;font-size:10px">▶</span><b style="font-family:var(--vn);color:var(--ink)">lẩu</b> <span style="font-family:var(--serif);color:var(--body)">hot pot</span></span>
+          <span style="display:flex;align-items:center;gap:8px"><span class="spk" style="width:24px;height:24px;font-size:10px">▶</span><b style="font-family:var(--vn);color:var(--ink)">bao tiền</b> <span style="font-family:var(--serif);color:var(--body)">how much</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="bottomnav"><div><i></i>Today</div><div class="on"><i></i>Lessons</div><div><i></i>Cards</div><div><i></i>Words</div><div><i></i>Streak</div></div>
+  </div>
+  <div class="notes">
+    <div><b>1</b><span><strong>Warm-black header</strong> with the two actions. Review is the red; Mark complete is a sand outline.</span></div>
+    <div><b>2</b><span><strong>Speaker on everything Vietnamese.</strong> Title, each phrase, each word, and a "play all" that reads the phrases in order with a beat between. Southern female voice, generated server-side and cached per phrase so it plays instantly the second time.</span></div>
+    <div><b>3</b><span><strong>Tone tags</strong> come from one new word per phrase in the AI schema (casual, warm, direct, playful, polite, professional). Sample lessons tagged by hand.</span></div>
+    <div><b>4</b><span><strong>Grammar block</strong> inverts to warm black with the pattern in red-bright, so it reads as the one idea of the day.</span></div>
+  </div>
+</div>
+
+<!-- FLASHCARD -->
+<h2>Cards <small>review session</small></h2>
+<p class="desc">The session takes the whole screen. One white card in the warm-black room, a speaker in its corner, and two pills. The card auto-plays when it appears; tap the speaker to hear it again.</p>
+<div class="row">
+  <div class="phone" style="background:var(--ink-warm)">
+    <div class="fc-wrap">
+      <div class="status" style="padding:0;color:var(--sand-70)"><span>9:41</span><span>ICT</span></div>
+      <div class="fc-top"><span>✕ End</span><span>Rủ đi ăn tối · 13 / 34</span></div>
+      <div class="bar"><i></i></div>
+      <div class="fc"><span class="side">Front · phrase</span><span class="spk">▶</span><div class="big">Đi ăn với anh nha?</div><span class="hint">Tap to flip · Space</span></div>
+      <p class="encour">Giỏi lắm. 9 in a row.</p>
+      <div class="fc-btns"><div class="again">Again</div><div class="know">Know it ✓</div></div>
+      <p class="skip">Skip for now</p>
+    </div>
+  </div>
+  <div class="notes">
+    <div><b>1</b><span><strong>Auto-play on reveal</strong>, with a setting to turn it off. Hearing before reading is how the ear learns tones.</span></div>
+    <div><b>2</b><span><strong>Know it</strong> is the red. Again is a sand outline, never a red slab, so a miss doesn't feel like punishment.</span></div>
+    <div><b>3</b><span><strong>Encouragements in Vietnamese</strong> with English on long-press: giỏi lắm, ráng lên, gần xong rồi. Also spoken.</span></div>
+    <div><b>4</b><span><strong>End state</strong>: the streak number pulses once as it increments. The only animation in the app.</span></div>
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<h2>Streak <small>progress</small></h2>
+<p class="desc">The number is huge and set in sand on warm black. The calendar is a heat map in the palette. One milestone line, no badges.</p>
+<div class="row">
+  <div class="phone" style="min-height:700px">
+    <div class="content" style="padding-top:26px">
+      <div class="status" style="padding:0"><span>9:41</span><span>ICT</span></div>
+      <div class="big-streak"><b>🔥 7</b><div><div style="font-weight:600;font-size:15px;color:var(--sand)">day streak</div><span>Longest 12 · 23 learning days</span></div></div>
+      <div class="lbl">Last 30 days</div>
+      <div class="cal"><i></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i class="hot"></i><i class="on"></i><i></i><i></i><i class="on"></i><i class="on"></i><i class="hot"></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="hot"></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i class="on"></i><i class="on"></i><i class="hot"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="today"></i></div>
+      <div class="tiles" style="grid-template-columns:1fr 1fr">
+        <div class="tile"><b>18</b><span>Lessons done</span></div>
+        <div class="tile"><b>231</b><span>Phrases</span></div>
+        <div class="tile"><b>187</b><span>Words met</span></div>
+        <div class="tile"><b>132</b><span>Words known</span></div>
+      </div>
+      <div class="sec" style="border-left:5px solid var(--red)"><div class="lbl" style="margin-bottom:6px">Next milestone</div><div style="font-family:var(--vn);font-weight:800;font-size:18px;color:var(--ink)">200 words · 13 to go</div><div style="font-family:var(--serif);color:var(--body);font-size:14px">About two lessons at your pace.</div></div>
+    </div>
+    <div class="bottomnav"><div><i></i>Today</div><div><i></i>Lessons</div><div><i></i>Cards</div><div><i></i>Words</div><div class="on"><i></i>Streak</div></div>
+  </div>
+  <div class="notes">
+    <div><b>1</b><span><strong>Heat map</strong>: sand for a study day, ink for a day with both a lesson and a full review, red for today.</span></div>
+    <div><b>2</b><span><strong>Next milestone</strong> every 50 words, phrased as lessons at your pace. The one gamification element worth having.</span></div>
+  </div>
+</div>
+
+<h2>If you say yes</h2>
+<p class="desc">Tokens and fonts in <code>globals.css</code>, the six pages and app components, one optional <code>tone</code> field in the lesson schema, greeting and suggestion chips on Home, and the voice layer (a server route that synthesises and caches audio per phrase, a speaker button component). Dark mode is not a separate palette: the rooms are already warm black and the cards already white.</p>
+
+</div>
+</body>
+</html>

@@ -25,7 +25,7 @@ export function LoginForm() {
       className="space-y-4"
     >
       {serverError && (
-        <p role="alert" className="rounded-md border border-warn/40 bg-warn-soft px-3 py-2 text-sm text-warn">
+        <p role="alert" className="alert">
           {serverError}
         </p>
       )}
@@ -33,17 +33,17 @@ export function LoginForm() {
       <form.Field name="email" validators={{ onChange: ({ value }) => !value ? 'Email is required' : undefined }}>
         {(field) => (
           <div>
-            <label htmlFor={field.name} className="mb-1 block text-sm font-medium text-ink-2">Email</label>
+            <label htmlFor={field.name} className="mb-1 block text-sm font-semibold text-body">Email</label>
             <input
               id={field.name}
               type="email"
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={e => field.handleChange(e.target.value)}
-              className="w-full rounded-md border border-line bg-surface px-3 py-2.5 text-ink focus:outline-none focus:ring-2 focus:ring-accent"
+              className="input"
             />
             {field.state.meta.errors[0] && (
-              <p className="mt-1 text-xs text-warn">{field.state.meta.errors[0]}</p>
+              <p className="mt-1 text-xs text-err-ink">{field.state.meta.errors[0]}</p>
             )}
           </div>
         )}
@@ -52,17 +52,17 @@ export function LoginForm() {
       <form.Field name="password" validators={{ onChange: ({ value }) => !value ? 'Password is required' : undefined }}>
         {(field) => (
           <div>
-            <label htmlFor={field.name} className="mb-1 block text-sm font-medium text-ink-2">Password</label>
+            <label htmlFor={field.name} className="mb-1 block text-sm font-semibold text-body">Password</label>
             <input
               id={field.name}
               type="password"
               value={field.state.value}
               onBlur={field.handleBlur}
               onChange={e => field.handleChange(e.target.value)}
-              className="w-full rounded-md border border-line bg-surface px-3 py-2.5 text-ink focus:outline-none focus:ring-2 focus:ring-accent"
+              className="input"
             />
             {field.state.meta.errors[0] && (
-              <p className="mt-1 text-xs text-warn">{field.state.meta.errors[0]}</p>
+              <p className="mt-1 text-xs text-err-ink">{field.state.meta.errors[0]}</p>
             )}
           </div>
         )}
@@ -73,15 +73,15 @@ export function LoginForm() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="btn-primary w-full"
+            className="btn-red w-full"
           >
             {isSubmitting ? 'Signing in…' : 'Sign in'}
           </button>
         )}
       </form.Subscribe>
 
-      <p className="text-center text-sm text-ink-3">
-        No account? <a href="/signup" className="text-accent hover:underline">Sign up</a>
+      <p className="text-center text-sm text-stone">
+        No account? <a href="/signup" className="font-semibold text-red hover:underline">Sign up</a>
       </p>
     </form>
   )

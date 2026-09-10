@@ -3,8 +3,9 @@
 App name in the UI is **Vietnamese Daily**. A situation-driven conversational Southern Vietnamese tutor. Plan and wireframes: `docs/plans/build-plan.md`, `docs/plans/wireframes.html`.
 
 ## Map (read first)
-- **Design tokens**: `website/app/globals.css` (CSS variables + Tailwind `@theme`). Documented in `docs/brand/DESIGN.md`. Never invent a hex.
-- **Component reference**: `website/components/app/` (StatTiles, LessonList, ReviewSession, StatusToggle, Nav). Copy these rather than hand-rolling.
+- **Design tokens**: `website/app/globals.css` (CSS variables + Tailwind `@theme`). Spec: `docs/brand/DESIGN.md`, live twin `docs/brand/design-system.html`. ĀRCA palette: one red per view, Vietnamese in Be Vietnam Pro 800, English in Playfair. Never invent a hex.
+- **Component reference**: `website/components/app/` (StatTiles, LessonList, ReviewSession, StatusToggle, Nav, Speak, ToneTag, Wordmark). Copy these rather than hand-rolling.
+- **Voice**: `website/lib/voice/tts.ts` (FPT.AI Southern female, cached in the `audio` bucket) + `app/api/tts/route.ts` + `components/app/Speak.tsx`. Browser-speech fallback when `FPT_AI_API_KEY` is unset.
 - **Domain logic**: `website/lib/` — `ai/` (schema, prompt, generate), `lessons/` (pipeline, actions, queries), `vocabulary/` (normalize), `flashcards/`, `activity/` (streak).
 - **Database**: `website/supabase/migrations/20260910000000_vietnamese_daily.sql`. Supabase project `xdztfwmiangsepxfqjyt`. Apply with `npx supabase db push` from `website/`.
 - **Seed lessons**: `website/data/seed-lessons/*.json`, validated by `LessonSchema`. Load via the Home empty-state button or `npx tsx --env-file=.env.local scripts/seed.ts <email>`.

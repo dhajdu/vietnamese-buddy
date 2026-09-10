@@ -1,72 +1,108 @@
 @import "tailwindcss";
 
-/* Design tokens — the single source. See docs/plans/build-plan.md §10. */
+/* ═══════════════════════════════════════════════════════════════════════
+   Design tokens — the single source. docs/brand/DESIGN.md is the spec,
+   docs/brand/design-system.html the live twin. No raw hex outside this file.
+   Palette: ĀRCA Wellness (arcawellness.com). Single theme by design: the
+   "rooms" are warm black and the cards are white, so no dark palette exists.
+   ═══════════════════════════════════════════════════════════════════════ */
 :root {
-  --bg: #F6F7F3;
-  --surface: #FFFFFF;
-  --ink: #1B211C;
-  --ink-2: #4A544C;
-  --ink-3: #7C867E;
-  --line: #DDE2DB;
-  --accent: #1F6B4F;
-  --accent-soft: #E3EFE8;
-  --vn: #8A4B12;
-  --vn-soft: #F6EBDD;
-  --warn: #9A5B00;
-  --warn-soft: #FBF1DC;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #141915;
-    --surface: #1B211C;
-    --ink: #EDF0EA;
-    --ink-2: #B7C0B8;
-    --ink-3: #7F8A81;
-    --line: #2C352E;
-    --accent: #6FC49C;
-    --accent-soft: #1E3128;
-    --vn: #E0A365;
-    --vn-soft: #33271A;
-    --warn: #E0A94A;
-    --warn-soft: #332A17;
-  }
+  --red: #AF0D0E;
+  --red-deep: #8F0A0B;
+  --red-bright: #C8191A;
+  --ink: #111111;
+  --ink-warm: #1C1A17;
+  --body: #3D3A37;
+  --cream: #FEF9EF;
+  --cream-warm: #FFF5EA;
+  --white: #FFFFFF;
+  --sand: #EEE6DC;
+  --sand-deep: #E3D7C6;
+  --stone: #9E9A93;
+  --paper: #F4F3F3;
+  --sand-70: rgba(238, 230, 220, 0.70);
+  --sand-35: rgba(238, 230, 220, 0.35);
+  --on-dark-line: rgba(255, 255, 255, 0.10);
+  --on-dark-soft: rgba(255, 255, 255, 0.06);
+  --ok-bg: #D8F3E8;    --ok-ink: #157A5A;
+  --amber-bg: #FAEEDA; --amber-ink: #854F0B;
+  --pink-bg: #FBE6F1;  --pink-ink: #B03571;
+  --info-bg: #E2ECFD;  --info-ink: #1E4FA3;
+  --err-bg: #FDE4E4;   --err-ink: #B0332F;
+  --focus-ring: rgba(175, 13, 14, 0.25);
+  --elevation-2: 0 6px 24px rgba(28, 26, 23, 0.10);
+  --elevation-dark: 0 12px 32px rgba(0, 0, 0, 0.40);
 }
 
 @theme inline {
-  --color-bg: var(--bg);
-  --color-surface: var(--surface);
+  --color-red: var(--red);
+  --color-red-deep: var(--red-deep);
+  --color-red-bright: var(--red-bright);
   --color-ink: var(--ink);
-  --color-ink-2: var(--ink-2);
-  --color-ink-3: var(--ink-3);
-  --color-line: var(--line);
-  --color-accent: var(--accent);
-  --color-accent-soft: var(--accent-soft);
-  --color-vn: var(--vn);
-  --color-vn-soft: var(--vn-soft);
-  --color-warn: var(--warn);
-  --color-warn-soft: var(--warn-soft);
-  --font-display: var(--font-be-vietnam), system-ui, sans-serif;
-  --font-body: var(--font-newsreader), Georgia, serif;
-  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
-  --radius-card: 8px;
+  --color-ink-warm: var(--ink-warm);
+  --color-body: var(--body);
+  --color-cream: var(--cream);
+  --color-cream-warm: var(--cream-warm);
+  --color-white: var(--white);
+  --color-sand: var(--sand);
+  --color-sand-deep: var(--sand-deep);
+  --color-stone: var(--stone);
+  --color-paper: var(--paper);
+  --color-sand-70: var(--sand-70);
+  --color-sand-35: var(--sand-35);
+  --color-on-dark-line: var(--on-dark-line);
+  --color-on-dark-soft: var(--on-dark-soft);
+  --color-ok-bg: var(--ok-bg);       --color-ok-ink: var(--ok-ink);
+  --color-amber-bg: var(--amber-bg); --color-amber-ink: var(--amber-ink);
+  --color-pink-bg: var(--pink-bg);   --color-pink-ink: var(--pink-ink);
+  --color-info-bg: var(--info-bg);   --color-info-ink: var(--info-ink);
+  --color-err-bg: var(--err-bg);     --color-err-ink: var(--err-ink);
+  --font-vn: var(--font-be-vietnam), system-ui, sans-serif;
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-ui: var(--font-inter), "Helvetica Neue", Arial, sans-serif;
+  --radius-card: 12px;
+  --radius-pill: 40px;
+  --shadow-float: var(--elevation-2);
+  --shadow-dark: var(--elevation-dark);
 }
 
 body {
-  background: var(--bg);
-  color: var(--ink);
-  font-family: var(--font-body);
-  font-size: 17px;
+  background: var(--cream);
+  color: var(--body);
+  font-family: var(--font-ui);
+  font-size: 15px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
-h1, h2, h3, h4, button, input, textarea, nav, .font-display { font-family: var(--font-display); }
 .tabular { font-variant-numeric: tabular-nums; }
 
 @layer components {
-  .card { @apply rounded-card border border-line bg-surface; }
-  .btn-primary { @apply inline-flex items-center justify-center rounded-md bg-ink px-4 py-2.5 text-sm font-semibold text-bg transition-opacity hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed; }
-  .btn-ghost { @apply inline-flex items-center justify-center rounded-md border border-ink px-4 py-2.5 text-sm font-semibold text-ink hover:bg-accent-soft disabled:opacity-50; }
-  .btn-quiet { @apply inline-flex items-center justify-center rounded-md border border-line px-4 py-2.5 text-sm font-medium text-ink-2 hover:bg-accent-soft disabled:opacity-50; }
-  .label { @apply text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-3; }
-  .vn { @apply font-display font-semibold text-vn; }
+  /* Type roles */
+  .vn { @apply font-vn font-extrabold tracking-[-0.02em] text-ink; }
+  .t-title { @apply font-serif font-normal text-ink leading-[1.1]; }
+  .t-gloss { @apply font-serif text-body; }
+  .eyebrow { @apply font-ui text-[11px] font-semibold uppercase tracking-[0.18em] text-red; }
+  .eyebrow-dark { @apply font-ui text-[11px] font-semibold uppercase tracking-[0.18em] text-sand-70; }
+  .meta { @apply text-xs text-stone; }
+
+  /* Surfaces */
+  .card { @apply rounded-card border border-sand bg-white; }
+  .room { @apply rounded-card bg-ink-warm text-sand; }
+
+  /* Buttons: pills. One red per view. */
+  .btn-red { @apply inline-flex items-center justify-center gap-2 rounded-pill px-5 py-3 text-[15px] font-semibold transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-[color:var(--focus-ring)] disabled:cursor-not-allowed disabled:opacity-50 bg-red text-white hover:bg-red-deep; }
+  .btn-red-dark { @apply inline-flex items-center justify-center gap-2 rounded-pill px-5 py-3 text-[15px] font-semibold transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-[color:var(--focus-ring)] disabled:cursor-not-allowed disabled:opacity-50 bg-red-bright text-white hover:bg-red; }
+  .btn-ink { @apply inline-flex items-center justify-center gap-2 rounded-pill px-5 py-3 text-[15px] font-semibold transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-[color:var(--focus-ring)] disabled:cursor-not-allowed disabled:opacity-50 bg-ink text-white hover:bg-ink-warm; }
+  .btn-quiet { @apply inline-flex items-center justify-center gap-2 rounded-pill px-5 py-3 text-[15px] font-semibold transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-[color:var(--focus-ring)] disabled:cursor-not-allowed disabled:opacity-50 border border-sand bg-transparent text-body hover:bg-cream-warm; }
+  .btn-ghost-dark { @apply inline-flex items-center justify-center gap-2 rounded-pill px-5 py-3 text-[15px] font-semibold transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-[color:var(--focus-ring)] disabled:cursor-not-allowed disabled:opacity-50 border-[1.5px] border-sand-35 bg-transparent text-sand hover:bg-on-dark-soft; }
+  .chip { @apply inline-flex items-center rounded-pill bg-cream-warm px-3 py-1 text-xs font-semibold text-body hover:bg-sand; }
+  .tone { @apply inline-block rounded-pill px-2 py-[2px] text-[10.5px] font-semibold uppercase tracking-[0.06em]; }
+
+  .input { @apply w-full rounded-card border border-sand bg-white px-3 py-2.5 text-[15px] text-ink placeholder:text-stone focus:outline-none focus:ring-4 focus:ring-[color:var(--focus-ring)]; }
+  .alert { @apply rounded-card bg-err-bg px-3 py-2 text-sm text-err-ink; }
 }
+
+/* The one animation: the streak number pulsing once when it increments. */
+@keyframes streak-pulse { 0% { transform: scale(1) } 40% { transform: scale(1.18) } 100% { transform: scale(1) } }
+.streak-pulse { animation: streak-pulse 700ms cubic-bezier(.2,.8,.2,1) 1; display: inline-block; }
+@media (prefers-reduced-motion: reduce) { .streak-pulse { animation: none; } }

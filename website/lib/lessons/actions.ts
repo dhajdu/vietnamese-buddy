@@ -2,13 +2,20 @@
 'use server'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
+import { after } from 'next/server'
 import { requireAuth } from '@/lib/auth/guards'
 import { createClient } from '@/lib/supabase/server'
 import { generateLesson, LessonGenerationError } from '@/lib/ai/generate'
 import { saveLesson } from './pipeline'
 import { recordActivity } from '@/lib/activity/actions'
+import { warmLessonAudio } from '@/lib/voice/tts'
+import type { Lesson } from '@/lib/ai/schema'
 
 const DAILY_LIMIT = 20
+
+function lessonTexts(l: Lesson) {
+  return [...l.phrases.map(p => p.vietnamese), ...l.vocabulary.map(v => v.vietnamese), ...l.grammar.examples.map(e => e.vietnamese)]
+}
 
 async function ctx() {
   const user = await requireAuth()
@@ -35,6 +42,7 @@ async function generateAndSave(situation: string, parentLessonId: string | null,
     })
     ;({ lessonId } = await saveLesson(db, user.id, { lesson, situation, source: 'ai', parentLessonId }))
     await recordActivity(db, 'lesson_created', tz)
+    after(() => warmLessonAudio(lessonTexts(lesson)))
   } catch (err) {
     if (err instanceof LessonGenerationError) return { error: err.message }
     console.error('createLesson failed', err)
@@ -77,9 +85,11 @@ export async function loadSampleLessons() {
   const { count } = await db.from('lessons').select('id', { count: 'exact', head: true }).eq('user_id', user.id)
   if ((count ?? 0) > 0) return { error: 'You already have lessons.' }
   const { loadSeedLessons } = await import('./seeds')
-  for (const lesson of loadSeedLessons()) {
+  const seeds = loadSeedLessons()
+  for (const lesson of seeds) {
     await saveLesson(db, user.id, { lesson, situation: lesson.situation, source: 'seed' })
   }
+  after(() => warmLessonAudio(seeds.flatMap(lessonTexts)))
   revalidatePath('/')
   revalidatePath('/lessons')
   return { ok: true }

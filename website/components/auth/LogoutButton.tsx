@@ -2,12 +2,9 @@
 'use client'
 import { logout } from '@/lib/auth/actions'
 
-export function LogoutButton() {
+export function LogoutButton({ dark = false }: { dark?: boolean }) {
   return (
-    <button
-      onClick={() => logout()}
-      className="text-sm text-ink-3 hover:text-ink"
-    >
+    <button onClick={() => logout()} className={`text-sm font-semibold ${dark ? 'text-sand-70 hover:text-sand' : 'text-stone hover:text-ink'}`}>
       Sign out
     </button>
   )
