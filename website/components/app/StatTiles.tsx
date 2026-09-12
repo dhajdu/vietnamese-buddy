@@ -11,7 +11,7 @@ export function StatTiles({ stats, cols }: { stats: Stat[]; cols?: string }) {
         const cls = `rounded-card border px-3 py-3 ${amber ? 'border-transparent bg-amber-bg' : 'card'} ${s.href ? 'hover:border-ink' : ''}`
         const inner = (
           <>
-            <b className={`tabular block font-vn text-2xl font-extrabold leading-none tracking-[-0.03em] ${amber ? 'text-amber-ink' : 'text-ink'}`}>{s.value}</b>
+            <b className={`tabular block font-target text-2xl font-extrabold leading-none tracking-[-0.03em] ${amber ? 'text-amber-ink' : 'text-ink'}`}>{s.value}</b>
             <span className={`mt-1 block text-[10.5px] font-semibold uppercase tracking-[0.08em] ${amber ? 'text-amber-ink' : 'text-stone'}`}>{s.label}</span>
           </>
         )

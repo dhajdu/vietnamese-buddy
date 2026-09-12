@@ -1,0 +1,137 @@
+{
+  "title": "Phỏng vấn xin việc bằng tiếng Anh",
+  "situation": "Phỏng vấn xin việc bằng tiếng Anh",
+  "phrases": [
+    {
+      "english": "Thanks for having me.",
+      "vietnamese": "Cảm ơn anh chị đã dành thời gian cho em.",
+      "explanation": "Câu mở đầu chuẩn của người Mỹ khi bước vào phòng phỏng vấn hoặc vào phòng họp online. Ngắn, lịch sự, không khúm núm. Đừng dịch thẳng thành 'Thank you for your time to interview me', nghe rất gượng. Nhớ âm 'th' trong 'Thanks': lưỡi chạm răng trên, đừng đọc thành 'Tanks'.",
+      "tone": "polite"
+    },
+    {
+      "english": "I've been working in marketing for about three years.",
+      "vietnamese": "Em làm marketing được khoảng ba năm rồi.",
+      "explanation": "Đây là mẫu câu quan trọng nhất của bài. Việc bắt đầu trong quá khứ và vẫn đang tiếp diễn thì dùng hiện tại hoàn thành, không dùng quá khứ đơn. Nói 'I worked in marketing for three years' sẽ khiến nhà tuyển dụng hiểu là bạn đã nghỉ rồi. Nhớ 'for' đi với khoảng thời gian, 'since' đi với mốc thời gian.",
+      "tone": "professional"
+    },
+    {
+      "english": "I worked at a startup in Da Nang from 2021 to 2023.",
+      "vietnamese": "Em từng làm ở một startup tại Đà Nẵng từ 2021 đến 2023.",
+      "explanation": "Ngược lại với câu trên: việc đã kết thúc, có mốc thời gian rõ ràng, nên dùng quá khứ đơn. Người Việt hay nuốt đuôi '-ed' nên 'worked' thành 'work'; phải bật rõ âm /t/ ở cuối. Cũng đừng quên mạo từ 'a' trước 'startup'.",
+      "tone": "professional"
+    },
+    {
+      "english": "I've never managed a team before, but I learn fast.",
+      "vietnamese": "Em chưa từng quản lý nhóm bao giờ, nhưng em học nhanh lắm.",
+      "explanation": "Người Việt hay dịch 'đã từng' thành 'I have ever been' hoặc 'I have ever done'. Trong câu khẳng định và phủ định thì dùng 'never' hoặc bỏ hẳn, chỉ dùng 'ever' trong câu hỏi. Trả lời thành thật rồi bù bằng một điểm mạnh là cách xử lý được đánh giá cao ở Mỹ.",
+      "tone": "direct"
+    },
+    {
+      "english": "My biggest strength is that I stay calm under pressure.",
+      "vietnamese": "Điểm mạnh nhất của em là em giữ được bình tĩnh khi áp lực.",
+      "explanation": "Câu trả lời mẫu cho câu hỏi kinh điển về điểm mạnh. Đừng nói 'I very calm', vì thiếu động từ 'to be' và dùng sai 'very'. Ở đây dùng động từ 'stay' còn tự nhiên hơn. Sau khi nói điểm mạnh, luôn kèm một ví dụ ngắn, nếu không sẽ nghe rỗng.",
+      "tone": "professional"
+    },
+    {
+      "english": "Could you tell me more about the role?",
+      "vietnamese": "Anh chị có thể nói rõ hơn về vị trí này không ạ?",
+      "explanation": "Dùng 'could' để hỏi lịch sự. Chú ý mạo từ 'the' trước 'role', tiếng Việt không có mạo từ nên đây là chỗ hay rơi rụng. Hỏi lại nhà tuyển dụng cho thấy bạn quan tâm thật sự, chứ không phải rải hồ sơ đại trà.",
+      "tone": "polite"
+    },
+    {
+      "english": "I'm really interested in this position.",
+      "vietnamese": "Em rất quan tâm tới vị trí này.",
+      "explanation": "'Tôi rất thích' hay bị dịch thành 'I very interested', sai hai chỗ: thiếu 'am' và dùng 'very' trước tính từ dài kiểu này nghe cứng. 'I'm really interested' là cách nói tự nhiên. Nhấn trọng âm vào âm tiết thứ hai của 'position': po-SI-tion.",
+      "tone": "warm"
+    },
+    {
+      "english": "I handled about twenty clients a month.",
+      "vietnamese": "Mỗi tháng em phụ trách khoảng hai mươi khách hàng.",
+      "explanation": "Hai lỗi hay gặp nằm chung một câu: đuôi '-ed' trong 'handled' và đuôi '-s' số nhiều trong 'clients'. Tiếng Việt không đánh dấu số nhiều nên người học hay bỏ, nhưng người Mỹ nghe thiếu 's' sẽ tưởng bạn chỉ có một khách. Cụm 'a month' nghĩa là mỗi tháng.",
+      "tone": "professional"
+    },
+    {
+      "english": "I left my last job because I wanted more responsibility.",
+      "vietnamese": "Em nghỉ chỗ cũ vì em muốn được giao nhiều trách nhiệm hơn.",
+      "explanation": "Cách trả lời câu hỏi vì sao nghỉ việc: hướng về phía trước, không nói xấu công ty cũ. Cả hai động từ đều ở quá khứ đơn vì sự việc đã xong. Tránh nói 'I have left my last job because...' vì có mốc quá khứ rõ ràng trong đầu người nghe.",
+      "tone": "direct"
+    },
+    {
+      "english": "I'd love to keep growing on the technical side.",
+      "vietnamese": "Em muốn phát triển thêm về mảng kỹ thuật.",
+      "explanation": "'I'd love to' là cách nói mong muốn nghe nhiệt tình mà vẫn chuyên nghiệp, mềm hơn 'I want to'. Sau 'keep' phải dùng V-ing: 'keep growing', không phải 'keep to grow'. Đây là câu tốt để trả lời về mục tiêu năm năm tới.",
+      "tone": "warm"
+    },
+    {
+      "english": "Sorry, could you repeat the question?",
+      "vietnamese": "Xin lỗi, anh chị nhắc lại câu hỏi giúp em được không ạ?",
+      "explanation": "Hỏi lại không hề làm mất điểm, trả lời lạc đề mới mất điểm. Dùng 'could' cho lịch sự, đừng nói cụt lủn 'Repeat again'. Nếu bạn chỉ nghe hụt một chỗ thì nói cụ thể hơn: 'Sorry, the last part?'.",
+      "tone": "polite"
+    },
+    {
+      "english": "I have a couple of questions, if that's okay.",
+      "vietnamese": "Em có vài câu muốn hỏi, nếu được ạ.",
+      "explanation": "Cuối buổi phỏng vấn kiểu Mỹ luôn có phần bạn được hỏi, và im lặng bị coi là thiếu quan tâm. 'A couple of' nghĩa là hai ba câu. Nhớ đuôi '-s' trong 'questions' và cụm 'if that's okay' để nghe nhã nhặn.",
+      "tone": "polite"
+    },
+    {
+      "english": "When can I expect to hear back from you?",
+      "vietnamese": "Khi nào em có thể nhận được phản hồi ạ?",
+      "explanation": "'Hear back' là cụm động từ chuẩn cho việc nhận phản hồi tuyển dụng, tự nhiên hơn nhiều so với 'receive your answer'. Hỏi câu này ở cuối buổi cho thấy bạn chủ động và chuyên nghiệp.",
+      "tone": "professional"
+    },
+    {
+      "english": "It was great meeting you.",
+      "vietnamese": "Rất vui được gặp anh chị.",
+      "explanation": "Câu chào tạm biệt chuẩn sau phỏng vấn, dùng quá khứ vì buổi gặp vừa kết thúc. Sau 'great' dùng V-ing: 'meeting you'. Kèm một cái bắt tay và giao tiếp bằng mắt là đủ, không cần cúi đầu như ở Việt Nam.",
+      "tone": "warm"
+    }
+  ],
+  "vocabulary": [
+    { "english": "strength", "vietnamese": "điểm mạnh" },
+    { "english": "weakness", "vietnamese": "điểm yếu" },
+    { "english": "position", "vietnamese": "vị trí công việc" },
+    { "english": "role", "vietnamese": "vai trò, công việc đảm nhận" },
+    { "english": "responsibility", "vietnamese": "trách nhiệm" },
+    { "english": "background", "vietnamese": "nền tảng học vấn và kinh nghiệm" },
+    { "english": "resume", "vietnamese": "sơ yếu lý lịch, CV (kiểu Mỹ)" },
+    { "english": "apply for", "vietnamese": "nộp đơn ứng tuyển vào" },
+    { "english": "hire", "vietnamese": "tuyển dụng, nhận vào làm" },
+    { "english": "salary expectations", "vietnamese": "mức lương mong muốn" },
+    { "english": "notice period", "vietnamese": "thời gian báo trước khi nghỉ" },
+    { "english": "hear back", "vietnamese": "nhận được phản hồi" },
+    { "english": "under pressure", "vietnamese": "trong tình huống áp lực" },
+    { "english": "team player", "vietnamese": "người hợp tác tốt trong nhóm" },
+    { "english": "take on", "vietnamese": "nhận thêm việc, đảm nhận" },
+    { "english": "handle", "vietnamese": "phụ trách, xử lý" },
+    { "english": "promotion", "vietnamese": "thăng chức" },
+    { "english": "achievement", "vietnamese": "thành tích đạt được" }
+  ],
+  "grammar": {
+    "title": "Hiện tại hoàn thành và quá khứ đơn (present perfect vs past simple)",
+    "pattern": "I've + [động từ phân từ hai] (không có mốc thời gian) / I + [động từ + -ed] + [mốc thời gian đã xong]",
+    "explanation": "Đây là cặp thì làm người Việt vấp nhiều nhất trong phỏng vấn, vì tiếng Việt chỉ dùng 'đã', 'rồi', 'từng' cho cả hai. Quy tắc thực dụng: nếu chuyện còn liên quan tới hiện tại, hoặc bạn không nói rõ nó xảy ra lúc nào, thì dùng hiện tại hoàn thành. Nếu chuyện đã khép lại và gắn với một mốc thời gian trong quá khứ, thì dùng quá khứ đơn. So sánh 'I've worked with big clients' (kinh nghiệm nói chung, vẫn có giá trị bây giờ) với 'I worked with Unilever in 2022' (một việc cụ thể đã xong). Có ba dấu hiệu dễ nhớ: 'for' và 'since' kéo tới hiện tại nên đi với hiện tại hoàn thành; 'yesterday', 'last year', 'in 2021', 'from... to...' là mốc đã đóng nên đi với quá khứ đơn; 'ever' chỉ dùng trong câu hỏi, còn câu khẳng định dùng 'never' hoặc bỏ hẳn, nên câu 'I have ever been to Singapore' là sai, phải nói 'I've been to Singapore'. Về phát âm, nhớ bật đuôi '-ed', và ba cách đọc của nó: /t/ trong 'worked', /d/ trong 'managed', /ɪd/ trong 'started'. Nuốt đuôi này là cách nhanh nhất khiến người nghe không biết bạn đang nói về hiện tại hay quá khứ.",
+    "examples": [
+      {
+        "english": "I've worked with international clients for two years.",
+        "vietnamese": "Em làm việc với khách nước ngoài được hai năm rồi.",
+        "explanation": "Có 'for' và việc vẫn đang tiếp diễn nên phải dùng hiện tại hoàn thành. Nếu dùng quá khứ đơn, người nghe hiểu là bạn đã ngưng làm việc đó."
+      },
+      {
+        "english": "I graduated from Hoa Sen University in 2020.",
+        "vietnamese": "Em tốt nghiệp Đại học Hoa Sen năm 2020.",
+        "explanation": "Có mốc năm cụ thể và sự việc đã khép lại nên dùng quá khứ đơn. Nhớ bật đuôi '-ed' trong 'graduated', đọc là /ɪd/ vì gốc kết thúc bằng âm /t/."
+      },
+      {
+        "english": "Have you ever led a project on your own?",
+        "vietnamese": "Bạn từng tự dẫn dắt một dự án chưa?",
+        "explanation": "'Ever' chỉ xuất hiện trong câu hỏi như thế này. Khi trả lời, bỏ 'ever' đi: 'Yes, I've led two' hoặc 'No, I've never led one alone'."
+      },
+      {
+        "english": "I've never used Salesforce, but I picked up HubSpot in a week.",
+        "vietnamese": "Em chưa dùng Salesforce bao giờ, nhưng em học HubSpot chỉ trong một tuần.",
+        "explanation": "Vế đầu là kinh nghiệm chung nên dùng hiện tại hoàn thành với 'never'; vế sau là chuyện cụ thể đã xong nên chuyển sang quá khứ đơn. Đổi thì giữa hai vế như vậy là hoàn toàn đúng."
+      }
+    ]
+  }
+}

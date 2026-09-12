@@ -3,10 +3,13 @@
 import { createAdminClient } from '../lib/supabase/admin'
 import { saveLesson } from '../lib/lessons/pipeline'
 import { loadSeedLessons } from '../lib/lessons/seeds'
+import { getPair, isPairId, DEFAULT_PAIR } from '../lib/pairs'
 
 async function main() {
   const email = process.argv[2]
-  if (!email) throw new Error('Usage: seed.ts <email>')
+  if (!email) throw new Error('Usage: seed.ts <email> [en-vi|vi-en]')
+  const pairId = isPairId(process.argv[3]) ? process.argv[3] : DEFAULT_PAIR
+  const pair = getPair(pairId)
   const db = createAdminClient()
 
   const { data: list, error: listErr } = await db.auth.admin.listUsers({ perPage: 1000 })
@@ -19,8 +22,8 @@ async function main() {
     console.log('created user', email)
   }
 
-  for (const lesson of loadSeedLessons()) {
-    const { lessonId, newWords } = await saveLesson(db, user.id, { lesson, situation: lesson.situation, source: 'seed' })
+  for (const lesson of loadSeedLessons(pairId)) {
+    const { lessonId, newWords } = await saveLesson(db, user.id, { lesson, situation: lesson.situation, source: 'seed', pair })
     console.log(`seeded "${lesson.title}" → ${lessonId} (${newWords} new words)`)
   }
 }

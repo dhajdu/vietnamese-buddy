@@ -1,23 +1,27 @@
-// lib/lessons/suggestions.ts — situation chips for the Home input.
-const POOL = [
-  'Talking to a Grab driver', 'Ordering cơm tấm at a street stall', 'Making weekend plans with a friend',
-  'Small talk at the gym', 'Asking a coworker to lunch', 'Meeting my partner’s parents', 'Bargaining at Bến Thành market',
-  'Explaining what I do for work', 'Telling a friend about my weekend', 'At the pharmacy with a cold',
-  'Getting a haircut', 'Asking for the wifi password at a café', 'Renewing my visa at an agent', 'Complimenting someone’s cooking',
-  'Cancelling plans politely', 'Asking a neighbour about the parking rules',
-]
+// lib/lessons/suggestions.ts — Home chips and the greeting, both from the pair.
+import type { LanguagePair } from '@/lib/pairs'
+import { t } from '@/lib/i18n'
 
-/** Four chips the learner hasn't obviously covered, rotating daily. */
-export function pickSuggestions(existingSituations: string[], seedDay: number): string[] {
+/** Four chips the learner has not obviously covered, rotating daily. */
+export function pickSuggestions(pair: LanguagePair, existingSituations: string[], seedDay: number): string[] {
   const seen = existingSituations.map(s => s.toLowerCase())
-  const fresh = POOL.filter(p => !seen.some(s => s.includes(p.toLowerCase().split(' ').slice(-2).join(' '))))
-  const pool = fresh.length >= 4 ? fresh : POOL
-  const start = seedDay % pool.length
-  return Array.from({ length: 4 }, (_, i) => pool[(start + i * 3) % pool.length])
+  const pool = pair.situationExamples
+  const fresh = pool.filter(p => !seen.some(s => s.includes(p.toLowerCase().split(' ').slice(-2).join(' '))))
+  const use = fresh.length >= 4 ? fresh : pool
+  const start = seedDay % use.length
+  // Stride through the pool, skipping repeats: a short pool would otherwise wrap
+  // and show the same chip twice.
+  const out: string[] = []
+  for (let i = 0; out.length < 4 && i < use.length; i++) {
+    const c = use[(start + i * 3) % use.length]
+    if (!out.includes(c)) out.push(c)
+  }
+  return out
 }
 
-export function greeting(tz: string, name: string | null, now = new Date()) {
+export function greeting(pair: LanguagePair, tz: string, name: string | null, now = new Date()) {
+  const d = t(pair.uiLocale)
   const hour = Number(new Intl.DateTimeFormat('en-GB', { timeZone: tz, hour: 'numeric', hour12: false }).format(now))
-  const chao = hour < 12 ? 'Chào buổi sáng' : hour < 18 ? 'Chào buổi chiều' : 'Chào buổi tối'
-  return name ? `${chao}, ${name}.` : `${chao}.`
+  const hello = hour < 12 ? d.greetingMorning : hour < 18 ? d.greetingAfternoon : d.greetingEvening
+  return name ? `${hello}, ${name}.` : `${hello}.`
 }

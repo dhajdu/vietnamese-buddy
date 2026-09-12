@@ -78,9 +78,11 @@ body {
 
 @layer components {
   /* Type roles */
-  .vn { @apply font-vn font-extrabold tracking-[-0.02em] text-ink; }
+  /* The language being learned is always the hero, whichever language it is.
+     The learner's own language is always the gloss. Roles, not languages. */
+  .target { @apply font-vn font-extrabold tracking-[-0.02em] text-ink; }
+  .gloss { @apply font-serif text-body; }
   .t-title { @apply font-serif font-normal text-ink leading-[1.1]; }
-  .t-gloss { @apply font-serif text-body; }
   .eyebrow { @apply font-ui text-[11px] font-semibold uppercase tracking-[0.18em] text-red; }
   .eyebrow-dark { @apply font-ui text-[11px] font-semibold uppercase tracking-[0.18em] text-sand-70; }
   .meta { @apply text-xs text-stone; }

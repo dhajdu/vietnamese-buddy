@@ -1,0 +1,137 @@
+{
+  "title": "Nói chuyện với đồng nghiệp nước ngoài",
+  "situation": "Nói chuyện với đồng nghiệp nước ngoài",
+  "phrases": [
+    {
+      "english": "Hey, how's it going?",
+      "vietnamese": "Chào, dạo này sao rồi?",
+      "explanation": "Câu chào thân mật nhất ở công sở Mỹ. Người ta hỏi cho có, bạn chỉ cần đáp 'Pretty good, you?' chứ không cần kể thật. Đừng dịch thẳng 'Bạn khỏe không?' thành 'Are you healthy?', nghe rất lạ. Chú ý nối âm: 'how's it' đọc liền thành 'how-zit', và đừng nuốt âm cuối 'g' trong 'going'.",
+      "tone": "casual"
+    },
+    {
+      "english": "Did you have a good weekend?",
+      "vietnamese": "Cuối tuần của bạn vui không?",
+      "explanation": "Câu mở đầu kinh điển sáng thứ Hai. Vì đã có 'did' nên động từ giữ nguyên 'have', không nói 'Did you had'. Người Việt hay quên mạo từ 'a' trước 'good weekend', nhưng tiếng Anh bắt buộc phải có. Trả lời tự nhiên: 'Yeah, it was pretty chill. How about you?'",
+      "tone": "warm"
+    },
+    {
+      "english": "I'm still getting the hang of it.",
+      "vietnamese": "Mình vẫn đang làm quen với nó.",
+      "explanation": "Cách nói khiêm tốn và rất Mỹ khi bạn còn mới với công việc hay công cụ nào đó. Nghe dễ chịu hơn nhiều so với 'I don't know how to use it'. 'Getting the hang of it' là cụm cố định, đừng đổi giới từ. Nhớ phát âm âm cuối 'ng' trong 'hang', nếu nuốt mất sẽ thành 'ha'.",
+      "tone": "casual"
+    },
+    {
+      "english": "Could you walk me through this real quick?",
+      "vietnamese": "Bạn chỉ mình cái này một chút được không?",
+      "explanation": "Cách nhờ đồng nghiệp hướng dẫn mà không làm phiền. 'Walk me through' nghĩa là chỉ từng bước, còn 'real quick' là kiểu nói khẩu ngữ Mỹ cho 'nhanh thôi'. Dùng 'could' thay 'can' để lịch sự hơn. Đừng nói 'Please teach me', vì 'teach' nghe như bạn đang xin học một khóa học.",
+      "tone": "polite"
+    },
+    {
+      "english": "Sorry, could you say that again?",
+      "vietnamese": "Xin lỗi, bạn nói lại giúp mình được không?",
+      "explanation": "Câu cứu cánh khi bạn nghe không kịp. Tự nhiên và lịch sự hơn 'Repeat, please', nghe như ra lệnh. Nếu muốn ngắn gọn hơn nữa thì nói 'Sorry, one more time?'. Đừng ngại dùng câu này, người Mỹ dùng nó với nhau suốt.",
+      "tone": "polite"
+    },
+    {
+      "english": "I really like working with this team.",
+      "vietnamese": "Mình rất thích làm việc với nhóm này.",
+      "explanation": "Đây là lỗi kinh điển: 'tôi rất thích' bị dịch thành 'I very like', nhưng tiếng Anh không bao giờ dùng 'very' trước động từ. Phải là 'really like' hoặc 'like it a lot'. Sau 'like' thì dùng dạng V-ing: 'like working', không phải 'like work with'.",
+      "tone": "warm"
+    },
+    {
+      "english": "I'm swamped today.",
+      "vietnamese": "Hôm nay mình ngập việc luôn.",
+      "explanation": "Cách nói khẩu ngữ cho 'bận quá trời'. Nhớ có 'I'm', vì tiếng Việt nói 'Hôm nay bận quá' không cần chủ ngữ hay động từ 'to be', nhưng tiếng Anh thì bắt buộc: không nói 'Today very busy'. Muốn nhẹ hơn thì dùng 'I've got a lot on my plate today'.",
+      "tone": "casual"
+    },
+    {
+      "english": "I'm pretty tired today, honestly.",
+      "vietnamese": "Thật ra hôm nay mình khá mệt.",
+      "explanation": "Người Việt hay bỏ động từ 'to be' trước tính từ và nói 'I very tired'. Đúng phải là 'I'm tired', và thay 'very' bằng 'pretty' để nghe tự nhiên hơn ở công sở. 'Honestly' đặt cuối câu là kiểu nói thật lòng, thân mật của người Mỹ.",
+      "tone": "casual"
+    },
+    {
+      "english": "Let's grab lunch sometime.",
+      "vietnamese": "Hôm nào mình đi ăn trưa nha.",
+      "explanation": "Lời rủ nhẹ nhàng, chưa chốt ngày. 'Grab' ở đây không phải là chụp lấy mà là 'đi ăn nhanh', rất thông dụng: grab a coffee, grab a beer. Nếu bạn muốn rủ thật thì phải theo sau bằng một ngày cụ thể, nếu không người Mỹ hiểu đây chỉ là câu xã giao.",
+      "tone": "warm"
+    },
+    {
+      "english": "Can I get your take on this?",
+      "vietnamese": "Bạn cho mình xin ý kiến về cái này nha?",
+      "explanation": "'Take' ở đây là danh từ, nghĩa là góc nhìn hay ý kiến. Câu này nghe chuyên nghiệp mà vẫn thân thiện, hợp khi hỏi đồng nghiệp ngang cấp. Đừng nói 'Give me your opinion', nghe như yêu cầu. Nhớ mạo từ 'your' và đừng nuốt âm cuối 'k' trong 'take'.",
+      "tone": "professional"
+    },
+    {
+      "english": "I'll send you the files this afternoon.",
+      "vietnamese": "Chiều nay mình gửi mấy file cho bạn.",
+      "explanation": "Chú ý số nhiều: 'files' phải có âm 's' ở cuối, dù tiếng Việt chỉ nói 'mấy file'. Người Việt hay nuốt cụm phụ âm cuối nên 'files' thành 'file', làm người nghe tưởng chỉ có một. Dùng 'I'll' cho việc bạn quyết định ngay lúc nói.",
+      "tone": "professional"
+    },
+    {
+      "english": "Got it, that makes sense.",
+      "vietnamese": "Hiểu rồi, hợp lý ha.",
+      "explanation": "Cách xác nhận ngắn gọn khi ai đó giải thích xong. 'Makes sense' là cụm cố định nghĩa là 'nghe hợp lý', không dịch từng chữ. Chú ý âm 'th' trong 'that': đầu lưỡi chạm nhẹ răng trên, đừng đọc thành 'dat' hay 'zat'.",
+      "tone": "direct"
+    },
+    {
+      "english": "No worries, it happens.",
+      "vietnamese": "Không sao đâu, chuyện thường mà.",
+      "explanation": "Câu để trấn an khi đồng nghiệp xin lỗi vì lỡ sai. Nhẹ nhàng hơn 'It's okay' và rất phổ biến ở Mỹ. 'It happens' nghĩa là chuyện này ai cũng gặp. Nhớ âm 's' cuối trong 'worries' và 'happens', nếu bỏ sẽ nghe rất cụt.",
+      "tone": "warm"
+    },
+    {
+      "english": "You're from Chicago, aren't you?",
+      "vietnamese": "Bạn là người Chicago đúng không?",
+      "explanation": "Đây là câu hỏi đuôi, phần ngữ pháp của bài này. Người Việt hay gắn 'right?' vào mọi câu, nhưng dùng đúng câu hỏi đuôi sẽ nghe tự nhiên hơn nhiều. Lên giọng ở phần đuôi nếu bạn thật sự chưa chắc, xuống giọng nếu bạn chỉ muốn xác nhận cho có.",
+      "tone": "casual"
+    }
+  ],
+  "vocabulary": [
+    { "english": "get the hang of", "vietnamese": "làm quen, nắm được cách làm" },
+    { "english": "walk someone through", "vietnamese": "hướng dẫn ai đó từng bước" },
+    { "english": "swamped", "vietnamese": "ngập việc, bận tối mắt" },
+    { "english": "grab lunch", "vietnamese": "đi ăn trưa (nhanh, thân mật)" },
+    { "english": "take", "vietnamese": "ý kiến, góc nhìn (danh từ)" },
+    { "english": "heads-up", "vietnamese": "lời báo trước" },
+    { "english": "catch up", "vietnamese": "nói chuyện cập nhật tình hình" },
+    { "english": "deadline", "vietnamese": "hạn chót" },
+    { "english": "coworker", "vietnamese": "đồng nghiệp" },
+    { "english": "no worries", "vietnamese": "không sao đâu" },
+    { "english": "real quick", "vietnamese": "nhanh thôi (khẩu ngữ Mỹ)" },
+    { "english": "make sense", "vietnamese": "nghe hợp lý, dễ hiểu" },
+    { "english": "run late", "vietnamese": "bị trễ giờ" },
+    { "english": "on the same page", "vietnamese": "hiểu giống nhau, thống nhất" },
+    { "english": "follow up", "vietnamese": "hỏi lại, theo dõi tiếp" },
+    { "english": "out of the loop", "vietnamese": "không nắm được thông tin" },
+    { "english": "reach out", "vietnamese": "chủ động liên hệ" },
+    { "english": "pretty", "vietnamese": "khá, tương đối (trạng từ khẩu ngữ)" }
+  ],
+  "grammar": {
+    "title": "Câu hỏi đuôi (question tags)",
+    "pattern": "[Câu khẳng định] + , + [trợ động từ phủ định] + [chủ ngữ]? / [Câu phủ định] + , + [trợ động từ khẳng định] + [chủ ngữ]?",
+    "explanation": "Câu hỏi đuôi là phần ngắn gắn ở cuối câu để xác nhận thông tin, giống 'đúng không', 'phải không', 'nhỉ' trong tiếng Việt. Quy tắc gốc rất đơn giản: câu chính khẳng định thì đuôi phủ định, câu chính phủ định thì đuôi khẳng định. Trợ động từ ở đuôi phải khớp với câu chính: có 'to be' thì lặp lại 'to be' (You're new here, aren't you?), có trợ động từ như 'can', 'will', 'have' thì lặp lại nó (You've met Sarah, haven't you?), còn nếu câu chính là động từ thường thì dùng 'do', 'does' hoặc 'did' (You sent the report, didn't you?). Chủ ngữ ở đuôi luôn là đại từ, không lặp lại tên riêng. Hai điểm người Việt hay sai: một là gắn 'right?' vào mọi câu vì nó dễ, hai là dùng sai thì ở đuôi, ví dụ nói 'You went home, don't you?' thay vì 'didn't you?'. Ngữ điệu cũng quan trọng: lên giọng ở đuôi nghĩa là bạn thật sự đang hỏi, xuống giọng nghĩa là bạn đã khá chắc và chỉ muốn người kia gật đầu. Ở công sở Mỹ, câu hỏi đuôi xuống giọng là cách rất khéo để mở đầu một chuyện tế nhị mà không nghe như chất vấn.",
+    "examples": [
+      {
+        "english": "You're new here, aren't you?",
+        "vietnamese": "Bạn mới vào đây đúng không?",
+        "explanation": "Câu chính khẳng định với 'to be' nên đuôi là 'aren't you'. Lưu ý 'I am' thì đuôi bất quy tắc là 'aren't I', không phải 'amn't I'."
+      },
+      {
+        "english": "You sent the report, didn't you?",
+        "vietnamese": "Bạn gửi báo cáo rồi phải không?",
+        "explanation": "Động từ thường ở quá khứ nên đuôi phải dùng 'didn't'. Người Việt hay quên và nói 'don't you'. Chú ý âm cuối '-ed' trong 'sent' đã đổi dạng bất quy tắc."
+      },
+      {
+        "english": "You haven't met the new manager yet, have you?",
+        "vietnamese": "Bạn chưa gặp sếp mới đúng không?",
+        "explanation": "Câu chính phủ định nên đuôi phải khẳng định 'have you'. Đây là kiểu câu rất hay dùng khi bạn muốn đề nghị giới thiệu ai đó cho đồng nghiệp."
+      },
+      {
+        "english": "We can push the deadline, can't we?",
+        "vietnamese": "Mình dời hạn chót được mà, đúng không?",
+        "explanation": "Có trợ động từ 'can' thì đuôi lặp lại nó ở dạng phủ định. Xuống giọng ở đuôi để nghe như một đề xuất nhẹ nhàng chứ không phải câu hỏi thật."
+      }
+    ]
+  }
+}

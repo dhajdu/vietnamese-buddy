@@ -1,0 +1,143 @@
+{
+  "title": "Gọi món ở nhà hàng",
+  "situation": "Gọi món ở nhà hàng",
+  "phrases": [
+    {
+      "english": "Table for two, please.",
+      "vietnamese": "Cho mình bàn hai người nha.",
+      "explanation": "Câu đầu tiên khi bước vào nhà hàng Mỹ. Ngắn gọn là đủ, không cần nói cả câu dài. Từ 'please' ở cuối làm câu lịch sự ngay. Nhớ bật âm cuối 'l' trong 'table', nếu nuốt sẽ nghe thành 'tay-bo'.",
+      "tone": "polite"
+    },
+    {
+      "english": "Could we see the menu, please?",
+      "vietnamese": "Cho tụi mình xin thực đơn với ạ.",
+      "explanation": "'Could' là chìa khóa lịch sự của bài này. Nói 'Give me the menu' đúng ngữ pháp nhưng nghe như ra lệnh. Chú ý mạo từ 'the' trước 'menu', tiếng Việt không có nên rất hay bị bỏ quên.",
+      "tone": "polite"
+    },
+    {
+      "english": "What do you recommend?",
+      "vietnamese": "Ở đây món nào ngon vậy bạn?",
+      "explanation": "Cách hỏi gợi ý món chuẩn nhất, phục vụ ở Mỹ rất thích câu này và thường trả lời rất nhiệt tình. Đừng dịch thẳng 'What is delicious here?', nghe lạ tai. Trọng âm rơi vào âm tiết cuối: re-co-MMEND.",
+      "tone": "casual"
+    },
+    {
+      "english": "Can we have a few more minutes?",
+      "vietnamese": "Cho tụi mình xem thêm chút nữa nha.",
+      "explanation": "Dùng khi phục vụ tới hỏi mà bạn chưa chọn xong. Nhớ đuôi '-s' trong 'minutes'; bỏ mất là lỗi số nhiều rất hay gặp. 'A few' đi với danh từ đếm được số nhiều, đừng nói 'a little more minutes'.",
+      "tone": "polite"
+    },
+    {
+      "english": "Excuse me, we're ready to order.",
+      "vietnamese": "Bạn ơi, tụi mình gọi món nha.",
+      "explanation": "Ở Mỹ bạn không gọi to hay vẫy tay như ở quán Việt Nam, mà bắt ánh mắt phục vụ rồi nói 'Excuse me'. Nhớ 'we're' chứ không phải 'we ready', vì tiếng Anh bắt buộc có động từ 'to be' trước tính từ.",
+      "tone": "polite"
+    },
+    {
+      "english": "I'd like the grilled chicken, please.",
+      "vietnamese": "Cho mình món gà nướng nha.",
+      "explanation": "'I'd like' là dạng rút gọn của 'I would like', cách gọi món lịch sự và phổ biến nhất. Lịch sự hơn hẳn 'I want'. Dùng 'the' vì bạn đang chỉ vào một món cụ thể có trên thực đơn. Nhớ bật cụm phụ âm cuối 'ld' trong 'grilled'.",
+      "tone": "polite"
+    },
+    {
+      "english": "Could I get that without onions?",
+      "vietnamese": "Cho mình món đó nhưng không bỏ hành được không?",
+      "explanation": "Ở Mỹ việc yêu cầu bớt hay thêm nguyên liệu là hoàn toàn bình thường. 'Could I get' là mẫu câu vàng cho mọi yêu cầu ở nhà hàng. Nhớ số nhiều 'onions', vì nói về loại nguyên liệu nói chung thì luôn để số nhiều.",
+      "tone": "polite"
+    },
+    {
+      "english": "Does this come with rice?",
+      "vietnamese": "Món này có kèm cơm không?",
+      "explanation": "'Come with' nghĩa là đi kèm, dùng khắp nơi trong nhà hàng. 'Rice' là danh từ không đếm được nên không bao giờ có 's' và không có 'a'. Chú ý âm 'th' trong 'this', đừng đọc thành 'dis'.",
+      "tone": "direct"
+    },
+    {
+      "english": "Is this dish spicy?",
+      "vietnamese": "Món này có cay không?",
+      "explanation": "Đồ Mỹ ghi 'spicy' thường nhẹ hơn khẩu vị Việt nhiều. Nhớ giữ 'Is this', đừng bỏ động từ 'to be' và nói 'This dish spicy?'. Nếu muốn cay hơn thì nói 'Could I get some hot sauce on the side?'.",
+      "tone": "direct"
+    },
+    {
+      "english": "I'll have the same.",
+      "vietnamese": "Cho mình giống bạn đó luôn.",
+      "explanation": "Câu cực ngắn để gọi giống người vừa gọi trước, rất hay dùng khi bạn còn ngại đọc tên món. 'I'll have' là cách gọi món tự nhiên ngang với 'I'd like', chỉ hơi thân mật hơn một chút.",
+      "tone": "casual"
+    },
+    {
+      "english": "Could I have some water, please?",
+      "vietnamese": "Cho mình xin ít nước với ạ.",
+      "explanation": "'Water' không đếm được nên dùng 'some', không nói 'a water' trừ khi ý là một chai. Ở Mỹ nước lọc thường miễn phí; nếu muốn nước có ga thì phải nói rõ 'sparkling water', và nước đó có tính tiền.",
+      "tone": "polite"
+    },
+    {
+      "english": "This is really good.",
+      "vietnamese": "Món này ngon thiệt.",
+      "explanation": "Đừng nói 'I very like it'. Tiếng Anh không dùng 'very' trước động từ, phải là 'I really like it' hoặc gọn hơn là câu này. Khen món ăn với phục vụ là chuyện rất bình thường và được đón nhận vui vẻ.",
+      "tone": "warm"
+    },
+    {
+      "english": "Could we get the check, please?",
+      "vietnamese": "Cho tụi mình tính tiền nha.",
+      "explanation": "Ở Mỹ dùng 'check', ở Anh dùng 'bill'. Phục vụ sẽ mang hóa đơn tới bàn chứ bạn không ra quầy trả. Nhớ mạo từ 'the' và bật âm cuối 'k' trong 'check'.",
+      "tone": "polite"
+    },
+    {
+      "english": "Can we split the bill?",
+      "vietnamese": "Tụi mình chia tiền được không?",
+      "explanation": "'Split the bill' là chia đều, còn 'separate checks' là mỗi người một hóa đơn riêng. Nên hỏi ngay lúc gọi món chứ đừng đợi cuối bữa. Chia tiền ở Mỹ là chuyện bình thường, không mất mặt như đôi khi ở Việt Nam.",
+      "tone": "direct"
+    },
+    {
+      "english": "Everything was delicious, thank you.",
+      "vietnamese": "Mọi thứ đều ngon lắm, cảm ơn bạn.",
+      "explanation": "Câu cảm ơn khi ra về. Dùng quá khứ 'was' vì bữa ăn đã xong. 'Everything' luôn đi với động từ số ít, nên là 'was' chứ không phải 'were'. Đừng quên tiền tip khoảng 18 đến 20 phần trăm.",
+      "tone": "warm"
+    }
+  ],
+  "vocabulary": [
+    { "english": "appetizer", "vietnamese": "món khai vị" },
+    { "english": "entree", "vietnamese": "món chính (cách gọi ở Mỹ)" },
+    { "english": "side", "vietnamese": "món ăn kèm" },
+    { "english": "check", "vietnamese": "hóa đơn (kiểu Mỹ)" },
+    { "english": "tip", "vietnamese": "tiền boa" },
+    { "english": "server", "vietnamese": "nhân viên phục vụ" },
+    { "english": "to go", "vietnamese": "mang về" },
+    { "english": "refill", "vietnamese": "rót thêm miễn phí" },
+    { "english": "medium rare", "vietnamese": "bò tái vừa" },
+    { "english": "well done", "vietnamese": "bò chín kỹ" },
+    { "english": "recommend", "vietnamese": "gợi ý, giới thiệu món" },
+    { "english": "split the bill", "vietnamese": "chia đều tiền" },
+    { "english": "allergic to", "vietnamese": "bị dị ứng với" },
+    { "english": "sparkling water", "vietnamese": "nước có ga" },
+    { "english": "napkin", "vietnamese": "khăn giấy ăn" },
+    { "english": "come with", "vietnamese": "có kèm theo" },
+    { "english": "on the side", "vietnamese": "để riêng ra một bên" },
+    { "english": "spicy", "vietnamese": "cay" }
+  ],
+  "grammar": {
+    "title": "Would / Could để nói lịch sự",
+    "pattern": "Could I / Could we / Could you + [động từ nguyên mẫu]? • I'd like + [danh từ] • Would you like + [danh từ]?",
+    "explanation": "Tiếng Việt làm câu nhẹ đi bằng các tiểu từ cuối câu như 'nha', 'ạ', 'với', 'giùm'. Tiếng Anh không có những từ đó, nên gánh nặng lịch sự dồn hết vào hai từ 'would' và 'could'. Đây là lý do người Việt nói tiếng Anh đúng ngữ pháp mà vẫn bị nghe là cộc lốc: 'I want the chicken' hay 'Give me water' không sai, nhưng nghe như ra lệnh. Ba mẫu cần thuộc lòng. Một, 'Could I' hoặc 'Could we' khi bạn xin gì đó cho mình: Could I get a menu? Hai, 'Could you' khi bạn nhờ người khác làm gì: Could you bring some napkins? Ba, 'I'd like' khi gọi món, là dạng rút gọn của 'I would like' và luôn nghe nhã hơn 'I want'. Ngược lại, khi phục vụ hỏi bạn thì họ dùng 'Would you like...?', trả lời gọn bằng 'Yes, please' hoặc 'No, thanks'. Thêm 'please' vào cuối là được, không cần thêm cả 'please' lẫn cả câu dài lê thê. Hai lưu ý phát âm: 'could' và 'would' có chữ 'l' câm, đọc là /kʊd/ và /wʊd/; còn 'I'd' phải bật rõ âm /d/, nếu nuốt mất thì thành 'I like', nghĩa hoàn toàn khác.",
+    "examples": [
+      {
+        "english": "Could I get a glass of water?",
+        "vietnamese": "Cho mình xin một ly nước nha.",
+        "explanation": "'Could I get' là mẫu vạn năng để xin bất cứ thứ gì ở nhà hàng Mỹ. 'Water' không đếm được nên phải mượn đơn vị 'a glass of'."
+      },
+      {
+        "english": "Could you bring us some extra napkins?",
+        "vietnamese": "Bạn cho tụi mình xin thêm khăn giấy nha.",
+        "explanation": "Nhờ người khác làm việc gì thì dùng 'Could you'. Nhớ đuôi '-s' trong 'napkins' và dùng 'some' vì bạn không nói rõ số lượng."
+      },
+      {
+        "english": "I'd like the beef pho, please.",
+        "vietnamese": "Cho mình một tô phở bò nha.",
+        "explanation": "'I'd like' lịch sự hơn 'I want' rất nhiều. Bật rõ âm /d/ trong 'I'd', nếu nuốt sẽ thành 'I like the beef pho', nghe như bạn đang bình luận chứ không phải gọi món."
+      },
+      {
+        "english": "Would you like anything to drink?",
+        "vietnamese": "Anh chị dùng gì uống không ạ?",
+        "explanation": "Đây là câu phục vụ sẽ hỏi bạn, nên tập nghe cho quen. Trả lời tự nhiên: 'Just water, please' hoặc 'No, thanks, I'm good'."
+      }
+    ]
+  }
+}
