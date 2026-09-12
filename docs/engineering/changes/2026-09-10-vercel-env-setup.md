@@ -42,3 +42,15 @@ Still outstanding, and blocking a real checkout test:
 - `STRIPE_WEBHOOK_SECRET` from the live endpoint at
   `https://www.vietnamese-buddy.com/api/stripe/webhook`, created once the code
   is deployed.
+
+
+## 2026-09-12 — Stripe keys added to Vercel
+
+`STRIPE_SECRET_KEY` and `STRIPE_PUBLISHABLE_KEY` (Talent Edge live) set for
+**production and preview** via `vercel env add`. Needed because the pricing page
+reads its amounts from Stripe; without a key it falls back to the hard-coded
+$9.99 and $79 rather than failing, but the live figures are better.
+
+Nothing is on sale: `plans.monetised` is false for both directions, so checkout
+refuses. Turn it on in `/admin/settings` after a checkout has been verified with
+test keys.
