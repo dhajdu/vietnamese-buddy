@@ -1,6 +1,6 @@
 # Vietnamese Buddy
 
-**Vietnamese Daily**: a web app for learning conversational Southern Vietnamese through daily, situation-based lessons. You type what you expect to talk about today ("asking a coworker to dinner", "talking to a Grab driver"), the app generates a lesson in real Ho Chi Minh City Vietnamese, turns it into flashcards, and rolls every word into one persistent vocabulary store with a streak. Plan: `docs/plans/build-plan.md`.
+**Vietnamese Buddy**: a web app for learning conversational Southern Vietnamese through daily, situation-based lessons. You type what you expect to talk about today ("asking a coworker to dinner", "talking to a Grab driver"), the app generates a lesson in real Ho Chi Minh City Vietnamese, turns it into flashcards, and rolls every word into one persistent vocabulary store with a streak. Plan: `docs/plans/build-plan.md`.
 
 > Scaffolded with [Infinite Leverage](https://github.com/talentedgeai/infinite-leverage)
 > (`/il-project`) — a 4-agent team lives in `.claude/`; say what you need and the
@@ -23,14 +23,14 @@ NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<publishable-key>
 SUPABASE_SECRET_KEY=<secret-key>            # server-side only — never NEXT_PUBLIC
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ANTHROPIC_API_KEY=<anthropic-key>           # server-side only
-AI_MODEL=anthropic/claude-opus-5            # or openai/<model> with OPENAI_API_KEY
+AI_MODEL=anthropic/claude-sonnet-5            # or openai/<model> with OPENAI_API_KEY
 FPT_AI_API_KEY=<fpt-ai-key>                 # Southern Vietnamese voice (console.fpt.ai); optional
 TTS_VOICE=lannhi                            # FPT.AI Southern female; or linhsan
 DEFAULT_TIMEZONE=Asia/Ho_Chi_Minh
 EOF
 ```
 
-`website/.env.local.example` is the authoritative list. Apply the migrations (starter chat/notifications tables plus the Vietnamese Daily schema):
+`website/.env.local.example` is the authoritative list. Apply the migrations (starter chat/notifications tables plus the Vietnamese Buddy schema):
 
 ```bash
 npx supabase link --project-ref <project-ref>

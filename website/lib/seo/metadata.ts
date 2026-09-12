@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.vietnamese-buddy.com'
 
-export const SITE_NAME = 'Vietnamese Daily'
+export const SITE_NAME = 'Vietnamese Buddy'
 export const SITE_TAGLINE = 'Conversational Southern Vietnamese, one real situation a day.'
 export const SITE_DESCRIPTION =
   'Tell it what you expect to talk about today in Ho Chi Minh City and get a lesson in real spoken Southern Vietnamese: phrases with their social flavour, reusable vocabulary, one grammar pattern, and flashcards that build a streak.'

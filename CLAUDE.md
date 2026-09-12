@@ -1,11 +1,11 @@
 # Vietnamese Buddy — Project Instructions
 
-App name in the UI is **Vietnamese Daily**. A situation-driven conversational Southern Vietnamese tutor. Plan and wireframes: `docs/plans/build-plan.md`, `docs/plans/wireframes.html`.
+App name in the UI is **Vietnamese Buddy**. A situation-driven conversational Southern Vietnamese tutor. Plan and wireframes: `docs/plans/build-plan.md`, `docs/plans/wireframes.html`.
 
 ## Map (read first)
 - **Design tokens**: `website/app/globals.css` (CSS variables + Tailwind `@theme`). Spec: `docs/brand/DESIGN.md`, live twin `docs/brand/design-system.html`. ĀRCA palette: one red per view, Vietnamese in Be Vietnam Pro 800, English in Playfair. Never invent a hex.
-- **Component reference**: `website/components/app/` (StatTiles, LessonList, ReviewSession, StatusToggle, Nav, Speak, ToneTag, Wordmark). Copy these rather than hand-rolling.
-- **Voice**: `website/lib/voice/tts.ts` (FPT.AI Southern female, cached in the `audio` bucket) + `app/api/tts/route.ts` + `components/app/Speak.tsx`. Browser-speech fallback when `FPT_AI_API_KEY` is unset.
+- **Component reference**: `website/components/app/` (StatTiles, LessonList, ReviewSession, StatusToggle, Nav, Speak, ToneTag, Wordmark, Generating). Copy these rather than hand-rolling.
+- **Voice**: `website/lib/voice/tts.ts` (FPT.AI Southern female, cached in the `audio` bucket) + `app/api/tts/route.ts` + `components/app/Speak.tsx`. Browser-speech fallback when the key is unset or FPT returns 403.
 - **Domain logic**: `website/lib/` — `ai/` (schema, prompt, generate), `lessons/` (pipeline, actions, queries), `vocabulary/` (normalize), `flashcards/`, `activity/` (streak).
 - **Database**: `website/supabase/migrations/20260910000000_vietnamese_daily.sql`. Supabase project `xdztfwmiangsepxfqjyt`. Apply with `npx supabase db push` from `website/`.
 - **Seed lessons**: `website/data/seed-lessons/*.json`, validated by `LessonSchema`. Load via the Home empty-state button or `npx tsx --env-file=.env.local scripts/seed.ts <email>`.
@@ -15,7 +15,7 @@ App name in the UI is **Vietnamese Daily**. A situation-driven conversational So
 ## Stack
 - Next.js 16 App Router, TypeScript strict, Tailwind v4 (`website/`)
 - Supabase (Postgres + Auth email/password, RLS on every table)
-- Vercel AI SDK `generateObject` + Zod; provider from `AI_MODEL` (default `anthropic/claude-opus-5`; `openai/…` also supported)
+- Vercel AI SDK `generateObject` + Zod; provider from `AI_MODEL` (default `anthropic/claude-sonnet-5`; `openai/…` also supported)
 - Vitest (`npm test` in `website/`)
 
 ## Rules
@@ -23,7 +23,7 @@ App name in the UI is **Vietnamese Daily**. A situation-driven conversational So
 - Every Supabase call checks `error` before touching `data`.
 - Vocabulary dedupe is exact match on `normalizeVietnamese()`; diacritics are kept.
 - Streak math uses the profile timezone (default Asia/Ho_Chi_Minh) via `localDate()`. Never UTC.
-- Regenerations create a new lesson row with `parent_lesson_id`; originals are never edited.
+- `adjustLesson` creates a new lesson row with `parent_lesson_id`; originals are never edited. There is no blind regenerate: an adjustment note is required.
 
 <!-- BEGIN: AGENT-DELEGATION (managed by infiniteleverage skills — do not delete this block) -->
 ## Agent delegation (auto-routing)

@@ -11,7 +11,7 @@ export default async function LoginPage() {
     <div className="flex min-h-screen items-center justify-center px-6">
       <div className="w-full max-w-sm space-y-6">
         <div className="space-y-2 text-center">
-          <h1 className="t-title text-3xl">Vietnamese Daily</h1>
+          <h1 className="t-title text-3xl">Vietnamese Buddy</h1>
           <p className="t-gloss text-[15px] italic">Sign in to continue.</p>
         </div>
         <LoginForm />

@@ -1,7 +1,8 @@
 // components/app/CreateLessonForm.tsx
 'use client'
-import { useActionState, useEffect, useState } from 'react'
+import { useActionState, useState } from 'react'
 import { createLesson } from '@/lib/lessons/actions'
+import { Generating } from './Generating'
 
 const WAIT_LINES = [
   'Writing phrases a Saigon local would actually say…',
@@ -12,23 +13,8 @@ const WAIT_LINES = [
 export function CreateLessonForm({ suggestions }: { suggestions: string[] }) {
   const [state, action, pending] = useActionState(createLesson, null)
   const [text, setText] = useState('')
-  const [line, setLine] = useState(0)
 
-  useEffect(() => {
-    if (!pending) return
-    const t = setInterval(() => setLine(l => (l + 1) % WAIT_LINES.length), 4000)
-    return () => clearInterval(t)
-  }, [pending])
-
-  if (pending) {
-    return (
-      <div className="space-y-3 rounded-card bg-white p-4 shadow-float" aria-live="polite">
-        <p className="t-gloss text-[17px] italic">&ldquo;{text}&rdquo;</p>
-        <div className="h-1.5 w-full overflow-hidden rounded bg-sand"><div className="h-full w-1/2 animate-pulse bg-red" /></div>
-        <p className="text-sm text-body">{WAIT_LINES[line]}</p>
-      </div>
-    )
-  }
+  if (pending) return <Generating echo={text} lines={WAIT_LINES} />
 
   return (
     <form action={action} className="space-y-3 rounded-card bg-white p-4 shadow-float">

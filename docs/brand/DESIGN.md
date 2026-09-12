@@ -1,6 +1,6 @@
 # Vietnamese Daily design system
 
-The visual language for Vietnamese Daily, built on the ĀRCA Wellness palette
+The visual language for Vietnamese Buddy, built on the ĀRCA Wellness palette
 (sampled from [arcawellness.com](https://www.arcawellness.com/), see the ĀRCA
 design system in `~/code-projects/arca-wellness/docs/design/`). An HTML twin
 with live swatches and every component sits alongside this file:
