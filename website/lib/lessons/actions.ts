@@ -11,10 +11,8 @@ import { recordActivity } from '@/lib/activity/actions'
 import { warmLessonAudio } from '@/lib/voice/tts'
 import type { Lesson } from '@/lib/ai/schema'
 import { getPair, type LanguagePair } from '@/lib/pairs'
-
-// Worst-case guard, not the product's shape: one situation a day is the premise.
-// PR 3 moves this to app_settings so it is tunable without a deploy.
-const DAILY_LIMIT = 3
+import { getEntitlement } from '@/lib/billing/entitlement'
+import { t } from '@/lib/i18n'
 
 /** Every string in the language being learned, for speech pre-warming. */
 function lessonTexts(l: Lesson, pair: LanguagePair) {
@@ -25,17 +23,20 @@ function lessonTexts(l: Lesson, pair: LanguagePair) {
 async function ctx() {
   const user = await requireAuth()
   const db = await createClient()
-  const { data: profile } = await db.from('profiles').select('timezone, pair').eq('id', user.id).single()
-  return { user, db, tz: profile?.timezone as string | undefined, pair: getPair(profile?.pair) }
+  const { data: profile } = await db.from('profiles').select('timezone, pair, is_admin').eq('id', user.id).single()
+  const tz = (profile?.timezone as string) ?? 'Asia/Ho_Chi_Minh'
+  return { user, db, tz, pair: getPair(profile?.pair), isAdmin: Boolean(profile?.is_admin) }
 }
 
 async function generateAndSave(situation: string, parentLessonId: string | null, adjustment?: string) {
-  const { user, db, tz, pair } = await ctx()
+  const { user, db, tz, pair, isAdmin } = await ctx()
 
-  const since = new Date(Date.now() - 24 * 3600 * 1000).toISOString()
-  const { count } = await db.from('lessons').select('id', { count: 'exact', head: true })
-    .eq('user_id', user.id).eq('source', 'ai').gte('created_at', since)
-  if ((count ?? 0) >= DAILY_LIMIT) return { error: `Daily limit of ${DAILY_LIMIT} lessons reached. Come back tomorrow.` }
+  const ent = await getEntitlement(db, user.id, { pair: pair.id, timezone: tz, isAdmin })
+  if (!ent.canCreate) {
+    const d = t(pair.uiLocale)
+    return { error: ent.reason === 'weekly' ? d.weeklyLimitReached : d.dailyLimitReached, upgrade: ent.reason === 'weekly' && ent.monetised }
+  }
+  if (adjustment && !ent.canAdjust) return { error: t(pair.uiLocale).adjustIsPro, upgrade: true }
 
   const { data: recent } = await db.from('lessons').select('grammar_topic')
     .eq('user_id', user.id).eq('pair', pair.id).order('created_at', { ascending: false }).limit(5)
@@ -58,7 +59,7 @@ async function generateAndSave(situation: string, parentLessonId: string | null,
   redirect(`/lessons/${lessonId}`)
 }
 
-export async function createLesson(_prev: { error?: string } | null, formData: FormData) {
+export async function createLesson(_prev: { error?: string; upgrade?: boolean } | null, formData: FormData) {
   const situation = String(formData.get('situation') ?? '').trim()
   if (!situation) return { error: 'Describe a situation first.' }
   return generateAndSave(situation, null)
@@ -71,8 +72,11 @@ export async function createLesson(_prev: { error?: string } | null, formData: F
  */
 export async function adjustLesson(lessonId: string, adjustment: string) {
   const note = adjustment.trim()
-  if (!note) return { error: 'Say what you want changed.' }
-  const { user, db } = await ctx()
+  const { user, db, tz, pair, isAdmin } = await ctx()
+  const d = t(pair.uiLocale)
+  if (!note) return { error: d.sayWhatChanged }
+  const ent = await getEntitlement(db, user.id, { pair: pair.id, timezone: tz, isAdmin })
+  if (!ent.canAdjust) return { error: d.adjustIsPro, upgrade: ent.monetised }
   const { data: original, error } = await db.from('lessons').select('situation, parent_lesson_id')
     .eq('id', lessonId).eq('user_id', user.id).single()
   if (error || !original) return { error: 'Lesson not found.' }

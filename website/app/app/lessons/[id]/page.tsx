@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { requireAuth } from '@/lib/auth/guards'
 import { createClient } from '@/lib/supabase/server'
 import { getLesson, getProfile } from '@/lib/lessons/queries'
+import { getEntitlement } from '@/lib/billing/entitlement'
 import { getPair } from '@/lib/pairs'
 import { t } from '@/lib/i18n'
 import { LessonActions } from '@/components/app/LessonActions'
@@ -24,8 +25,8 @@ export default async function LessonPage({ params }: PageProps<'/app/lessons/[id
   const pair = getPair(row.pair)
   const d = t(pair.uiLocale)
   const lesson = row.lesson_json
-  const { isAdmin } = await getProfile(db, user.id)
-  void isAdmin
+  const { isAdmin, timezone } = await getProfile(db, user.id)
+  const ent = await getEntitlement(db, user.id, { pair: pair.id, timezone, isAdmin })
 
   const [{ count: cardCount }, { data: parent }, { count: newWords }] = await Promise.all([
     db.from('flashcards').select('id', { count: 'exact', head: true }).eq('lesson_id', id),
@@ -45,7 +46,7 @@ export default async function LessonPage({ params }: PageProps<'/app/lessons/[id
             {lesson.title}
           </h1>
           <p className="gloss text-[15px] italic text-sand-70">&ldquo;{row.situation}&rdquo;</p>
-          <LessonActions lessonId={id} completed={!!row.completed_at} cardCount={cardCount ?? 0} locale={pair.uiLocale} />
+          <LessonActions lessonId={id} completed={!!row.completed_at} cardCount={cardCount ?? 0} locale={pair.uiLocale} canAdjust={ent.canAdjust} />
         </div>
       </header>
 

@@ -44,6 +44,14 @@ export const en = {
   reviewed: '✓ reviewed', newWords: 'new',
   learning: 'Learning', direction: 'Direction', switchDirection: 'Switch direction',
   sample: 'sample', today: 'Today', yesterday: 'Yesterday',
+  weeklyLimitReached: 'That’s your free lessons for this week. Upgrade for unlimited, or come back Monday.',
+  dailyLimitReached: 'That’s today’s lessons. Come back tomorrow.',
+  adjustIsPro: 'Adjust is part of the paid plan.',
+  freeLeft: (n: number, of: number) => `${n} of ${of} free lessons left this week`,
+  freeSpent: 'You’ve used this week’s free lessons.',
+  upgrade: 'Upgrade',
+  unlimitedPlan: 'Unlimited',
+  proPlan: 'Pro',
   listen: 'Listen',
 }
 export type Dictionary = typeof en
