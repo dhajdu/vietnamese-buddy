@@ -3,7 +3,8 @@ import { getOptionalUser } from '@/lib/auth/guards'
 import { redirect } from 'next/navigation'
 import { SignupForm } from '@/components/auth/SignupForm'
 
-export default async function SignupPage() {
+export default async function SignupPage({ searchParams }: PageProps<'/signup'>) {
+  const { plan } = await searchParams
   const user = await getOptionalUser()
   if (user) redirect('/app')
 
@@ -14,7 +15,7 @@ export default async function SignupPage() {
           <h1 className="t-title text-3xl">Vietnamese Buddy</h1>
           <p className="gloss text-[15px] italic">Create your account.</p>
         </div>
-        <SignupForm />
+        <SignupForm plan={typeof plan === 'string' ? plan : undefined} />
       </div>
     </div>
   )

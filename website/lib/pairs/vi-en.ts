@@ -8,6 +8,7 @@ export const viEn: LanguagePair = {
   sourceField: 'vietnamese',
   label: 'Tiếng Việt → Tiếng Anh',
   targetName: 'Tiếng Anh',
+  targetCode: 'EN',
   version: 1,
   tts: { provider: 'openai', voice: 'nova' },
   situationExamples: [

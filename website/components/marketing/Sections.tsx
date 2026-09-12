@@ -1,18 +1,18 @@
 // components/marketing/Sections.tsx — the eight sections, written once and fed
 // by lib/marketing/content.ts. Server components: no client JavaScript out here.
 import Link from 'next/link'
-import type { Landing } from '@/lib/marketing/content'
+import { fill, type Landing } from '@/lib/marketing/content'
 import type { Lesson } from '@/lib/ai/schema'
 import { getPair } from '@/lib/pairs'
 import { ToneTag } from '@/components/app/ToneTag'
 
-export function Hero({ c, signedIn }: { c: Landing; signedIn: boolean }) {
+export function Hero({ c, signedIn, freeLessons }: { c: Landing; signedIn: boolean; freeLessons: number }) {
   return (
     <section className="bg-ink-warm px-6 py-20 text-sand sm:py-28">
       <div className="mx-auto max-w-3xl">
         <p className="eyebrow-dark mb-4">{c.eyebrow}</p>
         <h1 className="font-vn text-[34px] font-extrabold leading-[1.05] tracking-[-0.03em] text-sand sm:text-[54px]">{c.h1}</h1>
-        <p className="gloss mt-5 max-w-[58ch] text-xl text-sand-70">{c.lede}</p>
+        <p className="gloss mt-5 max-w-[58ch] text-xl text-sand-70">{fill(c.lede, freeLessons, c.locale)}</p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Link href={signedIn ? '/app' : '/signup'} className="btn-red-dark">{signedIn ? 'Continue learning →' : c.ctaPrimary}</Link>
           <Link href="#sample" className="btn-ghost-dark">{c.ctaSecondary}</Link>
@@ -112,7 +112,7 @@ export function Accumulate({ c }: { c: Landing }) {
   )
 }
 
-export function Faq({ c }: { c: Landing }) {
+export function Faq({ c, freeLessons }: { c: Landing; freeLessons: number }) {
   return (
     <section className="mx-auto max-w-3xl px-6 py-16">
       <h2 className="t-title text-3xl">{c.faqHeading}</h2>
@@ -120,7 +120,7 @@ export function Faq({ c }: { c: Landing }) {
         {c.faqs.map(f => (
           <div key={f.q} className="py-5">
             <dt className="font-vn text-[17px] font-bold text-ink">{f.q}</dt>
-            <dd className="gloss mt-2 max-w-[65ch] text-[16px]">{f.a}</dd>
+            <dd className="gloss mt-2 max-w-[65ch] text-[16px]">{fill(f.a, freeLessons, c.locale)}</dd>
           </div>
         ))}
       </dl>
@@ -128,7 +128,7 @@ export function Faq({ c }: { c: Landing }) {
   )
 }
 
-export function Closing({ c, signedIn }: { c: Landing; signedIn: boolean }) {
+export function Closing({ c, signedIn, freeLessons }: { c: Landing; signedIn: boolean; freeLessons: number }) {
   return (
     <section className="bg-cream-warm px-6 py-20">
       <div className="mx-auto max-w-3xl text-center">
@@ -136,27 +136,27 @@ export function Closing({ c, signedIn }: { c: Landing; signedIn: boolean }) {
         <p className="gloss mx-auto mt-3 max-w-[50ch] text-lg">{c.closingBody}</p>
         <div className="mt-7 flex flex-wrap justify-center gap-3">
           <Link href={signedIn ? '/app' : '/signup'} className="btn-red">{signedIn ? 'Continue learning →' : c.ctaPrimary}</Link>
-          <Link href="/pricing" className="btn-quiet">{c.pricingHeading}</Link>
+          <Link href="/pricing" className="btn-quiet">{fill(c.pricingHeading, freeLessons, c.locale)}</Link>
         </div>
-        <p className="meta mt-4">{c.pricingBody}</p>
+        <p className="meta mt-4">{fill(c.pricingBody, freeLessons, c.locale)}</p>
       </div>
     </section>
   )
 }
 
 /** SoftwareApplication plus FAQPage, so both the page and an LLM can quote it. */
-export function LandingJsonLd({ c, base }: { c: Landing; base: string }) {
+export function LandingJsonLd({ c, base, freeLessons }: { c: Landing; base: string; freeLessons: number }) {
   const data = [
     {
       '@context': 'https://schema.org', '@type': 'SoftwareApplication',
       name: 'Vietnamese Buddy', url: `${base}${c.path}`,
       applicationCategory: 'EducationalApplication', operatingSystem: 'Web',
-      description: c.metaDescription, inLanguage: c.locale,
-      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', description: 'Three lessons a week, free' },
+      description: fill(c.metaDescription, freeLessons, c.locale), inLanguage: c.locale,
+      offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', description: fill(c.pricingHeading, freeLessons, c.locale) },
     },
     {
       '@context': 'https://schema.org', '@type': 'FAQPage',
-      mainEntity: c.faqs.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+      mainEntity: c.faqs.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: fill(f.a, freeLessons, c.locale) } })),
     },
   ]
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />

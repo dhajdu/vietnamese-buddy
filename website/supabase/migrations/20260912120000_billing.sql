@@ -7,7 +7,7 @@
 -- ── app_settings: one row, admin-writable ───────────────────────────────────
 create table app_settings (
   id int primary key default 1 check (id = 1),
-  free_lessons_per_week int not null default 3 check (free_lessons_per_week between 0 and 100),
+  free_lessons_per_week int not null default 1 check (free_lessons_per_week between 0 and 100),
   paid_lessons_per_day int not null default 3 check (paid_lessons_per_day between 1 and 100),
   ai_provider text not null default 'anthropic',
   ai_model text not null default 'claude-sonnet-5',

@@ -4,6 +4,26 @@
 // belongs in the H1 and the schema, and the title tag is keyword-led.
 import type { Locale, PairId } from '@/lib/pairs'
 
+/**
+ * Copy writes {free} and {freeWord} rather than a number, and `fill()` puts the
+ * live app_settings value in. A landing page that advertises three lessons while
+ * the gate allows one is the kind of drift nobody notices until a customer does.
+ */
+export function fill(text: string, freeLessons: number, locale: Locale) {
+  const words: Record<Locale, string[]> = {
+    en: ['no', 'One', 'Two', 'Three', 'Four', 'Five'],
+    vi: ['không', 'Một', 'Hai', 'Ba', 'Bốn', 'Năm'],
+  }
+  const word = words[locale][freeLessons] ?? String(freeLessons)
+  return text
+    .replace(/\{freeWord\}/g, word)
+    .replace(/\{freeword\}/g, word.toLowerCase())
+    .replace(/\{lessonWord\}/g, locale === 'vi' ? 'bài học' : freeLessons === 1 ? 'lesson' : 'lessons')
+    .replace(/\{lessonword\}/g, locale === 'vi' ? 'bài học' : freeLessons === 1 ? 'lesson' : 'lessons')
+    .replace(/\{isare\}/g, freeLessons === 1 ? 'is' : 'are')
+    .replace(/\{free\}/g, String(freeLessons))
+}
+
 export interface Contrast { wrong: string; right: string; note: string }
 export interface Step { title: string; body: string }
 export interface Faq { q: string; a: string }
@@ -47,7 +67,7 @@ export const EN: Landing = {
   path: '/',
   titleTag: 'Learn Conversational Southern Vietnamese — Daily Situation-Based Lessons',
   metaDescription:
-    'Learn conversational Southern Vietnamese through daily lessons built around your real situations: ordering, dating, work, Grab rides. Three free lessons a week. No textbook Vietnamese.',
+    'Learn conversational Southern Vietnamese through daily lessons built around your real situations: ordering, dating, work, Grab rides. {freeWord} free {lessonWord} a week. No textbook Vietnamese.',
   keywords: ['learn conversational Vietnamese', 'Southern Vietnamese lessons', 'how to speak Vietnamese in Ho Chi Minh City', 'Vietnamese phrases for daily life'],
   eyebrow: 'Southern Vietnamese, daily',
   h1: 'Learn the Vietnamese people actually speak in Saigon',
@@ -84,7 +104,7 @@ export const EN: Landing = {
     { stat: '1', label: 'grammar pattern a day' },
   ],
 
-  pricingHeading: 'Three lessons a week, free',
+  pricingHeading: '{freeWord} {lessonword} a week, free',
   pricingBody: 'No card to start. Upgrade when a situation a day has become the habit.',
 
   faqHeading: 'Questions people ask',
@@ -92,7 +112,7 @@ export const EN: Landing = {
     { q: 'How is Southern Vietnamese different from Northern Vietnamese?', a: 'Pronunciation, vocabulary and particles all differ. The South says coi phim where the North says xem phim, softens không to hông in questions, and leans on particles like nha and nè to set the tone. Learn the Northern forms in Saigon and you will be understood, but you will sound like a textbook.' },
     { q: 'Can I learn Vietnamese without studying grammar first?', a: 'Yes. Every lesson starts from a situation you are about to be in and teaches one grammar pattern that happens to appear in it. You learn the structure because you needed the sentence, not before you needed it.' },
     { q: 'How much Vietnamese do I need to live in Ho Chi Minh City?', a: 'You can get by on almost none, which is why most expats never progress. A few hundred well-chosen phrases covering Grab rides, ordering, small talk and work will change how people treat you far more than a large passive vocabulary.' },
-    { q: 'Is Vietnamese Buddy free?', a: 'Three lessons a week are free with no card. Paid plans add unlimited lessons and the ability to rewrite any lesson with your own note.' },
+    { q: 'Is Vietnamese Buddy free?', a: '{freeWord} {lessonword} a week {isare} free with no card. Paid plans add unlimited lessons and the ability to rewrite any lesson with your own note.' },
     { q: 'What makes situation-based lessons better than a fixed curriculum?', a: 'A fixed curriculum teaches colours and family members in week one whether or not you need them. Situation-based lessons teach what you are about to say, which means you use it within a day, and using it is what makes it stick.' },
   ],
 
@@ -106,7 +126,7 @@ export const VI: Landing = {
   path: '/vi',
   titleTag: 'Học Tiếng Anh Giao Tiếp Theo Tình Huống — Mỗi Ngày Một Bài',
   metaDescription:
-    'Học tiếng Anh giao tiếp qua bài học tạo riêng cho tình huống của bạn: đi làm, họp online, phỏng vấn, đi ăn, du lịch. Ba bài miễn phí mỗi tuần. Không học vẹt.',
+    'Học tiếng Anh giao tiếp qua bài học tạo riêng cho tình huống của bạn: đi làm, họp online, phỏng vấn, đi ăn, du lịch. {freeWord} bài miễn phí mỗi tuần. Không học vẹt.',
   keywords: ['học tiếng Anh giao tiếp hàng ngày', 'luyện nói tiếng Anh theo tình huống', 'cách nói tiếng Anh tự nhiên', 'tiếng Anh cho người đi làm'],
   eyebrow: 'Tiếng Anh giao tiếp mỗi ngày',
   h1: 'Học tiếng Anh mà người bản xứ thật sự nói',
