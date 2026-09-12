@@ -53,6 +53,9 @@ export const en = {
   unlimitedPlan: 'Unlimited',
   proPlan: 'Pro',
   freePlan: 'Free',
+  delete: 'Delete',
+  deleteConfirm: 'Delete for good?',
+  deleteHint: 'This removes the lesson, its cards, and any word no other lesson uses.',
   listen: 'Listen',
 }
 export type Dictionary = typeof en

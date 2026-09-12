@@ -26,6 +26,8 @@ export interface LanguagePair {
   label: string
   /** Short form for compact UI, e.g. "Tiếng Việt". */
   targetName: string
+  /** Two letters for the switcher chip. */
+  targetCode: string
   /**
    * The language layer of the prompt: who is teaching, what register, what this
    * particular learner gets wrong, which grammar to prefer and to skip.

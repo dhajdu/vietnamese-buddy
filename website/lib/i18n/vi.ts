@@ -55,5 +55,8 @@ export const vi: Dictionary = {
   unlimitedPlan: 'Không giới hạn',
   proPlan: 'Trả phí',
   freePlan: 'Miễn phí',
+  delete: 'Xoá',
+  deleteConfirm: 'Xoá hẳn?',
+  deleteHint: 'Xoá bài học, các thẻ của bài, và những từ không còn bài nào khác dùng.',
   listen: 'Nghe',
 }

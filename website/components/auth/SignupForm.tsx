@@ -4,7 +4,7 @@ import { useForm } from '@tanstack/react-form'
 import { signupWithEmail } from '@/lib/auth/actions'
 import { useState } from 'react'
 
-export function SignupForm() {
+export function SignupForm({ plan }: { plan?: string }) {
   const [serverError, setServerError] = useState<string | null>(null)
 
   const form = useForm({
@@ -18,6 +18,7 @@ export function SignupForm() {
       const fd = new FormData()
       fd.set('email', value.email)
       fd.set('password', value.password)
+      if (plan) fd.set('plan', plan)
       const result = await signupWithEmail(fd)
       if (result?.error) setServerError(result.error)
     },

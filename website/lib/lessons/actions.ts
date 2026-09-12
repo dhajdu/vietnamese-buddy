@@ -87,6 +87,31 @@ export async function adjustLesson(lessonId: string, adjustment: string) {
   return generateAndSave(original.situation as string, parent, note)
 }
 
+/**
+ * Removes a lesson, its flashcards and its vocabulary. Words that other lessons
+ * still teach survive: vocabulary is deduped across lessons, so a blanket
+ * delete would strip words out from under lessons that still use them. The
+ * database function does both steps in one transaction.
+ */
+export async function deleteLesson(lessonId: string) {
+  const { user, db } = await ctx()
+  const { data: owned, error: findError } = await db.from('lessons')
+    .select('id').eq('id', lessonId).eq('user_id', user.id).maybeSingle()
+  if (findError) return { error: findError.message }
+  if (!owned) return { error: 'Lesson not found.' }
+
+  const { data, error } = await db.rpc('delete_lesson', { p_lesson_id: lessonId })
+  if (error) return { error: error.message }
+  const deletedWords = Array.isArray(data) ? (data[0]?.deleted_words ?? 0) : 0
+
+  revalidatePath('/app')
+  revalidatePath('/app/lessons')
+  revalidatePath('/app/vocabulary')
+  revalidatePath('/app/flashcards')
+  redirect('/app/lessons')
+  return { ok: true, deletedWords }
+}
+
 export async function completeLesson(lessonId: string) {
   const { user, db, tz } = await ctx()
   const { error } = await db.from('lessons').update({ completed_at: new Date().toISOString() })

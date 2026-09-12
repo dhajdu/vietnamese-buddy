@@ -6,6 +6,7 @@ import { getProfile } from '@/lib/lessons/queries'
 import { getEntitlement } from '@/lib/billing/entitlement'
 import { t } from '@/lib/i18n'
 import { PortalButton } from '@/components/app/PortalButton'
+import { AutoCheckout } from '@/components/app/CheckoutButtons'
 
 export const metadata = { title: 'Billing' }
 
@@ -39,7 +40,9 @@ export default async function BillingPage({ searchParams }: PageProps<'/app/bill
         </>)}
       </dl>
 
-      {ent.plan === 'pro' && !ent.unlimited
+      {ent.plan === 'free' && ent.monetised && (sp.checkout === 'monthly' || sp.checkout === 'annual')
+        ? <AutoCheckout term={sp.checkout} />
+        : ent.plan === 'pro' && !ent.unlimited
         ? <PortalButton label="Manage billing" />
         : ent.monetised
           ? <Link href="/pricing" className="btn-red">{d.upgrade}</Link>

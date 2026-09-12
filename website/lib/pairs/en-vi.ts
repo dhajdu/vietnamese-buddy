@@ -8,6 +8,7 @@ export const enVi: LanguagePair = {
   sourceField: 'english',
   label: 'English → Vietnamese',
   targetName: 'Vietnamese',
+  targetCode: 'VN',
   version: 1,
   tts: { provider: 'fpt', voice: process.env.TTS_VOICE ?? 'lannhi' },
   situationExamples: [

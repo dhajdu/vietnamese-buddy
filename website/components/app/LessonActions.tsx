@@ -2,7 +2,7 @@
 'use client'
 import { useState, useTransition } from 'react'
 import Link from 'next/link'
-import { completeLesson, adjustLesson } from '@/lib/lessons/actions'
+import { completeLesson, adjustLesson, deleteLesson } from '@/lib/lessons/actions'
 import { Generating } from './Generating'
 import type { Locale } from '@/lib/pairs'
 import { t } from '@/lib/i18n'
@@ -14,6 +14,7 @@ export function LessonActions({ lessonId, completed, cardCount, locale = 'en', c
   const [note, setNote] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [done, setDone] = useState(completed)
+  const [confirmingDelete, setConfirmingDelete] = useState(false)
 
   const run = (fn: () => Promise<{ error?: string } | { ok: true } | undefined | void>) =>
     start(async () => { setError(null); const r = await fn(); if (r && 'error' in r && r.error) setError(r.error) })
@@ -29,6 +30,16 @@ export function LessonActions({ lessonId, completed, cardCount, locale = 'en', c
           onClick={() => run(async () => { const r = await completeLesson(lessonId); if (r && 'ok' in r) setDone(true); return r })}>
           {done ? d.completed : d.markComplete}
         </button>
+        {confirmingDelete ? (
+          <span className="flex flex-wrap items-center gap-2">
+            <button type="button" disabled={pending} className="btn-red-dark"
+              onClick={() => run(() => deleteLesson(lessonId))}>{d.deleteConfirm}</button>
+            <button type="button" disabled={pending} className="btn-ghost-dark" onClick={() => setConfirmingDelete(false)}>{d.cancel}</button>
+            <span className="gloss text-[13px] text-sand-70">{d.deleteHint}</span>
+          </span>
+        ) : (
+          <button type="button" disabled={pending} className="btn-ghost-dark" onClick={() => setConfirmingDelete(true)}>{d.delete}</button>
+        )}
         {canAdjust ? (
           <button type="button" disabled={pending} className="btn-ghost-dark" onClick={() => setAdjusting(a => !a)}>
             {adjusting ? d.cancel : d.adjust}
