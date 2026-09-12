@@ -11,7 +11,7 @@ import { Speak } from '@/components/app/Speak'
 export const metadata = { title: 'Words' }
 const FILTERS = ['all', 'new', 'learning', 'known'] as const
 
-export default async function VocabularyPage({ searchParams }: PageProps<'/vocabulary'>) {
+export default async function VocabularyPage({ searchParams }: PageProps<'/app/vocabulary'>) {
   const sp = await searchParams
   const q = typeof sp.q === 'string' ? sp.q.trim() : ''
   const status = FILTERS.includes(sp.status as never) ? (sp.status as string) : 'all'
@@ -51,7 +51,7 @@ export default async function VocabularyPage({ searchParams }: PageProps<'/vocab
       </form>
       <div className="flex flex-wrap gap-1.5">
         {FILTERS.map(f => (
-          <Link key={f} href={`/vocabulary?${new URLSearchParams({ ...(q ? { q } : {}), ...(f !== 'all' ? { status: f } : {}) })}`}
+          <Link key={f} href={`/app/vocabulary?${new URLSearchParams({ ...(q ? { q } : {}), ...(f !== 'all' ? { status: f } : {}) })}`}
             className={`rounded-pill px-3 py-1 text-xs font-semibold capitalize ${status === f ? 'bg-ink text-white' : 'bg-cream-warm text-body hover:bg-sand'}`}>
             {filterLabel[f]}
           </Link>
@@ -74,7 +74,7 @@ export default async function VocabularyPage({ searchParams }: PageProps<'/vocab
                   <StatusToggle id={r.id} status={r.status} locale={pair.uiLocale} />
                 </div>
                 <p className="gloss text-[14px]">{r[pair.sourceField]}</p>
-                {intro && <p className="meta"><Link href={`/lessons/${intro.id}`} className="hover:text-ink">{intro.title}</Link> · {formatDate(intro.created_at, timezone, pair.uiLocale)}</p>}
+                {intro && <p className="meta"><Link href={`/app/lessons/${intro.id}`} className="hover:text-ink">{intro.title}</Link> · {formatDate(intro.created_at, timezone, pair.uiLocale)}</p>}
               </li>
             )
           })}

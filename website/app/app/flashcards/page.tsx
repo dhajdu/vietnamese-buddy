@@ -10,7 +10,7 @@ import { ReviewSession, type Card } from '@/components/app/ReviewSession'
 export const metadata = { title: 'Cards' }
 const ORDER = { review: 0, new: 1, known: 2 } as const
 
-export default async function FlashcardsPage({ searchParams }: PageProps<'/flashcards'>) {
+export default async function FlashcardsPage({ searchParams }: PageProps<'/app/flashcards'>) {
   const { lesson, deck } = await searchParams
   const user = await requireAuth()
   const db = await createClient()
@@ -27,7 +27,7 @@ export default async function FlashcardsPage({ searchParams }: PageProps<'/flash
     ])
     const cards = ((data ?? []) as unknown as (Card & { status: keyof typeof ORDER })[]).sort((a, b) => ORDER[a.status] - ORDER[b.status])
     if (!cards.length) {
-      return <div className="mx-auto max-w-3xl px-6 pt-12"><div className="rounded-card border border-dashed border-sand px-4 py-8 text-center text-sm text-stone">{d.noCardsDue} <Link href="/" className="font-semibold text-red hover:underline">{d.createALesson}</Link></div></div>
+      return <div className="mx-auto max-w-3xl px-6 pt-12"><div className="rounded-card border border-dashed border-sand px-4 py-8 text-center text-sm text-stone">{d.noCardsDue} <Link href="/app" className="font-semibold text-red hover:underline">{d.createALesson}</Link></div></div>
     }
     const streak = computeStreak((act ?? []).map(r => r.activity_date as string), localDate(timezone))
     return (
@@ -48,7 +48,7 @@ export default async function FlashcardsPage({ searchParams }: PageProps<'/flash
       <div><p className="eyebrow">{d.navCards}</p><h1 className="t-title text-3xl sm:text-4xl">{d.cardsTitle}</h1></div>
       <section className="space-y-2">
         <h2 className="eyebrow">{d.dueToday}</h2>
-        <Link href="/flashcards?deck=due" className="card flex items-center justify-between px-4 py-3 hover:border-ink">
+        <Link href="/app/flashcards?deck=due" className="card flex items-center justify-between px-4 py-3 hover:border-ink">
           <span className="font-vn text-[15px] font-bold text-ink">{d.allDueCards}</span>
           <span className={`tabular text-sm font-semibold ${due ? 'text-amber-ink' : 'text-stone'}`}>{due ?? 0}</span>
         </Link>
@@ -61,7 +61,7 @@ export default async function FlashcardsPage({ searchParams }: PageProps<'/flash
             const open = cards.filter(c => c.status !== 'known').length
             return (
               <li key={l.id}>
-                <Link href={`/flashcards?lesson=${l.id}`} className="card flex items-center justify-between px-4 py-3 hover:border-ink">
+                <Link href={`/app/flashcards?lesson=${l.id}`} className="card flex items-center justify-between px-4 py-3 hover:border-ink">
                   <span className="font-vn text-[15px] font-bold text-ink">{l.title as string}</span>
                   <span className={`tabular text-sm font-semibold ${open ? 'text-amber-ink' : 'text-ok-ink'}`}>{open ? `${open} ${d.due}` : d.done} <span className="text-stone">· {cards.length}</span></span>
                 </Link>

@@ -24,7 +24,7 @@ export function LessonList({ lessons, tz, states, locale = 'en', detailed = fals
         const s = states?.get(l.id) ?? { kind: 'none' as const }
         return (
           <li key={l.id} className={l.parent_lesson_id ? 'ml-4' : ''}>
-            <Link href={`/lessons/${l.id}`} className={`card flex items-center gap-3 px-3.5 py-3 hover:border-ink ${l.parent_lesson_id ? 'border-dashed' : ''}`}>
+            <Link href={`/app/lessons/${l.id}`} className={`card flex items-center gap-3 px-3.5 py-3 hover:border-ink ${l.parent_lesson_id ? 'border-dashed' : ''}`}>
               <span className={`w-1.5 self-stretch rounded-[3px] ${STRIPE[s.kind]}`} />
               <span className="min-w-0 flex-1">
                 <b className="block truncate font-vn text-[15px] font-bold text-ink">{l.parent_lesson_id ? '↳ ' : ''}{l.title}</b>

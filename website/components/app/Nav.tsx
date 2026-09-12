@@ -13,14 +13,14 @@ export function Nav({ pair, locale }: { pair: PairId; locale: Locale }) {
   const path = usePathname()
   const d = t(locale)
   const items = [
-    { href: '/', label: d.navToday, Icon: Sun },
-    { href: '/lessons', label: d.navLessons, Icon: BookOpen },
-    { href: '/flashcards', label: d.navCards, Icon: Layers },
-    { href: '/vocabulary', label: d.navWords, Icon: ListChecks },
-    { href: '/progress', label: d.navStreak, Icon: Flame },
+    { href: '/app', label: d.navToday, Icon: Sun },
+    { href: '/app/lessons', label: d.navLessons, Icon: BookOpen },
+    { href: '/app/flashcards', label: d.navCards, Icon: Layers },
+    { href: '/app/vocabulary', label: d.navWords, Icon: ListChecks },
+    { href: '/app/progress', label: d.navStreak, Icon: Flame },
   ]
-  const active = (href: string) => (href === '/' ? path === '/' : path.startsWith(href))
-  const inSession = path.startsWith('/flashcards') && typeof window !== 'undefined' && /[?&](lesson|deck)=/.test(window.location.search)
+  const active = (href: string) => (href === '/app' ? path === '/app' : path.startsWith(href))
+  const inSession = path.startsWith('/app/flashcards') && typeof window !== 'undefined' && /[?&](lesson|deck)=/.test(window.location.search)
 
   return (
     <>

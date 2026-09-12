@@ -1,8 +1,11 @@
-// proxy.ts — refreshes the Supabase session cookie on every request and gates the app.
+// proxy.ts — refreshes the Supabase session cookie and gates the private surfaces.
+// Marketing lives at the root and must stay public, static and identical for
+// everyone, so the gate is a short allow-list of private prefixes rather than a
+// deny-list of public ones.
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-const PUBLIC = ['/login', '/signup', '/check-email', '/auth', '/robots.txt', '/sitemap.xml', '/icon', '/apple-icon', '/opengraph-image', '/twitter-image']
+const PRIVATE = ['/app', '/admin']
 
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request })
@@ -20,20 +23,13 @@ export async function proxy(request: NextRequest) {
       },
     },
   )
-  const { pathname } = request.nextUrl
-  // Supabase falls back to the Site URL (the root) when a confirmation link's
-  // redirect isn't allow-listed. Forward a stray ?code= to the callback so the
-  // code is exchanged instead of dropped by the login redirect below.
-  if (pathname === '/' && request.nextUrl.searchParams.has('code')) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/auth/callback'
-    return NextResponse.redirect(url)
-  }
   const { data: { user } } = await supabase.auth.getUser()
-  const isPublic = PUBLIC.some(p => pathname === p || pathname.startsWith(p + '/'))
-  if (!user && !isPublic) {
+  const { pathname } = request.nextUrl
+  const isPrivate = PRIVATE.some(p => pathname === p || pathname.startsWith(p + '/'))
+  if (!user && isPrivate) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
+    url.searchParams.set('next', pathname)
     return NextResponse.redirect(url)
   }
   return response

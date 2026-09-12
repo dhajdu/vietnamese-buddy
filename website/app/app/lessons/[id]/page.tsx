@@ -13,7 +13,7 @@ import { ToneTag } from '@/components/app/ToneTag'
 // Adjust runs as a Server Action from this route; give it room.
 export const maxDuration = 180
 
-export default async function LessonPage({ params }: PageProps<'/lessons/[id]'>) {
+export default async function LessonPage({ params }: PageProps<'/app/lessons/[id]'>) {
   const { id } = await params
   const user = await requireAuth()
   const db = await createClient()
@@ -38,8 +38,8 @@ export default async function LessonPage({ params }: PageProps<'/lessons/[id]'>)
       <header className="bg-ink-warm px-6 pb-7 pt-6 text-sand sm:pt-10">
         <div className="mx-auto max-w-3xl space-y-3">
           <nav className="text-xs font-semibold text-sand-70">
-            <Link href="/lessons" className="hover:text-sand">← {d.navLessons}</Link>
-            {parent && <> / <Link href={`/lessons/${parent.id}`} className="hover:text-sand">{parent.title as string}</Link></>}
+            <Link href="/app/lessons" className="hover:text-sand">← {d.navLessons}</Link>
+            {parent && <> / <Link href={`/app/lessons/${parent.id}`} className="hover:text-sand">{parent.title as string}</Link></>}
           </nav>
           <h1 className="flex items-center gap-3 font-vn text-[26px] font-extrabold leading-[1.05] tracking-[-0.03em] text-sand sm:text-[34px]">
             {lesson.title}

@@ -4,6 +4,8 @@ import { createClient } from '@/lib/supabase/server'
 import { getProfile } from '@/lib/lessons/queries'
 import { Nav } from '@/components/app/Nav'
 
+export const metadata = { robots: { index: false, follow: false } }
+
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const user = await requireAuth()
   const db = await createClient()

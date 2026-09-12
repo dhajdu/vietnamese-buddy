@@ -3,9 +3,10 @@ import { getOptionalUser } from '@/lib/auth/guards'
 import { redirect } from 'next/navigation'
 import { LoginForm } from '@/components/auth/LoginForm'
 
-export default async function LoginPage() {
+export default async function LoginPage({ searchParams }: PageProps<'/login'>) {
+  const { next } = await searchParams
   const user = await getOptionalUser()
-  if (user) redirect('/')
+  if (user) redirect(typeof next === 'string' && next.startsWith('/app') ? next : '/app')
 
   return (
     <div className="flex min-h-screen items-center justify-center px-6">
