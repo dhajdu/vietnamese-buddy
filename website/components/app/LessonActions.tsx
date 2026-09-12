@@ -7,7 +7,7 @@ import { Generating } from './Generating'
 import type { Locale } from '@/lib/pairs'
 import { t } from '@/lib/i18n'
 
-export function LessonActions({ lessonId, completed, cardCount, locale = 'en' }: { lessonId: string; completed: boolean; cardCount: number; locale?: Locale }) {
+export function LessonActions({ lessonId, completed, cardCount, locale = 'en', canAdjust = true }: { lessonId: string; completed: boolean; cardCount: number; locale?: Locale; canAdjust?: boolean }) {
   const d = t(locale)
   const [pending, start] = useTransition()
   const [adjusting, setAdjusting] = useState(false)
@@ -29,9 +29,13 @@ export function LessonActions({ lessonId, completed, cardCount, locale = 'en' }:
           onClick={() => run(async () => { const r = await completeLesson(lessonId); if (r && 'ok' in r) setDone(true); return r })}>
           {done ? d.completed : d.markComplete}
         </button>
-        <button type="button" disabled={pending} className="btn-ghost-dark" onClick={() => setAdjusting(a => !a)}>
-          {adjusting ? d.cancel : d.adjust}
-        </button>
+        {canAdjust ? (
+          <button type="button" disabled={pending} className="btn-ghost-dark" onClick={() => setAdjusting(a => !a)}>
+            {adjusting ? d.cancel : d.adjust}
+          </button>
+        ) : (
+          <Link href="/pricing" className="btn-ghost-dark opacity-70" title={d.adjustIsPro}>🔒 {d.adjust}</Link>
+        )}
       </div>
       {adjusting && (
         <form className="flex gap-2" onSubmit={e => { e.preventDefault(); run(() => adjustLesson(lessonId, note)) }}>

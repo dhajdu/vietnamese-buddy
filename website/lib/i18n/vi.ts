@@ -46,5 +46,13 @@ export const vi: Dictionary = {
   reviewed: '✓ đã ôn', newWords: 'từ mới',
   learning: 'Đang học', direction: 'Chiều học', switchDirection: 'Đổi chiều học',
   sample: 'mẫu', today: 'Hôm nay', yesterday: 'Hôm qua',
+  weeklyLimitReached: 'Bạn đã dùng hết bài học miễn phí tuần này. Nâng cấp để học không giới hạn, hoặc quay lại thứ Hai.',
+  dailyLimitReached: 'Hôm nay bạn đã học đủ rồi. Mai quay lại nhé.',
+  adjustIsPro: 'Chỉnh lại là tính năng của gói trả phí.',
+  freeLeft: (n: number, of: number) => `Còn ${n}/${of} bài học miễn phí tuần này`,
+  freeSpent: 'Bạn đã dùng hết bài miễn phí tuần này.',
+  upgrade: 'Nâng cấp',
+  unlimitedPlan: 'Không giới hạn',
+  proPlan: 'Trả phí',
   listen: 'Nghe',
 }

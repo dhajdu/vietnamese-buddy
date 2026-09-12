@@ -5,8 +5,15 @@ import { createLesson } from '@/lib/lessons/actions'
 import { Generating } from './Generating'
 import type { Locale } from '@/lib/pairs'
 import { t } from '@/lib/i18n'
+import Link from 'next/link'
 
-export function CreateLessonForm({ suggestions, locale = 'en' }: { suggestions: string[]; locale?: Locale }) {
+export function CreateLessonForm({ suggestions, locale = 'en', allowance = null, canCreate = true, showUpgrade = false }: {
+  suggestions: string[]; locale?: Locale
+  /** Null for pro and unlimited accounts, who see no counter at all. */
+  allowance?: { left: number; of: number } | null
+  canCreate?: boolean
+  showUpgrade?: boolean
+}) {
   const [state, action, pending] = useActionState(createLesson, null)
   const [text, setText] = useState('')
   const d = t(locale)
@@ -25,7 +32,15 @@ export function CreateLessonForm({ suggestions, locale = 'en' }: { suggestions: 
       <div className="flex flex-wrap gap-1.5">
         {suggestions.map(s => <button key={s} type="button" className="chip" onClick={() => setText(s)}>{s}</button>)}
       </div>
-      <button type="submit" disabled={!text.trim()} className="btn-red w-full sm:w-auto">{d.createLesson}</button>
+      <div className="flex flex-wrap items-center gap-3">
+        <button type="submit" disabled={!text.trim() || !canCreate} className="btn-red w-full sm:w-auto">{d.createLesson}</button>
+        {allowance && (
+          <p className={`text-sm font-semibold ${allowance.left === 0 ? 'text-amber-ink' : 'text-stone'}`}>
+            {allowance.left > 0 ? d.freeLeft(allowance.left, allowance.of) : d.freeSpent}
+            {allowance.left === 0 && showUpgrade && <> <Link href="/pricing" className="text-red hover:underline">{d.upgrade}</Link></>}
+          </p>
+        )}
+      </div>
     </form>
   )
 }

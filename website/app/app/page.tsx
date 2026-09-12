@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { requireAuth } from '@/lib/auth/guards'
 import { createClient } from '@/lib/supabase/server'
 import { getProfile, getHomeStats, listLessons, lessonStates } from '@/lib/lessons/queries'
+import { getEntitlement } from '@/lib/billing/entitlement'
 import { pickSuggestions, greeting } from '@/lib/lessons/suggestions'
 import { t } from '@/lib/i18n'
 import { CreateLessonForm } from '@/components/app/CreateLessonForm'
@@ -17,9 +18,10 @@ export const maxDuration = 180
 export default async function HomePage() {
   const user = await requireAuth()
   const db = await createClient()
-  const { timezone, displayName, pair } = await getProfile(db, user.id)
+  const { timezone, displayName, pair, isAdmin } = await getProfile(db, user.id)
   const d = t(pair.uiLocale)
-  const [stats, lessons, states, all] = await Promise.all([
+  const [ent, stats, lessons, states, all] = await Promise.all([
+    getEntitlement(db, user.id, { pair: pair.id, timezone, isAdmin }),
     getHomeStats(db, user.id, timezone, pair.id),
     listLessons(db, user.id, pair.id, 5),
     lessonStates(db, user.id, pair.id),
@@ -57,7 +59,9 @@ export default async function HomePage() {
       </section>
 
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
-        <div className="-mt-10 sm:-mt-14"><CreateLessonForm suggestions={suggestions} locale={pair.uiLocale} /></div>
+        <div className="-mt-10 sm:-mt-14"><CreateLessonForm suggestions={suggestions} locale={pair.uiLocale}
+            allowance={ent.plan === 'free' ? { left: Math.max(0, ent.weeklyLimit - ent.lessonsThisWeek), of: ent.weeklyLimit } : null}
+            canCreate={ent.canCreate} showUpgrade={ent.monetised} /></div>
 
         <div className="mt-6 space-y-6">
           <StatTiles cols="grid-cols-3 sm:grid-cols-4" stats={[
