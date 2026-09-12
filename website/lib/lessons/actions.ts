@@ -11,7 +11,7 @@ import { recordActivity } from '@/lib/activity/actions'
 import { warmLessonAudio } from '@/lib/voice/tts'
 import type { Lesson } from '@/lib/ai/schema'
 import { getPair, type LanguagePair } from '@/lib/pairs'
-import { getEntitlement } from '@/lib/billing/entitlement'
+import { getEntitlement, getSettings } from '@/lib/billing/entitlement'
 import { t } from '@/lib/i18n'
 
 /** Every string in the language being learned, for speech pre-warming. */
@@ -43,8 +43,11 @@ async function generateAndSave(situation: string, parentLessonId: string | null,
 
   let lessonId: string
   try {
-    const lesson = await generateLesson({
-      pair, situation, adjustment, recentGrammar: (recent ?? []).map(r => r.grammar_topic as string),
+    const settings = await getSettings(db)
+    const { lesson } = await generateLesson({
+      pair, situation, adjustment,
+      recentGrammar: (recent ?? []).map(r => r.grammar_topic as string),
+      modelSpec: `${settings.aiProvider}/${settings.aiModel}`,
     })
     ;({ lessonId } = await saveLesson(db, user.id, { lesson, situation, source: 'ai', pair, parentLessonId }))
     await recordActivity(db, 'lesson_created', tz)

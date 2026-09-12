@@ -2,6 +2,7 @@
 import { generateObject } from 'ai'
 import { createOpenAI } from '@ai-sdk/openai'
 import { createAnthropic } from '@ai-sdk/anthropic'
+import { createOpenRouter } from '@openrouter/ai-sdk-provider'
 import { LessonSchema, type Lesson } from './schema'
 import { systemPrompt, userPrompt } from './prompt'
 import { normalizeTerm } from '@/lib/vocabulary/normalize'
@@ -11,22 +12,33 @@ export class LessonGenerationError extends Error {}
 
 const TIMEOUT_MS = 170_000 // pages hosting the action set maxDuration = 180
 
-/** AI_MODEL is "<provider>/<model>". Provider picks the key: anthropic → ANTHROPIC_API_KEY, openai → OPENAI_API_KEY. */
-function model() {
-  const spec = process.env.AI_MODEL ?? 'anthropic/claude-sonnet-5'
+export const DEFAULT_MODEL_SPEC = 'anthropic/claude-sonnet-5'
+
+/**
+ * A spec is "<provider>/<model>". The provider picks the key. For OpenRouter the
+ * model name itself contains a slash, so everything after the first segment is
+ * the model: openrouter/qwen/qwen-2.5-72b-instruct.
+ */
+export function resolveModel(spec: string) {
   const [provider, ...rest] = spec.split('/')
   const name = rest.join('/')
+  if (!name) throw new LessonGenerationError(`Malformed model "${spec}". Use provider/model.`)
   if (provider === 'anthropic') {
     const key = process.env.ANTHROPIC_API_KEY
-    if (!key) throw new LessonGenerationError('ANTHROPIC_API_KEY is not set. Add it to .env.local to generate lessons.')
+    if (!key) throw new LessonGenerationError('ANTHROPIC_API_KEY is not set.')
     return createAnthropic({ apiKey: key })(name)
   }
   if (provider === 'openai') {
     const key = process.env.OPENAI_API_KEY
-    if (!key) throw new LessonGenerationError('OPENAI_API_KEY is not set. Add it to .env.local to generate lessons.')
+    if (!key) throw new LessonGenerationError('OPENAI_API_KEY is not set.')
     return createOpenAI({ apiKey: key })(name)
   }
-  throw new LessonGenerationError(`Unknown AI_MODEL provider "${provider}". Use anthropic/… or openai/…`)
+  if (provider === 'openrouter') {
+    const key = process.env.OPENROUTER_API_KEY
+    if (!key) throw new LessonGenerationError('OPENROUTER_API_KEY is not set. Create one at openrouter.ai/keys.')
+    return createOpenRouter({ apiKey: key })(name)
+  }
+  throw new LessonGenerationError(`Unknown provider "${provider}". Use anthropic, openai or openrouter.`)
 }
 
 /** Dedupe vocabulary inside one lesson on the language being learned, and tidy edges. Pure. */
@@ -43,21 +55,35 @@ export function tidyLesson(lesson: Lesson, situation: string, pair: LanguagePair
   return { ...lesson, vocabulary, situation: lesson.situation || situation }
 }
 
+export interface GenerationResult {
+  lesson: Lesson
+  modelSpec: string
+  inputTokens: number
+  outputTokens: number
+  latencyMs: number
+}
+
 export async function generateLesson(opts: {
   pair: LanguagePair
   situation: string
   recentGrammar?: string[]
   adjustment?: string
-}): Promise<Lesson> {
+  /** Overrides the configured model. Used by the admin test harness. */
+  modelSpec?: string
+}): Promise<GenerationResult> {
   const situation = opts.situation.trim()
   if (!situation) throw new LessonGenerationError('Describe a situation first.')
   if (situation.length > 500) throw new LessonGenerationError('Keep the situation under 500 characters.')
 
-  const m = model()
+  const modelSpec = opts.modelSpec ?? process.env.AI_MODEL ?? DEFAULT_MODEL_SPEC
+  const m = resolveModel(modelSpec)
   let prompt = userPrompt(situation, opts.recentGrammar ?? [], opts.adjustment)
+  const started = Date.now()
+  let inputTokens = 0
+  let outputTokens = 0
 
   for (let attempt = 0; attempt < 2; attempt++) {
-    const { object } = await generateObject({
+    const { object, usage } = await generateObject({
       model: m,
       schema: LessonSchema,
       system: systemPrompt(opts.pair),
@@ -72,10 +98,14 @@ export async function generateLesson(opts: {
       }
       throw err
     })
+    inputTokens += usage?.inputTokens ?? 0
+    outputTokens += usage?.outputTokens ?? 0
     const parsed = LessonSchema.safeParse(object)
     if (parsed.success) {
       const tidy = tidyLesson(parsed.data, situation, opts.pair)
-      if (tidy.vocabulary.length >= 12) return tidy
+      if (tidy.vocabulary.length >= 12) {
+        return { lesson: tidy, modelSpec, inputTokens, outputTokens, latencyMs: Date.now() - started }
+      }
       prompt += `\n\nPrevious attempt had too few unique vocabulary items after deduplication. Provide at least 14 distinct items.`
       continue
     }
