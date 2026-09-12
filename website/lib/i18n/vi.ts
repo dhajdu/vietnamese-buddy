@@ -54,5 +54,6 @@ export const vi: Dictionary = {
   upgrade: 'Nâng cấp',
   unlimitedPlan: 'Không giới hạn',
   proPlan: 'Trả phí',
+  freePlan: 'Miễn phí',
   listen: 'Nghe',
 }

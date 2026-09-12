@@ -52,6 +52,7 @@ export const en = {
   upgrade: 'Upgrade',
   unlimitedPlan: 'Unlimited',
   proPlan: 'Pro',
+  freePlan: 'Free',
   listen: 'Listen',
 }
 export type Dictionary = typeof en
