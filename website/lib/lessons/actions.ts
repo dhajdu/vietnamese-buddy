@@ -11,7 +11,9 @@ import { recordActivity } from '@/lib/activity/actions'
 import { warmLessonAudio } from '@/lib/voice/tts'
 import type { Lesson } from '@/lib/ai/schema'
 
-const DAILY_LIMIT = 20
+// Worst-case guard, not the product's shape: one situation a day is the premise.
+// PR 3 moves this to app_settings so it is tunable without a deploy.
+const DAILY_LIMIT = 3
 
 function lessonTexts(l: Lesson) {
   return [...l.phrases.map(p => p.vietnamese), ...l.vocabulary.map(v => v.vietnamese), ...l.grammar.examples.map(e => e.vietnamese)]
@@ -59,13 +61,20 @@ export async function createLesson(_prev: { error?: string } | null, formData: F
   return generateAndSave(situation, null)
 }
 
-export async function regenerateLesson(lessonId: string, adjustment?: string) {
+/**
+ * Rewrites a lesson with the learner's note as a new row linked to the original.
+ * A note is required: a blind re-roll of the same situation was a full-price call
+ * that rarely produced a better lesson, so the Regenerate button is gone.
+ */
+export async function adjustLesson(lessonId: string, adjustment: string) {
+  const note = adjustment.trim()
+  if (!note) return { error: 'Say what you want changed.' }
   const { user, db } = await ctx()
-  const { data: original } = await db.from('lessons').select('situation, parent_lesson_id')
+  const { data: original, error } = await db.from('lessons').select('situation, parent_lesson_id')
     .eq('id', lessonId).eq('user_id', user.id).single()
-  if (!original) return { error: 'Lesson not found.' }
+  if (error || !original) return { error: 'Lesson not found.' }
   const parent = (original.parent_lesson_id as string | null) ?? lessonId
-  return generateAndSave(original.situation as string, parent, adjustment?.trim() || undefined)
+  return generateAndSave(original.situation as string, parent, note)
 }
 
 export async function completeLesson(lessonId: string) {

@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Freemium and Marketing Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@700;800&family=Playfair+Display:ital,wght@0,400;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap">
+<style>
+  :root{
+    --red:#AF0D0E; --red-deep:#8F0A0B; --red-bright:#C8191A;
+    --ink:#111111; --ink-warm:#1C1A17; --body:#3D3A37;
+    --cream:#FEF9EF; --cream-warm:#FFF5EA; --white:#FFFFFF;
+    --sand:#EEE6DC; --sand-deep:#E3D7C6; --stone:#9E9A93; --paper:#F4F3F3;
+    --sand-70:rgba(238,230,220,.70); --on-dark-line:rgba(255,255,255,.10); --on-dark-soft:rgba(255,255,255,.06);
+    --ok-bg:#D8F3E8; --ok-ink:#157A5A; --amber-bg:#FAEEDA; --amber-ink:#854F0B; --err-bg:#FDE4E4; --err-ink:#B0332F;
+    --elev:0 6px 24px rgba(28,26,23,.10);
+    --vn:"Be Vietnam Pro",system-ui,sans-serif;
+    --serif:"Playfair Display",Georgia,serif;
+    --ui:"Inter","Helvetica Neue",Arial,sans-serif;
+    --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--cream);color:var(--body);font-family:var(--ui);font-size:16px;line-height:1.62}
+  a{color:var(--red)}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+  .wrap{max-width:1160px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:56px}
+  @media (max-width:940px){.wrap{grid-template-columns:minmax(0,1fr);gap:0}}
+
+  header.mast{grid-column:1/-1;padding:64px 0 34px;border-bottom:1px solid var(--sand);margin-bottom:44px}
+  .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);font-weight:600;margin:0 0 14px}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(38px,5.4vw,60px);line-height:1.06;letter-spacing:-.01em;margin:0 0 16px;color:var(--ink);text-wrap:balance}
+  .lede{font-family:var(--serif);font-size:21px;color:var(--body);max-width:60ch;margin:0}
+  .facts{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:26px;font-size:13px;color:var(--stone)}
+  .facts b{color:var(--body);font-weight:500}
+
+  nav.toc{position:sticky;top:24px;align-self:start;font-size:13.5px}
+  @media (max-width:940px){nav.toc{position:static;margin-bottom:36px;padding-bottom:26px;border-bottom:1px solid var(--sand)}}
+  nav.toc ol{list-style:none;margin:0;padding:0;display:grid;gap:5px}
+  nav.toc a{color:var(--body);text-decoration:none;display:block;padding:4px 0 4px 13px;border-left:2px solid var(--sand)}
+  nav.toc a:hover{color:var(--ink);border-left-color:var(--red)}
+  nav.toc .n{color:var(--stone);display:inline-block;width:22px;font-variant-numeric:tabular-nums}
+
+  main{min-width:0;max-width:74ch}
+  section{margin:0 0 68px}
+  h2{font-family:var(--serif);font-weight:400;font-size:31px;line-height:1.16;margin:0 0 10px;color:var(--ink);text-wrap:balance}
+  h2 .n{color:var(--stone);font-family:var(--ui);font-size:15px;font-weight:600;margin-right:12px;vertical-align:3px}
+  h3{font-family:var(--ui);font-weight:600;font-size:17px;margin:34px 0 8px;color:var(--ink)}
+  h4{font-family:var(--ui);font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--stone);margin:26px 0 8px}
+  p{margin:0 0 15px}
+  .sub{font-family:var(--serif);font-size:18px;color:var(--body);margin-bottom:22px}
+  ul,ol{padding-left:21px;margin:0 0 15px}
+  li{margin:0 0 7px}
+  li::marker{color:var(--stone)}
+  strong{color:var(--ink);font-weight:600}
+  code{font-family:var(--mono);font-size:.84em;background:var(--paper);padding:1px 6px;border-radius:5px;color:var(--ink)}
+  .vn{font-family:var(--vn);font-weight:700;color:var(--ink)}
+
+  .tbl{overflow-x:auto;margin:0 0 20px;border:1px solid var(--sand);border-radius:12px;background:var(--white)}
+  table{border-collapse:collapse;width:100%;font-size:14.5px}
+  th,td{text-align:left;vertical-align:top;padding:11px 15px;border-bottom:1px solid var(--sand)}
+  th{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);font-weight:600;background:var(--cream-warm);white-space:nowrap}
+  tr:last-child td{border-bottom:0}
+  td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  th.num{text-align:right}
+  .loss{color:var(--err-ink);font-weight:600}
+  .good{color:var(--ok-ink);font-weight:600}
+  tr.total td{background:var(--cream-warm);font-weight:600;color:var(--ink)}
+
+  .callout{border-left:4px solid var(--red);background:var(--white);border-radius:0 12px 12px 0;padding:16px 20px;margin:0 0 22px;box-shadow:var(--elev)}
+  .callout .k{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--red);display:block;margin-bottom:7px}
+  .callout p:last-child{margin-bottom:0}
+  .room{background:var(--ink-warm);color:var(--sand-70);border-radius:12px;padding:20px 22px;margin:0 0 22px}
+  .room .k{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:600;color:var(--sand-70);display:block;margin-bottom:8px}
+  .room strong{color:var(--sand)}
+  .room p:last-child{margin-bottom:0}
+  .room code{background:var(--on-dark-soft);color:var(--sand)}
+
+  .pr{border:1px solid var(--sand);border-radius:12px;background:var(--white);padding:20px 22px;margin:0 0 14px}
+  .pr h3{margin:0 0 3px;display:flex;justify-content:space-between;gap:14px;align-items:baseline;font-size:18px}
+  .pr h3 .tag{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--red);white-space:nowrap}
+  .pr .days{display:inline-block;font-size:12px;font-weight:600;color:var(--amber-ink);background:var(--amber-bg);border-radius:40px;padding:3px 11px;margin-bottom:12px}
+  .pr .done{font-size:14px;color:var(--body);margin:12px 0 0;padding-top:12px;border-top:1px solid var(--sand);font-style:italic;font-family:var(--serif)}
+  .pr .done b{font-style:normal;font-family:var(--ui);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);font-weight:600;display:block;margin-bottom:3px}
+
+  .routes{display:grid;grid-template-columns:1fr auto 1fr;gap:0;align-items:center;font-size:14px;border:1px solid var(--sand);border-radius:12px;background:var(--white);overflow:hidden}
+  .routes>div{padding:10px 16px;border-bottom:1px solid var(--sand)}
+  .routes>div:nth-child(3n){border-right:0}
+  .routes .hd{background:var(--cream-warm);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);font-weight:600}
+  .routes .ar{color:var(--stone);padding:10px 14px;text-align:center}
+  .routes>div:nth-last-child(-n+3){border-bottom:0}
+  .routes code{background:none;padding:0}
+
+  .kw{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 18px}
+  .kw span{background:var(--cream-warm);border-radius:40px;padding:5px 13px;font-size:13px;font-weight:500}
+  .kw span.p{background:var(--ink-warm);color:var(--sand)}
+
+  .split{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:15px;border:1px solid var(--sand);border-radius:12px;padding:16px 18px;background:var(--white);margin-bottom:18px}
+  .split dt{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--stone);font-weight:600;white-space:nowrap;padding-top:3px}
+  .split dd{margin:0;color:var(--ink)}
+
+  .q{border:1px solid var(--sand);border-radius:12px;background:var(--white);padding:16px 20px;margin:0 0 12px}
+  .q .lbl{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);font-weight:600;display:block;margin-bottom:6px}
+  .q h3{margin:0 0 6px;font-size:17px}
+  .q p:last-child{margin-bottom:0}
+
+  footer{grid-column:1/-1;border-top:1px solid var(--sand);padding:24px 0 64px;font-size:13px;color:var(--stone)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="mast">
+  <p class="eyebrow">Build plan · Stripe account decided</p>
+  <h1>Freemium, marketing, and getting paid</h1>
+  <p class="lede">Turning a working app into a product that can be found, tried, and charged for. Six pull requests, eight days, and one number that has to be fixed before any of it ships.</p>
+  <div class="facts">
+    <span><b>Owner</b> Dave Hajdu</span>
+    <span><b>Date</b> 12 Sep 2026</span>
+    <span><b>Scope</b> 6 PRs · 7.5 days</span>
+    <span><b>Builds on</b> build-plan.md, DESIGN.md</span>
+  </div>
+</header>
+
+<nav class="toc" aria-label="Contents">
+  <ol>
+    <li><a href="#economics"><span class="n">1</span>The number</a></li>
+    <li><a href="#ground"><span class="n">2</span>Ground truth</a></li>
+    <li><a href="#routes"><span class="n">3</span>Route decision</a></li>
+    <li><a href="#data"><span class="n">4</span>Data model</a></li>
+    <li><a href="#prs"><span class="n">5</span>The six PRs</a></li>
+    <li><a href="#seo"><span class="n">6</span>Neil Patel lens</a></li>
+    <li><a href="#effort"><span class="n">7</span>Sequencing</a></li>
+    <li><a href="#risks"><span class="n">8</span>Risks</a></li>
+    <li><a href="#decisions"><span class="n">9</span>Your decisions</a></li>
+    <li><a href="#notnow"><span class="n">10</span>Not in this plan</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<section id="economics">
+  <h2><span class="n">1</span>The numbers</h2>
+  <p class="sub">Priced at $9.99 a month and $79 a year, decided on 12 September after looking at what the market charges.</p>
+
+  <div class="tbl"><table>
+    <thead><tr><th>What the market charges</th><th class="num">Monthly</th><th class="num">Annual, per month</th></tr></thead>
+    <tbody>
+      <tr><td>Duolingo Super</td><td class="num">$7.99</td><td class="num">$7.00</td></tr>
+      <tr><td>Praktika, AI tutor</td><td class="num">$10.00</td><td class="num">$10.00</td></tr>
+      <tr><td>Busuu Premium</td><td class="num">$12.49</td><td class="num">$6.08</td></tr>
+      <tr><td>Babbel</td><td class="num">$17.95</td><td class="num">varies</td></tr>
+      <tr><td>Speak, AI tutor</td><td class="num">$18.00</td><td class="num">$7.00</td></tr>
+      <tr><td>Pimsleur</td><td class="num">$19.95</td><td class="num">&mdash;</td></tr>
+      <tr class="total"><td>Vietnamese Buddy</td><td class="num">$9.99</td><td class="num">$6.58</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>A specialist tool prices with the specialists, not below the free-tier generalist. Nobody else teaches Southern Vietnamese by situation, so there is no substitute to be undercut by.</p>
+
+  <h3>Cost per lesson</h3>
+  <p>Measured against the live prompt and a real generated lesson: <strong>1,800 input tokens</strong> and about <strong>3,800 output</strong> including thinking.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Model</th><th class="num">Per lesson</th><th>Note</th></tr></thead>
+    <tbody>
+      <tr><td>Claude Opus 5</td><td class="num">$0.10</td><td>What runs today</td></tr>
+      <tr><td>Claude Sonnet 5</td><td class="num">$0.04</td><td>Same prompt, one setting away</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>Monthly at $9.99, netting $9.40 after Stripe</h4>
+  <div class="tbl"><table>
+    <thead><tr><th>Learner</th><th class="num">Lessons</th><th class="num">Opus cost</th><th class="num">Opus margin</th><th class="num">Sonnet cost</th><th class="num">Sonnet margin</th></tr></thead>
+    <tbody>
+      <tr><td>Light, 2 a week</td><td class="num">9</td><td class="num">$0.90</td><td class="num good">$8.50</td><td class="num">$0.36</td><td class="num good">$9.04</td></tr>
+      <tr><td>Daily, the intended pattern</td><td class="num">30</td><td class="num">$3.00</td><td class="num good">$6.40</td><td class="num">$1.20</td><td class="num good">$8.20</td></tr>
+      <tr><td>Heavy, 3 a day</td><td class="num">90</td><td class="num">$9.00</td><td class="num">$0.40</td><td class="num">$3.60</td><td class="num good">$5.80</td></tr>
+      <tr><td>At a 5 a day cap</td><td class="num">150</td><td class="num">$15.00</td><td class="num loss">&minus;$5.60</td><td class="num">$6.00</td><td class="num">$3.40</td></tr>
+      <tr class="total"><td>At today&rsquo;s 20 a day cap</td><td class="num">600</td><td class="num">$60.00</td><td class="num loss">&minus;$50.60</td><td class="num">$24.00</td><td class="num loss">&minus;$14.60</td></tr>
+    </tbody>
+  </table></div>
+
+  <h4>Annual at $79, netting $76.41, or $6.37 a month</h4>
+  <div class="tbl"><table>
+    <thead><tr><th>Learner</th><th class="num">Opus margin</th><th class="num">Sonnet margin</th></tr></thead>
+    <tbody>
+      <tr><td>Daily, 30 a month</td><td class="num good">$3.37</td><td class="num good">$5.17</td></tr>
+      <tr><td>At a 3 a day cap, 90 a month</td><td class="num loss">&minus;$2.63</td><td class="num">$2.77</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>Break-even sits at <strong>94 lessons a month on Opus</strong> and 235 on Sonnet for the monthly plan; 64 and 159 for annual.</p>
+
+  <div class="callout">
+    <span class="k">Three consequences</span>
+    <p><strong>1. Set the paid daily cap to three</strong>, not five and certainly not twenty. One situation a day is the premise of the product, so three is already triple the intended use, and it is the only cap that stays solvent on Opus. Configurable in admin either way.</p>
+    <p><strong>2. Move generation to Claude Sonnet 5</strong> unless a quality test says otherwise. At $9.99 you no longer need it to be profitable at normal use, but it is the difference between an annual heavy user costing you $2.63 and earning you $2.77. The admin test harness makes this measured rather than a guess.</p>
+    <p><strong>3. Free tier stays at three lessons a week</strong>, costing $1.30 a month on Opus and 52 cents on Sonnet, against no revenue.</p>
+  </div>
+
+  <p>Voice is not in these numbers yet. FPT bills per character, a lesson runs to about 1,200 Vietnamese characters, and it is synthesised once and cached forever, so it is a one-time cost per lesson. Confirm the rate once the service is activated and fold it in. Adjust is a full-price second generation, which is why it becomes pro-only and counts against the daily cap.</p>
+</section>
+
+<section id="ground">
+  <h2><span class="n">2</span>Ground truth</h2>
+  <p class="sub">Verified 12 September 2026 against <code>main</code>.</p>
+  <ul>
+    <li>The app lives at <code>/</code>, <code>/lessons</code>, <code>/flashcards</code>, <code>/vocabulary</code>, <code>/progress</code>. <strong>Every route sits behind auth</strong> via <code>proxy.ts</code>. There is no public page except login and signup.</li>
+    <li><code>profiles</code> holds id, display name, timezone, created date. No email, no role, no plan.</li>
+    <li><code>createLesson</code> enforces a hard-coded <code>DAILY_LIMIT</code> of 20 against AI lessons in the last 24 hours.</li>
+    <li>Voice spans five files, a storage bucket, and a pre-warm hook. <strong>Re-tested 12 September: FPT.AI still returns 403</strong> because the service was never activated, so every play falls back to browser speech. The code is fine; the account needs switching on.</li>
+    <li>&ldquo;Vietnamese Daily&rdquo; appears in 13 files: the wordmark, SEO metadata, three auth pages, and the docs.</li>
+    <li>Stripe is not installed. Scaffold leftovers (<code>app/chat</code>, <code>api/sessions</code>, <code>api/notifications</code>, <code>api/upload</code>) are unused and untouched here.</li>
+  </ul>
+</section>
+
+<section id="routes">
+  <h2><span class="n">3</span>The one architectural decision</h2>
+  <p class="sub">Marketing moves to the root; the app moves under <code>/app</code>.</p>
+
+  <div class="routes">
+    <div class="hd">Today</div><div class="hd ar"></div><div class="hd">After</div>
+    <div><em>nothing public</em></div><div class="ar">→</div><div><code>/</code> and <code>/pricing</code>, public and static</div>
+    <div><code>/</code></div><div class="ar">→</div><div><code>/app</code></div>
+    <div><code>/lessons</code>, <code>/flashcards</code>, <code>/vocabulary</code>, <code>/progress</code></div><div class="ar">→</div><div><code>/app/lessons</code> and the rest</div>
+    <div><em>none</em></div><div class="ar">→</div><div><code>/admin</code>, gated</div>
+    <div>Auth gate on everything</div><div class="ar">→</div><div>Gate on <code>/app/*</code> and <code>/admin/*</code> only</div>
+  </div>
+
+  <p style="margin-top:20px">Why not keep the app at the root and swap by auth state: the root page is the one Google indexes and the one a paid ad lands on. It should be static, fast, and identical for everybody. Swapping content by cookie makes it dynamic, uncacheable, and awkward to test variants against later.</p>
+  <p>A signed-in visitor who lands on <code>/</code> sees the marketing page with <strong>Continue learning →</strong> in place of <strong>Start free</strong>, rather than being bounced. That is one conditional in the header.</p>
+  <p>The cost is mechanical: roughly 25 internal links and redirects move under <code>/app</code>, plus the auth callback default and the proxy matcher.</p>
+</section>
+
+<section id="data">
+  <h2><span class="n">4</span>Data model additions</h2>
+  <p class="sub">One migration. Three new tables, three new columns.</p>
+
+  <h3>profiles gains</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Column</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>email</code></td><td>Backfilled and set by the signup trigger, so admin can list and search without reaching into <code>auth.users</code></td></tr>
+      <tr><td><code>is_admin</code></td><td>Boolean, default false. Set by hand in SQL for the first admin</td></tr>
+      <tr><td><code>stripe_customer_id</code></td><td>Unique, set on first checkout</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>app_settings</h3>
+  <p>A single row, pinned by a check constraint: the two limits, the active Stripe Price ids for monthly and annual, and the AI provider and model. Readable by any signed-in user, writable only by admins.</p>
+  <p>Prices live here rather than in environment variables because a Stripe Price is immutable: changing what you charge means creating a new Price and pointing at it. Holding the id in settings makes that a dropdown instead of a deploy, and existing subscribers stay on the Price they signed up to, which is both correct and free grandfathering.</p>
+  <h3>model_tests</h3>
+  <p>One row per admin model test: provider, model, situation, pass or fail, latency, token counts, the lesson itself, and any error. This is what turns &ldquo;try a cheaper model&rdquo; into a decision you can look at rather than a hunch you act on.</p>
+
+  <h3>subscriptions</h3>
+  <p>One row per user: Stripe subscription and price ids, status, plan, period end, cancel flag, and a <code>comped</code> boolean so you can grant access without Stripe. A user reads their own row; only the service role writes.</p>
+
+  <h3>stripe_events</h3>
+  <p>Event id, type, received time. Webhook idempotency: insert first, skip on conflict.</p>
+
+  <div class="room">
+    <span class="k">Entitlement is derived, never stored</span>
+    <p>A user is <strong>pro</strong> when their subscription row is active or trialing, or when <code>comped</code> is true. Otherwise <strong>free</strong>. No cached flag to drift out of sync with Stripe.</p>
+  </div>
+</section>
+
+<section id="prs">
+  <h2><span class="n">5</span>The six pull requests</h2>
+  <p class="sub">In order. Each one independently shippable.</p>
+
+  <div class="pr">
+    <h3>Rename, fix the voice, drop Regenerate <span class="tag">PR 1</span></h3>
+    <span class="days">half a day, plus the FPT console</span>
+    <p><strong>Rename</strong> the wordmark, SEO metadata, social image, three auth pages, and the two readme files. The Đ mark and the entire colour system stay. Historical plan docs keep the old name, because they record what was true then.</p>
+    <p><strong>Voice stays, and needs to start working.</strong> Re-tested on 12 September: FPT.AI still answers <code>403 You cannot consume this service</code>, so every play in production is quietly falling back to the browser&rsquo;s Northern-sounding voice. The code is correct; the account is not provisioned. Two steps, neither of them code: activate Text-to-Speech on the FPT console for this key, and confirm the per-character price so it can join the numbers in section one. A lesson is roughly 1,200 Vietnamese characters, synthesised <strong>once</strong> and cached in the bucket forever, so it is a one-time cost per lesson rather than per play. The fallback keeps the feature usable meanwhile, so this blocks nothing else.</p>
+    <p><strong>Remove Regenerate.</strong> The button leaves the lesson header. The server action stays but is renamed to <code>adjustLesson</code> and now demands a non-empty note, because a blind re-roll of the same situation was a full-price call that rarely produced a better lesson. Three actions remain: Review cards, Mark complete, Adjust.</p>
+    <p>Also here, because they are one-line changes with real money attached: point <code>AI_MODEL</code> at Sonnet 5 and make the daily cap read from settings.</p>
+    <p class="done"><b>Done when</b> the app says Vietnamese Buddy everywhere a user can see, Regenerate is gone, a generated lesson still validates, and either a real FPT recording plays or the fallback is confirmed with the activation still outstanding.</p>
+  </div>
+
+  <div class="pr">
+    <h3>Route split <span class="tag">PR 2</span></h3>
+    <span class="days">half a day</span>
+    <p>Move the app group under <code>/app</code>. Update every link, redirect and revalidate path. Invert the proxy so public is the default and only <code>/app</code> and <code>/admin</code> are gated. Point the auth callback at <code>/app</code>. Add placeholder pages at <code>/</code> and <code>/pricing</code> so the routing is provable before the copy exists.</p>
+    <p class="done"><b>Done when</b> signed out, the root returns 200 and <code>/app</code> redirects to login; signed in, <code>/app</code> renders Today and the root shows Continue learning.</p>
+  </div>
+
+  <div class="pr">
+    <h3>Freemium gate <span class="tag">PR 3</span></h3>
+    <span class="days">one day</span>
+    <p>Migration for settings and subscriptions. A single <code>getEntitlement()</code> helper returns the plan, the week&rsquo;s usage, both limits, and whether the next lesson is allowed. The week starts Monday in the learner&rsquo;s own timezone, reusing the existing local-date helper.</p>
+    <p><code>createLesson</code> calls it first and returns an upgrade prompt instead of a generic error. Home shows &ldquo;2 of 3 free lessons left this week&rdquo; under the input, and an upsell card once the week is spent.</p>
+    <p><strong>Adjust becomes pro-only.</strong> On a free account the button carries a lock and opens the upgrade sheet instead of the note field. On a pro account it spends one lesson from the daily cap, because it is a full-price generation. The action re-checks entitlement on the server; the locked button is a courtesy, the guard is the rule.</p>
+    <p><strong>Adjust gets a progress bar.</strong> Today it shows one line of text while a forty-five second call runs, which reads as a hang. Pull the progress card already used by the create form into a shared component &mdash; echoed input, animated bar, rotating status lines &mdash; and use it in both places. Adjust names what is happening: rewriting the phrases with your note, keeping the grammar pattern, checking it still sounds Southern.</p>
+    <p class="done"><b>Done when</b> a free account gets exactly the configured number each week and a clear upgrade path on the next attempt, Adjust is locked on free and works on pro, the same progress card appears for create and adjust, a comped account is unlimited to the daily cap, and changing the setting in the database changes behaviour with no deploy.</p>
+  </div>
+
+  <div class="pr">
+    <h3>Admin <span class="tag">PR 4</span></h3>
+    <span class="days">two days</span>
+    <p>A <code>requireAdmin()</code> guard as the first statement of every admin page and action, matching the rule the Edge8 codebase already enforces. Three screens: a table of every signup with email, join date, plan, lessons, words, streak and last active; a per-learner detail page with comp and un-comp buttons and a link to their Stripe customer; and a settings page in four parts.</p>
+    <p><strong>Limits</strong>: free lessons a week, paid lessons a day. <strong>Pricing</strong>: two dropdowns listing the live Prices pulled from the Talent Edge Stripe account, so you pick rather than paste an id; a note says changes affect new checkouts only. <strong>Discount codes</strong>: a read-only list of active promotion codes with percentage, redemptions and expiry. Codes are created in the Stripe dashboard, which already does the whole job.</p>
+    <p><strong>Model</strong>, and this is the part worth care. A free-text model field is a foot-gun, because generation depends on structured output and plenty of models cannot do it reliably. So it is a dropdown of known-good options with a custom string behind an advanced toggle and a warning. Three providers: Anthropic, OpenAI, and <strong>OpenRouter</strong>, which opens the door to open-weight models. The OpenRouter provider matches the installed AI SDK and Zod versions, so it is one dependency and a third branch in the generator.</p>
+    <p><strong>Test model</strong> is the important half. It runs one golden situation through the selected provider without touching a learner&rsquo;s data, then shows the rendered lesson, whether it passed the schema, latency, token counts and the cost per lesson, and records the run. Two models can be compared on the same situation. Nothing changes what learners get until you explicitly save. Expect most open-weight models to fail on one of two axes, structured output or Southern Vietnamese with correct diacritics; the harness tells you which, in about a minute.</p>
+    <p>The first admin is set by hand in SQL. Security notes for review: the service-role client never enters a client component, every action re-checks the guard rather than trusting the page, and admin routes carry <code>noindex</code>.</p>
+    <p class="done"><b>Done when</b> signed in as Dave the list shows every signup with live numbers, and a non-admin gets a 404 rather than a redirect that confirms the route exists.</p>
+  </div>
+
+  <div class="pr">
+    <h3>Stripe <span class="tag">PR 5</span></h3>
+    <span class="days">two days</span>
+    <p>The lazy-client pattern lifted from <code>edge8-web</code>: live key in production, test key everywhere else. Two products in the <strong>Talent Edge</strong> account, <strong>$9.99 a month</strong> and <strong>$79 a year</strong>, a 34 percent saving. Their Price ids live in settings, not environment variables, so admin can switch them later.</p>
+    <p>Three routes: checkout creates or reuses the Stripe customer, reads the active Price from settings, turns on promotion codes so your discounts work, and returns a session URL; the webhook verifies the signature against the raw body and is idempotent through the events table; the portal route hands cancellation and card updates to Stripe so we build no billing UI of our own. Four events matter: checkout completed, subscription updated, subscription deleted, payment failed.</p>
+    <p>Test mode first, end to end, with the Stripe CLI forwarding to localhost. Live keys only after a test subscription has been created, cancelled, and correctly reflected.</p>
+    <p class="done"><b>Done when</b> a test card moves a free account to pro within seconds, a promotion code visibly reduces the total at checkout, cancelling in the portal sets the cancel flag, and entitlement follows in both directions.</p>
+  </div>
+
+  <div class="pr">
+    <h3>Marketing site <span class="tag">PR 6</span></h3>
+    <span class="days">two days</span>
+    <p>One page at the root plus a pricing page, on the existing ĀRCA tokens. Eight sections: hero with the free CTA; the problem shown as textbook Vietnamese beside what Saigon actually says; three steps with the real interface; <strong>a real lesson rendered from an actual seed file</strong>, not a mock-up; what accumulates over thirty days; pricing read live from settings so the page can never drift from what Stripe charges; five FAQ questions marked up as schema; and a closing call to action.</p>
+    <p>Plus the plumbing: <code>noindex</code> on the app and admin, a sitemap covering only public routes, and JSON-LD for the application and the FAQ.</p>
+    <p class="done"><b>Done when</b> Lighthouse SEO scores 100, the page holds at 375 pixels, and the CTA reaches signup in one click.</p>
+  </div>
+</section>
+
+<section id="seo">
+  <h2><span class="n">6</span>The Neil Patel lens, applied</h2>
+  <p class="sub">Taken from the Edge8 brand profile and applied to this page rather than described.</p>
+
+  <h3>Keyword realism</h3>
+  <p>&ldquo;Vietnamese Buddy&rdquo; is a brand term. It belongs in the H1 and the schema, not the title tag. What a person actually types:</p>
+  <div class="kw">
+    <span class="p">learn conversational Vietnamese</span>
+    <span>Southern Vietnamese lessons</span>
+    <span>how to speak Vietnamese in Ho Chi Minh City</span>
+    <span>Vietnamese phrases for daily life</span>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th>Keyword</th><th>Why it is winnable</th></tr></thead>
+    <tbody>
+      <tr><td>learn conversational Vietnamese <em>(primary)</em></td><td>Intent matches the product. The head term is owned by Duolingo and Pimsleur</td></tr>
+      <tr><td>Southern Vietnamese lessons</td><td>Long tail with almost no dedicated competition, and exactly what this is</td></tr>
+      <tr><td>how to speak Vietnamese in Ho Chi Minh City</td><td>Question format wins AI Overviews, and matches expats who convert</td></tr>
+      <tr><td>Vietnamese phrases for daily life</td><td>Fits the situation-based structure of every lesson</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Title tag against H1</h3>
+  <p>Split them, because the H1 carries no searchable keyword.</p>
+  <dl class="split">
+    <dt>Title tag</dt><dd>Learn Conversational Southern Vietnamese — Daily Situation-Based Lessons</dd>
+    <dt>H1</dt><dd>Learn the Vietnamese people actually speak in Saigon</dd>
+    <dt>Meta</dt><dd>Learn conversational Southern Vietnamese through daily lessons built around your real situations: ordering, dating, work, Grab rides. Three free lessons a week. No textbook Vietnamese.</dd>
+  </dl>
+
+  <h3>The rest of the lens</h3>
+  <ul>
+    <li><strong>Intent to CTA.</strong> Every keyword above belongs to somebody who would start a free trial today, not to a browser researching languages in general.</li>
+    <li><strong>Links.</strong> Five internal minimum: pricing, sample lesson, FAQ, signup, how it works. Descriptive anchors, never &ldquo;click here&rdquo;.</li>
+    <li><strong>Entity definitions.</strong> One clean sentence each for Southern Vietnamese, situation-based learning, and spaced review, so a language model can quote the page.</li>
+  </ul>
+
+  <h4>The five FAQ questions, marked up as schema</h4>
+  <ol>
+    <li>How is Southern Vietnamese different from Northern Vietnamese?</li>
+    <li>Can I learn Vietnamese without studying grammar first?</li>
+    <li>How much Vietnamese do I need to live in Ho Chi Minh City?</li>
+    <li>Is Vietnamese Buddy free?</li>
+    <li>What makes situation-based lessons better than a fixed curriculum?</li>
+  </ol>
+</section>
+
+<section id="effort">
+  <h2><span class="n">7</span>Sequencing and effort</h2>
+  <div class="tbl"><table>
+    <thead><tr><th class="num">PR</th><th>Work</th><th class="num">Days</th></tr></thead>
+    <tbody>
+      <tr><td class="num">1</td><td>Voice removal, rename, model and cap change</td><td class="num">0.5</td></tr>
+      <tr><td class="num">2</td><td>Route split</td><td class="num">0.5</td></tr>
+      <tr><td class="num">3</td><td>Freemium gate</td><td class="num">1</td></tr>
+      <tr><td class="num">4</td><td>Admin, with pricing, discounts and the model test</td><td class="num">2</td></tr>
+      <tr><td class="num">5</td><td>Stripe</td><td class="num">2</td></tr>
+      <tr><td class="num">6</td><td>Marketing site</td><td class="num">2</td></tr>
+      <tr class="total"><td class="num"></td><td>Total</td><td class="num">8</td></tr>
+    </tbody>
+  </table></div>
+  <p>The first two are safe to ship immediately. The freemium gate can ship before Stripe exists: the gate simply has nobody who can pay yet, which is the correct behaviour for a waitlist. The marketing site shares no files with the admin or Stripe work, so it can be written alongside them.</p>
+</section>
+
+<section id="risks">
+  <h2><span class="n">8</span>Risks</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Risk</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr><td>Sonnet 5 lessons are noticeably worse than Opus 5</td><td>Run ten golden situations through both before switching and have a native speaker mark each phrase. Reverting is one environment variable.</td></tr>
+      <tr><td>Live Stripe keys leak</td><td>Keys live only in <code>.env.local</code> and Vercel; the example file carries names and placeholders. Test mode until a full cycle passes.</td></tr>
+      <tr><td>Admin exposes other learners&rsquo; data</td><td>Guard as the first statement everywhere, service-role client server-only, <code>noindex</code>, 404 for non-admins. Reviewed as its own PR.</td></tr>
+      <tr><td>The route split 404s a signed-in user</td><td>Grep every link and redirect, then walk all five screens signed in before merge.</td></tr>
+      <tr><td>Free tier farmed with throw-away emails</td><td>Accept for now. If it happens, email confirmation is already on and signups can be rate-limited by IP.</td></tr>
+      <tr><td>The marketing page ranks for nothing for months</td><td>Expected. SEO is the slow lane. The page&rsquo;s first job is converting paid and referral traffic.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="decisions">
+  <h2><span class="n">9</span>Decisions</h2>
+
+  <div class="q" style="border-left:4px solid var(--ok-ink)">
+    <span class="lbl" style="color:var(--ok-ink)">Decided · 12 Sep</span>
+    <h3>Talent Edge LLC collects the money</h3>
+    <p>Use the <strong>Talent Edge</strong> block from the Edge8 environment file, the one beginning <code>51RPj3</code>, which already carries a test secret and both webhook secrets. Not the AI Officer Institute block that follows it under the same variable names. Both products get created in the Talent Edge dashboard.</p>
+  </div>
+
+  <div class="q">
+    <span class="lbl">Starting point</span>
+    <h3>How many free lessons a week?</h3>
+    <p>The plan assumes three. It is configurable from day one, so this is a starting position rather than a commitment.</p>
+  </div>
+
+  <div class="q" style="border-left:4px solid var(--ok-ink)">
+    <span class="lbl" style="color:var(--ok-ink)">Decided · 12 Sep</span>
+    <h3>$9.99 a month, $79 a year</h3>
+    <p>A 34 percent annual saving, sitting level with Praktika and below Babbel, Speak and Pimsleur. Discounts run as Stripe promotion codes, created in the dashboard and accepted at checkout. Both prices are switchable from admin without a deploy.</p>
+  </div>
+
+  <div class="q">
+    <span class="lbl">Not planned</span>
+    <h3>Do you want a trial?</h3>
+    <p>A seven-day full-access trial converts better than a permanent free tier, but it costs about 28 cents per signup on Sonnet and needs a card up front. Not in this plan; worth a decision.</p>
+  </div>
+</section>
+
+<section id="notnow">
+  <h2><span class="n">10</span>Not in this plan</h2>
+  <p>Named so they do not creep in: teams and gifting, coupons and promo codes, proration UI, dunning beyond what Stripe sends, referral mechanics, the multi-language work from the earlier conversation, and the scaffold leftovers, which deserve their own small cleanup pull request.</p>
+</section>
+
+</main>
+
+<footer>Vietnamese Buddy · docs/plans/2026-09-12-freemium-and-marketing.html · Markdown twin alongside it</footer>
+</div>
+</body>
+</html>

@@ -12,7 +12,7 @@ const TIMEOUT_MS = 170_000 // pages hosting the action set maxDuration = 180
 
 /** AI_MODEL is "<provider>/<model>". Provider picks the key: anthropic → ANTHROPIC_API_KEY, openai → OPENAI_API_KEY. */
 function model() {
-  const spec = process.env.AI_MODEL ?? 'anthropic/claude-opus-5'
+  const spec = process.env.AI_MODEL ?? 'anthropic/claude-sonnet-5'
   const [provider, ...rest] = spec.split('/')
   const name = rest.join('/')
   if (provider === 'anthropic') {
