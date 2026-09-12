@@ -5,7 +5,7 @@ import { SignupForm } from '@/components/auth/SignupForm'
 
 export default async function SignupPage() {
   const user = await getOptionalUser()
-  if (user) redirect('/')
+  if (user) redirect('/app')
 
   return (
     <div className="flex min-h-screen items-center justify-center px-6">

@@ -9,7 +9,7 @@ export async function setVocabularyStatus(id: string, status: 'new' | 'learning'
   const db = await createClient()
   const { error } = await db.from('vocabulary').update({ status }).eq('id', id).eq('user_id', user.id)
   if (error) return { error: error.message }
-  revalidatePath('/vocabulary')
-  revalidatePath('/')
+  revalidatePath('/app/vocabulary')
+  revalidatePath('/app')
   return { ok: true }
 }

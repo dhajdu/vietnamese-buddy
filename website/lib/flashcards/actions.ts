@@ -34,6 +34,6 @@ export async function reviewCard(cardId: string, result: ReviewResult) {
 
   const { data: profile } = await db.from('profiles').select('timezone').eq('id', user.id).single()
   await recordActivity(db, 'card_reviewed', profile?.timezone as string | undefined)
-  revalidatePath('/')
+  revalidatePath('/app')
   return { ok: true }
 }

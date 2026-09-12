@@ -24,7 +24,7 @@ export function LessonActions({ lessonId, completed, cardCount, locale = 'en' }:
     <div className="space-y-3">
       {error && <p role="alert" className="rounded-card bg-err-bg px-3 py-2 text-sm text-err-ink">{error}</p>}
       <div className="flex flex-wrap gap-2">
-        <Link href={`/flashcards?lesson=${lessonId}`} className="btn-red-dark">{d.reviewCards(cardCount)}</Link>
+        <Link href={`/app/flashcards?lesson=${lessonId}`} className="btn-red-dark">{d.reviewCards(cardCount)}</Link>
         <button type="button" disabled={done || pending} className="btn-ghost-dark"
           onClick={() => run(async () => { const r = await completeLesson(lessonId); if (r && 'ok' in r) setDone(true); return r })}>
           {done ? d.completed : d.markComplete}

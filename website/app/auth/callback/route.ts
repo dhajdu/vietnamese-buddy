@@ -7,7 +7,7 @@ export async function GET(request: Request) {
   // In Next.js 16, URL searchParams on a Request are synchronous —
   // only page/layout searchParams props are async. Direct URL parsing is fine.
   const code = url.searchParams.get('code')
-  const next = url.searchParams.get('next') ?? '/'
+  const next = url.searchParams.get('next') ?? '/app'
   const origin = url.origin
 
   const tokenHash = url.searchParams.get('token_hash')

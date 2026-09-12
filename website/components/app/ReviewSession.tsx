@@ -48,14 +48,14 @@ export function ReviewSession({ cards, backHref, title, streakBefore, pair = DEF
           <p className="streak-pulse font-target text-6xl font-extrabold tracking-[-0.04em] text-sand">🔥 {streakBefore + 1 > streakBefore ? Math.max(streakBefore, 1) : streakBefore}</p>
           <p className="tabular gloss text-sand-70">{tally.known} {d.known} · {tally.again} {d.toReviewAgain}</p>
           <div className="flex justify-center gap-2">
-            <Link href="/flashcards" className="btn-ghost-dark">{d.otherDecks}</Link>
+            <Link href="/app/flashcards" className="btn-ghost-dark">{d.otherDecks}</Link>
             <Link href={backHref} className="btn-red-dark">{d.back}</Link>
           </div>
         </div>
       ) : (
         <>
           <div className="flex items-center justify-between text-xs font-semibold text-sand-70">
-            <Link href="/flashcards" className="hover:text-sand">{d.endSession}</Link>
+            <Link href="/app/flashcards" className="hover:text-sand">{d.endSession}</Link>
             <span className="tabular">{title} · {i + 1} / {cards.length}</span>
           </div>
           <div className="h-1.5 overflow-hidden rounded bg-on-dark-line"><div className="h-full rounded bg-red-bright transition-all" style={{ width: `${(i / cards.length) * 100}%` }} /></div>

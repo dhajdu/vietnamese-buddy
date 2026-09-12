@@ -53,8 +53,8 @@ async function generateAndSave(situation: string, parentLessonId: string | null,
     console.error('createLesson failed', err)
     return { error: 'Something went wrong saving the lesson. Try again.' }
   }
-  revalidatePath('/')
-  revalidatePath('/lessons')
+  revalidatePath('/app')
+  revalidatePath('/app/lessons')
   redirect(`/lessons/${lessonId}`)
 }
 
@@ -86,8 +86,8 @@ export async function completeLesson(lessonId: string) {
     .eq('id', lessonId).eq('user_id', user.id).is('completed_at', null)
   if (error) return { error: error.message }
   await recordActivity(db, 'lesson_completed', tz)
-  revalidatePath(`/lessons/${lessonId}`)
-  revalidatePath('/progress')
+  revalidatePath(`/app/lessons/${lessonId}`)
+  revalidatePath('/app/progress')
   return { ok: true }
 }
 
@@ -103,7 +103,7 @@ export async function loadSampleLessons() {
     await saveLesson(db, user.id, { lesson, situation: lesson.situation, source: 'seed', pair })
   }
   after(() => warmLessonAudio(seeds.flatMap(l => lessonTexts(l, pair)), pair.id))
-  revalidatePath('/')
-  revalidatePath('/lessons')
+  revalidatePath('/app')
+  revalidatePath('/app/lessons')
   return { ok: true }
 }
