@@ -10,7 +10,7 @@ Set via `vercel env add` (CLI, team `dave-hajdus-projects`, project `vietnamese-
 | ANTHROPIC_API_KEY | set (server-only) | same |
 | AI_MODEL | anthropic/claude-opus-5 | same |
 | DEFAULT_TIMEZONE | Asia/Ho_Chi_Minh | same |
-| NEXT_PUBLIC_SITE_URL | https://vietnamese-buddy.com | https://vietnamese-buddy.vercel.app |
+| NEXT_PUBLIC_SITE_URL | https://www.vietnamese-buddy.com | https://vietnamese-buddy.vercel.app |
 
 Also set via the Vercel REST API: project **Root Directory = `website`**.
 
@@ -54,3 +54,16 @@ $9.99 and $79 rather than failing, but the live figures are better.
 Nothing is on sale: `plans.monetised` is false for both directions, so checkout
 refuses. Turn it on in `/admin/settings` after a checkout has been verified with
 test keys.
+
+
+## 2026-09-12 — canonical URL moved to www
+
+Production `NEXT_PUBLIC_SITE_URL` changed from `https://vietnamese-buddy.com` to
+`https://www.vietnamese-buddy.com`.
+
+Vercel serves the site from `www` and 308s the apex to it, so every canonical
+tag, Open Graph URL, sitemap entry and auth redirect was pointing at a URL that
+redirects. Harmless for a human, wasteful for a crawler, and a canonical that
+redirects is a weak canonical.
+
+The Supabase redirect allow-list already carries both hosts, so no change there.
