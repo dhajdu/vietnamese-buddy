@@ -1,19 +1,34 @@
-// app/(marketing)/page.tsx — English landing. Full copy lands in the marketing PR.
-import Link from 'next/link'
+// app/(marketing)/page.tsx — the English landing page.
+import type { Metadata } from 'next'
+import { getOptionalUser } from '@/lib/auth/guards'
+import { BASE_URL, SITE_NAME } from '@/lib/seo/metadata'
+import { EN } from '@/lib/marketing/content'
+import { loadSample } from '@/lib/marketing/sample'
+import { Hero, Contrast, Steps, Sample, Accumulate, Faq, Closing, LandingJsonLd } from '@/components/marketing/Sections'
 
-export default function LandingPage() {
+export const metadata: Metadata = {
+  // The title tag is keyword-led; the brand name lives in the H1 and the schema.
+  title: { absolute: EN.titleTag },
+  description: EN.metaDescription,
+  keywords: EN.keywords,
+  alternates: { canonical: BASE_URL, languages: { 'en-US': BASE_URL, 'vi-VN': `${BASE_URL}/vi` } },
+  openGraph: { title: SITE_NAME, description: EN.lede, url: BASE_URL, type: 'website' },
+}
+
+export default async function LandingPage() {
+  const user = await getOptionalUser()
+  const lesson = loadSample(EN.sampleFile)
+  const signedIn = Boolean(user)
   return (
-    <section className="mx-auto max-w-3xl px-6 py-24">
-      <p className="eyebrow">Southern Vietnamese, daily</p>
-      <h1 className="t-title text-4xl sm:text-5xl">Learn the Vietnamese people actually speak in Saigon</h1>
-      <p className="gloss mt-4 max-w-[60ch] text-xl">
-        Tell it what you expect to talk about today and get a lesson in real spoken Southern Vietnamese:
-        phrases with their social flavour, reusable vocabulary, one grammar pattern, and flashcards that build a streak.
-      </p>
-      <div className="mt-8 flex flex-wrap gap-3">
-        <Link href="/signup" className="btn-red">Start free</Link>
-        <Link href="/pricing" className="btn-quiet">See pricing</Link>
-      </div>
-    </section>
+    <>
+      <LandingJsonLd c={EN} base={BASE_URL} />
+      <Hero c={EN} signedIn={signedIn} />
+      <Contrast c={EN} />
+      <Steps c={EN} />
+      <Sample c={EN} lesson={lesson} />
+      <Accumulate c={EN} />
+      <Faq c={EN} />
+      <Closing c={EN} signedIn={signedIn} />
+    </>
   )
 }
