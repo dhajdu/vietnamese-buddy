@@ -2,40 +2,46 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Lesson } from '@/lib/ai/schema'
 import { computeStreak, localDate } from '@/lib/activity/streak'
+import { getPair, type PairId } from '@/lib/pairs'
 
 export interface LessonRow {
-  id: string; situation: string; title: string; grammar_topic: string
+  id: string; situation: string; title: string; grammar_topic: string; pair: PairId
   lesson_json: Lesson; parent_lesson_id: string | null; source: 'ai' | 'seed'
   completed_at: string | null; created_at: string
 }
 
 export async function getProfile(db: SupabaseClient, userId: string) {
-  const { data } = await db.from('profiles').select('timezone, display_name').eq('id', userId).single()
-  return { timezone: (data?.timezone as string) ?? 'Asia/Ho_Chi_Minh', displayName: data?.display_name as string | null }
+  const { data } = await db.from('profiles').select('timezone, display_name, pair, is_admin').eq('id', userId).single()
+  return {
+    timezone: (data?.timezone as string) ?? 'Asia/Ho_Chi_Minh',
+    displayName: (data?.display_name as string | null) ?? null,
+    pair: getPair(data?.pair),
+    isAdmin: Boolean(data?.is_admin),
+  }
 }
 
-export async function getHomeStats(db: SupabaseClient, userId: string, tz: string) {
+export async function getHomeStats(db: SupabaseClient, userId: string, tz: string, pair: PairId) {
   const today = localDate(tz)
   const [act, vocabTotal, vocabKnown, due, recent] = await Promise.all([
     db.from('daily_activity').select('activity_date').eq('user_id', userId),
-    db.from('vocabulary').select('id', { count: 'exact', head: true }).eq('user_id', userId),
-    db.from('vocabulary').select('id', { count: 'exact', head: true }).eq('user_id', userId).eq('status', 'known'),
-    db.from('flashcards').select('id', { count: 'exact', head: true }).eq('user_id', userId).neq('status', 'known'),
-    db.from('vocabulary').select('vietnamese').eq('user_id', userId).order('first_seen_at', { ascending: false }).limit(6),
+    db.from('vocabulary').select('id', { count: 'exact', head: true }).eq('user_id', userId).eq('pair', pair),
+    db.from('vocabulary').select('id', { count: 'exact', head: true }).eq('user_id', userId).eq('pair', pair).eq('status', 'known'),
+    db.from('flashcards').select('id, lessons!inner(pair)', { count: 'exact', head: true }).eq('user_id', userId).neq('status', 'known').eq('lessons.pair', pair),
+    db.from('vocabulary').select('vietnamese, english').eq('user_id', userId).eq('pair', pair).order('first_seen_at', { ascending: false }).limit(6),
   ])
   const dates = (act.data ?? []).map(r => r.activity_date as string)
   const streak = computeStreak(dates, today)
   return {
     streak, today, activeToday: dates.includes(today),
     vocabTotal: vocabTotal.count ?? 0, vocabKnown: vocabKnown.count ?? 0, due: due.count ?? 0,
-    recentWords: (recent.data ?? []).map(r => r.vietnamese as string),
+    recentWords: (recent.data ?? []).map(r => (getPair(pair).targetField === 'vietnamese' ? r.vietnamese : r.english) as string),
   }
 }
 
-export async function listLessons(db: SupabaseClient, userId: string, limit?: number) {
+export async function listLessons(db: SupabaseClient, userId: string, pair: PairId, limit?: number) {
   let q = db.from('lessons')
     .select('id, situation, title, grammar_topic, parent_lesson_id, source, completed_at, created_at, lesson_json')
-    .eq('user_id', userId).order('created_at', { ascending: false })
+    .eq('user_id', userId).eq('pair', pair).order('created_at', { ascending: false })
   if (limit) q = q.limit(limit)
   const { data } = await q
   return (data ?? []) as LessonRow[]
@@ -47,10 +53,10 @@ export async function getLesson(db: SupabaseClient, userId: string, id: string) 
 }
 
 /** Count of vocabulary rows whose FIRST linked lesson is each lesson id. */
-export async function newWordsByLesson(db: SupabaseClient, userId: string) {
+export async function newWordsByLesson(db: SupabaseClient, userId: string, pair: PairId) {
   const { data } = await db.from('lesson_vocabulary')
-    .select('lesson_id, vocabulary_id, lessons!inner(user_id, created_at)')
-    .eq('lessons.user_id', userId)
+    .select('lesson_id, vocabulary_id, lessons!inner(user_id, created_at, pair)')
+    .eq('lessons.user_id', userId).eq('lessons.pair', pair)
   const first = new Map<string, { lessonId: string; at: string }>()
   for (const r of (data ?? []) as unknown as { lesson_id: string; vocabulary_id: string; lessons: { created_at: string } }[]) {
     const cur = first.get(r.vocabulary_id)
@@ -64,10 +70,10 @@ export async function newWordsByLesson(db: SupabaseClient, userId: string) {
 import type { LessonState } from '@/components/app/LessonList'
 
 /** Per-lesson state for list stripes: reviewed (all cards known), due (some open after a review), new (never reviewed). */
-export async function lessonStates(db: SupabaseClient, userId: string): Promise<Map<string, LessonState>> {
+export async function lessonStates(db: SupabaseClient, userId: string, pair: PairId): Promise<Map<string, LessonState>> {
   const [{ data: cards }, newWords] = await Promise.all([
-    db.from('flashcards').select('lesson_id, status').eq('user_id', userId),
-    newWordsByLesson(db, userId),
+    db.from('flashcards').select('lesson_id, status, lessons!inner(pair)').eq('user_id', userId).eq('lessons.pair', pair),
+    newWordsByLesson(db, userId, pair),
   ])
   const agg = new Map<string, { total: number; known: number; open: number }>()
   for (const c of (cards ?? []) as { lesson_id: string; status: string }[]) {

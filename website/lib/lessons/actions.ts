@@ -10,24 +10,27 @@ import { saveLesson } from './pipeline'
 import { recordActivity } from '@/lib/activity/actions'
 import { warmLessonAudio } from '@/lib/voice/tts'
 import type { Lesson } from '@/lib/ai/schema'
+import { getPair, type LanguagePair } from '@/lib/pairs'
 
 // Worst-case guard, not the product's shape: one situation a day is the premise.
 // PR 3 moves this to app_settings so it is tunable without a deploy.
 const DAILY_LIMIT = 3
 
-function lessonTexts(l: Lesson) {
-  return [...l.phrases.map(p => p.vietnamese), ...l.vocabulary.map(v => v.vietnamese), ...l.grammar.examples.map(e => e.vietnamese)]
+/** Every string in the language being learned, for speech pre-warming. */
+function lessonTexts(l: Lesson, pair: LanguagePair) {
+  const f = pair.targetField
+  return [...l.phrases.map(p => p[f]), ...l.vocabulary.map(v => v[f]), ...l.grammar.examples.map(e => e[f])]
 }
 
 async function ctx() {
   const user = await requireAuth()
   const db = await createClient()
-  const { data: profile } = await db.from('profiles').select('timezone').eq('id', user.id).single()
-  return { user, db, tz: profile?.timezone as string | undefined }
+  const { data: profile } = await db.from('profiles').select('timezone, pair').eq('id', user.id).single()
+  return { user, db, tz: profile?.timezone as string | undefined, pair: getPair(profile?.pair) }
 }
 
 async function generateAndSave(situation: string, parentLessonId: string | null, adjustment?: string) {
-  const { user, db, tz } = await ctx()
+  const { user, db, tz, pair } = await ctx()
 
   const since = new Date(Date.now() - 24 * 3600 * 1000).toISOString()
   const { count } = await db.from('lessons').select('id', { count: 'exact', head: true })
@@ -35,16 +38,16 @@ async function generateAndSave(situation: string, parentLessonId: string | null,
   if ((count ?? 0) >= DAILY_LIMIT) return { error: `Daily limit of ${DAILY_LIMIT} lessons reached. Come back tomorrow.` }
 
   const { data: recent } = await db.from('lessons').select('grammar_topic')
-    .eq('user_id', user.id).order('created_at', { ascending: false }).limit(5)
+    .eq('user_id', user.id).eq('pair', pair.id).order('created_at', { ascending: false }).limit(5)
 
   let lessonId: string
   try {
     const lesson = await generateLesson({
-      situation, adjustment, recentGrammar: (recent ?? []).map(r => r.grammar_topic as string),
+      pair, situation, adjustment, recentGrammar: (recent ?? []).map(r => r.grammar_topic as string),
     })
-    ;({ lessonId } = await saveLesson(db, user.id, { lesson, situation, source: 'ai', parentLessonId }))
+    ;({ lessonId } = await saveLesson(db, user.id, { lesson, situation, source: 'ai', pair, parentLessonId }))
     await recordActivity(db, 'lesson_created', tz)
-    after(() => warmLessonAudio(lessonTexts(lesson)))
+    after(() => warmLessonAudio(lessonTexts(lesson, pair), pair.id))
   } catch (err) {
     if (err instanceof LessonGenerationError) return { error: err.message }
     console.error('createLesson failed', err)
@@ -90,15 +93,16 @@ export async function completeLesson(lessonId: string) {
 
 /** Imports the three bundled sample lessons into the current account. Skips if any lesson already exists. */
 export async function loadSampleLessons() {
-  const { user, db } = await ctx()
-  const { count } = await db.from('lessons').select('id', { count: 'exact', head: true }).eq('user_id', user.id)
+  const { user, db, pair } = await ctx()
+  const { count } = await db.from('lessons').select('id', { count: 'exact', head: true })
+    .eq('user_id', user.id).eq('pair', pair.id)
   if ((count ?? 0) > 0) return { error: 'You already have lessons.' }
   const { loadSeedLessons } = await import('./seeds')
-  const seeds = loadSeedLessons()
+  const seeds = loadSeedLessons(pair.id)
   for (const lesson of seeds) {
-    await saveLesson(db, user.id, { lesson, situation: lesson.situation, source: 'seed' })
+    await saveLesson(db, user.id, { lesson, situation: lesson.situation, source: 'seed', pair })
   }
-  after(() => warmLessonAudio(seeds.flatMap(lessonTexts)))
+  after(() => warmLessonAudio(seeds.flatMap(l => lessonTexts(l, pair)), pair.id))
   revalidatePath('/')
   revalidatePath('/lessons')
   return { ok: true }

@@ -3,8 +3,9 @@ import { generateObject } from 'ai'
 import { createOpenAI } from '@ai-sdk/openai'
 import { createAnthropic } from '@ai-sdk/anthropic'
 import { LessonSchema, type Lesson } from './schema'
-import { SYSTEM_PROMPT, userPrompt } from './prompt'
-import { normalizeVietnamese } from '@/lib/vocabulary/normalize'
+import { systemPrompt, userPrompt } from './prompt'
+import { normalizeTerm } from '@/lib/vocabulary/normalize'
+import type { LanguagePair } from '@/lib/pairs'
 
 export class LessonGenerationError extends Error {}
 
@@ -28,13 +29,13 @@ function model() {
   throw new LessonGenerationError(`Unknown AI_MODEL provider "${provider}". Use anthropic/… or openai/…`)
 }
 
-/** Dedupe vocabulary inside one lesson and tidy edges. Pure. */
-export function tidyLesson(lesson: Lesson, situation: string): Lesson {
+/** Dedupe vocabulary inside one lesson on the language being learned, and tidy edges. Pure. */
+export function tidyLesson(lesson: Lesson, situation: string, pair: LanguagePair): Lesson {
   const seen = new Set<string>()
   const vocabulary = lesson.vocabulary
-    .map(v => ({ vietnamese: v.vietnamese.trim().replace(/[.,!?;:]+$/, ''), english: v.english.trim() }))
+    .map(v => ({ vietnamese: v.vietnamese.trim().replace(/[.,!?;:]+$/, ''), english: v.english.trim().replace(/[.,!?;:]+$/, '') }))
     .filter(v => {
-      const k = normalizeVietnamese(v.vietnamese)
+      const k = normalizeTerm(v[pair.targetField])
       if (!k || seen.has(k)) return false
       seen.add(k)
       return true
@@ -43,6 +44,7 @@ export function tidyLesson(lesson: Lesson, situation: string): Lesson {
 }
 
 export async function generateLesson(opts: {
+  pair: LanguagePair
   situation: string
   recentGrammar?: string[]
   adjustment?: string
@@ -58,7 +60,7 @@ export async function generateLesson(opts: {
     const { object } = await generateObject({
       model: m,
       schema: LessonSchema,
-      system: SYSTEM_PROMPT,
+      system: systemPrompt(opts.pair),
       prompt,
       temperature: 0.7,
       abortSignal: AbortSignal.timeout(TIMEOUT_MS),
@@ -72,7 +74,7 @@ export async function generateLesson(opts: {
     })
     const parsed = LessonSchema.safeParse(object)
     if (parsed.success) {
-      const tidy = tidyLesson(parsed.data, situation)
+      const tidy = tidyLesson(parsed.data, situation, opts.pair)
       if (tidy.vocabulary.length >= 12) return tidy
       prompt += `\n\nPrevious attempt had too few unique vocabulary items after deduplication. Provide at least 14 distinct items.`
       continue

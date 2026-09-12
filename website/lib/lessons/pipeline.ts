@@ -3,19 +3,21 @@
 // Used by the createLesson action (RLS client) and the seed script (admin client).
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Lesson } from '@/lib/ai/schema'
-import { normalizeVietnamese } from '@/lib/vocabulary/normalize'
+import { normalizeTerm } from '@/lib/vocabulary/normalize'
+import type { LanguagePair } from '@/lib/pairs'
 
 export interface SaveLessonInput {
   lesson: Lesson
   situation: string
   source: 'ai' | 'seed'
+  pair: LanguagePair
   parentLessonId?: string | null
 }
 
 export async function saveLesson(
   db: SupabaseClient, userId: string, input: SaveLessonInput,
 ): Promise<{ lessonId: string; newWords: number }> {
-  const { lesson } = input
+  const { lesson, pair } = input
   const { data: row, error: lErr } = await db.from('lessons').insert({
     user_id: userId,
     situation: input.situation,
@@ -23,6 +25,7 @@ export async function saveLesson(
     grammar_topic: lesson.grammar.title,
     lesson_json: lesson,
     source: input.source,
+    pair: pair.id,
     parent_lesson_id: input.parentLessonId ?? null,
   }).select('id').single()
   if (lErr || !row) throw new Error(`lesson insert failed: ${lErr?.message}`)
@@ -30,15 +33,18 @@ export async function saveLesson(
 
   try {
     // Vocabulary: insert only the ones that don't exist yet, then read back all.
+    // The dedupe key is the language being learned, so the two directions keep
+    // separate stores and never collide.
     const items = lesson.vocabulary.map(v => ({
       user_id: userId,
+      pair: pair.id,
       vietnamese: v.vietnamese,
-      normalized: normalizeVietnamese(v.vietnamese),
       english: v.english,
+      normalized: normalizeTerm(v[pair.targetField]),
     }))
     const keys = items.map(i => i.normalized)
     const { data: existing, error: eErr } = await db.from('vocabulary')
-      .select('id, normalized, status').eq('user_id', userId).in('normalized', keys)
+      .select('id, normalized, status').eq('user_id', userId).eq('pair', pair.id).in('normalized', keys)
     if (eErr) throw new Error(`vocabulary read failed: ${eErr.message}`)
     const existingByKey = new Map((existing ?? []).map(r => [r.normalized as string, r]))
     const fresh = items.filter(i => !existingByKey.has(i.normalized))
@@ -60,14 +66,14 @@ export async function saveLesson(
     const cards = [
       ...lesson.phrases.map(p => ({
         user_id: userId, lesson_id: lessonId, vocabulary_id: null, type: 'phrase',
-        front: p.vietnamese, back: { english: p.english, explanation: p.explanation },
+        front: p[pair.targetField], back: { english: p[pair.sourceField], explanation: p.explanation },
       })),
       ...lesson.vocabulary.flatMap(v => {
-        const row = byKey.get(normalizeVietnamese(v.vietnamese))
+        const row = byKey.get(normalizeTerm(v[pair.targetField]))
         if (!row || row.status === 'known') return []
         return [{
           user_id: userId, lesson_id: lessonId, vocabulary_id: row.id, type: 'vocabulary',
-          front: v.vietnamese, back: { english: v.english },
+          front: v[pair.targetField], back: { english: v[pair.sourceField] },
         }]
       }),
     ]
