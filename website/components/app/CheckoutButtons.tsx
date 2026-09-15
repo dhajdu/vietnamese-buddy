@@ -30,12 +30,12 @@ export function CheckoutButton({ term, label, live, signedIn, variant }: {
 
 /** Carries a plan chosen before signup straight through to Stripe on arrival. */
 export function AutoCheckout({ term }: { term: 'monthly' | 'annual' }) {
-  const [state, action] = useActionState(
+  const [state, action, pending] = useActionState(
     async (_p: { error?: string } | null, fd: FormData) => startCheckout(fd), null)
   return (
     <form action={action} className="space-y-2">
       <input type="hidden" name="term" value={term} />
-      <button className="btn-red" autoFocus>Continue to payment →</button>
+      <button disabled={pending} className="btn-red" autoFocus>{pending ? 'Opening Stripe…' : 'Continue to payment →'}</button>
       <p className="meta">You picked the {term} plan. This opens Stripe.</p>
       {state?.error && <p role="alert" className="text-sm text-err-ink">{state.error}</p>}
     </form>

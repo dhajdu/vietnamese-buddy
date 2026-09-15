@@ -1,8 +1,7 @@
 // app/app/billing/page.tsx
 import Link from 'next/link'
-import { requireAuth } from '@/lib/auth/guards'
+import { requireAuth, getCurrentProfile } from '@/lib/auth/guards'
 import { createClient } from '@/lib/supabase/server'
-import { getProfile } from '@/lib/lessons/queries'
 import { getEntitlement } from '@/lib/billing/entitlement'
 import { t } from '@/lib/i18n'
 import { PortalButton } from '@/components/app/PortalButton'
@@ -14,16 +13,21 @@ export default async function BillingPage({ searchParams }: PageProps<'/app/bill
   const sp = await searchParams
   const user = await requireAuth()
   const db = await createClient()
-  const { pair, timezone, isAdmin } = await getProfile(db, user.id)
+  const { pair, timezone, isAdmin } = await getCurrentProfile(user.id)
   const d = t(pair.uiLocale)
-  const [ent, { data: sub }] = await Promise.all([
+  const [ent, { data: sub, error: subError }] = await Promise.all([
     getEntitlement(db, user.id, { pair: pair.id, timezone, isAdmin }),
     db.from('subscriptions').select('*').eq('user_id', user.id).maybeSingle(),
   ])
+  if (subError) throw new Error(`billing: subscription read failed: ${subError.message}`)
+  // Stripe sends people back before the webhook lands, so ?welcome alone proves nothing.
+  const active = ['active', 'trialing'].includes((sub?.status as string) ?? '')
 
   return (
     <div className="mx-auto max-w-2xl space-y-5 px-4 pt-8 sm:px-6 sm:pt-12">
-      {sp.welcome && <p className="rounded-card bg-ok-bg px-4 py-3 text-sm font-semibold text-ok-ink">Thanks. Your plan is active.</p>}
+      {sp.welcome && (active
+        ? <p className="rounded-card bg-ok-bg px-4 py-3 text-sm font-semibold text-ok-ink">Thanks. Your plan is active.</p>
+        : <p role="status" className="rounded-card bg-info-bg px-4 py-3 text-sm font-semibold text-info-ink">Thanks. Your payment is processing. Refresh in a moment.</p>)}
       <header>
         <p className="eyebrow">Billing</p>
         <h1 className="t-title text-3xl">{ent.unlimited ? d.unlimitedPlan : ent.plan === 'pro' ? d.proPlan : d.freePlan}</h1>

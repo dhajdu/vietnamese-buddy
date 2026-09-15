@@ -1,7 +1,6 @@
 // app/(app)/progress/page.tsx — Streak
-import { requireAuth } from '@/lib/auth/guards'
+import { requireAuth, getCurrentProfile } from '@/lib/auth/guards'
 import { createClient } from '@/lib/supabase/server'
-import { getProfile } from '@/lib/lessons/queries'
 import { computeStreak, lastNDates, localDate } from '@/lib/activity/streak'
 import { t } from '@/lib/i18n'
 import { StatTiles } from '@/components/app/StatTiles'
@@ -12,21 +11,24 @@ export const metadata = { title: 'Streak' }
 export default async function ProgressPage() {
   const user = await requireAuth()
   const db = await createClient()
-  const { timezone, pair } = await getProfile(db, user.id)
+  const { timezone, pair } = await getCurrentProfile(user.id)
   const d = t(pair.uiLocale)
   const today = localDate(timezone)
 
-  const [act, completed, lessons, vocabTotal, vocabKnown] = await Promise.all([
+  const [act, completed, phraseCards, vocabTotal, vocabKnown] = await Promise.all([
     db.from('daily_activity').select('activity_date, lesson_created, cards_reviewed, lesson_completed').eq('user_id', user.id),
     db.from('lessons').select('id', { count: 'exact', head: true }).eq('user_id', user.id).eq('pair', pair.id).not('completed_at', 'is', null),
-    db.from('lessons').select('lesson_json').eq('user_id', user.id).eq('pair', pair.id),
+    // The pipeline makes one phrase card per phrase, so counting cards avoids loading every lesson_json.
+    db.from('flashcards').select('id, lessons!inner(pair)', { count: 'exact', head: true }).eq('user_id', user.id).eq('type', 'phrase').eq('lessons.pair', pair.id),
     db.from('vocabulary').select('id', { count: 'exact', head: true }).eq('user_id', user.id).eq('pair', pair.id),
     db.from('vocabulary').select('id', { count: 'exact', head: true }).eq('user_id', user.id).eq('pair', pair.id).eq('status', 'known'),
   ])
+  const failed = act.error ?? completed.error ?? phraseCards.error ?? vocabTotal.error ?? vocabKnown.error
+  if (failed) throw new Error(`progress: read failed: ${failed.message}`)
   type Day = { activity_date: string; lesson_created: boolean; cards_reviewed: number; lesson_completed: boolean }
   const days = new Map(((act.data ?? []) as Day[]).map(x => [x.activity_date, x]))
   const streak = computeStreak([...days.keys()], today)
-  const phrases = (lessons.data ?? []).reduce((n, l) => n + ((l.lesson_json as { phrases: unknown[] }).phrases?.length ?? 0), 0)
+  const phrases = phraseCards.count ?? 0
   const words = vocabTotal.count ?? 0
   const milestone = Math.max(50, Math.ceil((words + 1) / 50) * 50)
   const lessonsToGo = Math.max(1, Math.round((milestone - words) / 15))

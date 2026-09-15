@@ -1,9 +1,9 @@
 // app/(app)/lessons/[id]/page.tsx
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import { requireAuth } from '@/lib/auth/guards'
+import { requireAuth, getCurrentProfile } from '@/lib/auth/guards'
 import { createClient } from '@/lib/supabase/server'
-import { getLesson, getProfile } from '@/lib/lessons/queries'
+import { getLesson } from '@/lib/lessons/queries'
 import { getEntitlement } from '@/lib/billing/entitlement'
 import { getPair } from '@/lib/pairs'
 import { t } from '@/lib/i18n'
@@ -18,21 +18,25 @@ export default async function LessonPage({ params }: PageProps<'/app/lessons/[id
   const { id } = await params
   const user = await requireAuth()
   const db = await createClient()
-  const row = await getLesson(db, user.id, id)
+  const [row, { isAdmin, timezone }] = await Promise.all([getLesson(db, user.id, id), getCurrentProfile(user.id)])
   if (!row) notFound()
 
   // A lesson is read in the direction it was written in, not the learner's current one.
   const pair = getPair(row.pair)
   const d = t(pair.uiLocale)
   const lesson = row.lesson_json
-  const { isAdmin, timezone } = await getProfile(db, user.id)
-  const ent = await getEntitlement(db, user.id, { pair: pair.id, timezone, isAdmin })
 
-  const [{ count: cardCount }, { data: parent }, { count: newWords }] = await Promise.all([
+  const [ent, cards, parentRes, vocab] = await Promise.all([
+    getEntitlement(db, user.id, { pair: pair.id, timezone, isAdmin }),
     db.from('flashcards').select('id', { count: 'exact', head: true }).eq('lesson_id', id),
-    row.parent_lesson_id ? db.from('lessons').select('id, title').eq('id', row.parent_lesson_id).single() : Promise.resolve({ data: null }),
+    row.parent_lesson_id ? db.from('lessons').select('id, title').eq('id', row.parent_lesson_id).maybeSingle() : Promise.resolve({ data: null, error: null }),
     db.from('lesson_vocabulary').select('vocabulary_id, vocabulary!inner(status)', { count: 'exact', head: true }).eq('lesson_id', id).eq('vocabulary.status', 'new'),
   ])
+  const failed = cards.error ?? parentRes.error ?? vocab.error
+  if (failed) throw new Error(`lesson page: read failed: ${failed.message}`)
+  const cardCount = cards.count
+  const parent = parentRes.data
+  const newWords = vocab.count
 
   return (
     <article>

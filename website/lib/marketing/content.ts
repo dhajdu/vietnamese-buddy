@@ -112,7 +112,7 @@ export const EN: Landing = {
     { q: 'How is Southern Vietnamese different from Northern Vietnamese?', a: 'Pronunciation, vocabulary and particles all differ. The South says coi phim where the North says xem phim, softens không to hông in questions, and leans on particles like nha and nè to set the tone. Learn the Northern forms in Saigon and you will be understood, but you will sound like a textbook.' },
     { q: 'Can I learn Vietnamese without studying grammar first?', a: 'Yes. Every lesson starts from a situation you are about to be in and teaches one grammar pattern that happens to appear in it. You learn the structure because you needed the sentence, not before you needed it.' },
     { q: 'How much Vietnamese do I need to live in Ho Chi Minh City?', a: 'You can get by on almost none, which is why most expats never progress. A few hundred well-chosen phrases covering Grab rides, ordering, small talk and work will change how people treat you far more than a large passive vocabulary.' },
-    { q: 'Is Vietnamese Buddy free?', a: '{freeWord} {lessonword} a week {isare} free with no card. Paid plans add unlimited lessons and the ability to rewrite any lesson with your own note.' },
+    { q: 'Is Vietnamese Buddy free?', a: '{freeWord} {lessonword} a week {isare} free with no card. Paid plans swap the weekly allowance for a daily one and add the ability to rewrite any lesson with your own note.' },
     { q: 'What makes situation-based lessons better than a fixed curriculum?', a: 'A fixed curriculum teaches colours and family members in week one whether or not you need them. Situation-based lessons teach what you are about to say, which means you use it within a day, and using it is what makes it stick.' },
   ],
 

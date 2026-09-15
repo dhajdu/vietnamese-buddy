@@ -1,7 +1,8 @@
 // proxy.ts — refreshes the Supabase session cookie and gates the private surfaces.
-// Marketing lives at the root and must stay public, static and identical for
-// everyone, so the gate is a short allow-list of private prefixes rather than a
-// deny-list of public ones.
+// It only runs where a session is actually read (see the matcher). Marketing,
+// icons, OG images, robots and sitemap never pay for an Auth round trip, and the
+// gate is still a short allow-list of private prefixes rather than a deny-list
+// of public ones.
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
@@ -36,5 +37,6 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
+  // `/app/:path*` also matches `/app` itself.
+  matcher: ['/app/:path*', '/admin/:path*', '/login', '/signup', '/check-email', '/auth/:path*', '/api/:path*'],
 }

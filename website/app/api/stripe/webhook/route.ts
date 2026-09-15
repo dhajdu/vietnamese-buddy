@@ -8,29 +8,39 @@ import { createAdminClient } from '@/lib/supabase/admin'
 
 export const maxDuration = 60
 
-type SubLike = Stripe.Subscription & { current_period_end?: number }
-
-async function upsertFromSubscription(sub: SubLike) {
+/**
+ * Writes Stripe's current state for one subscription. Events arrive out of order,
+ * so the payload snapshot is never trusted; retrieving makes every write a full,
+ * idempotent overwrite. Throws on failure so the route returns 500 and Stripe retries.
+ */
+async function syncSubscription(id: string, userIdHint?: string) {
+  const sub = await stripe.subscriptions.retrieve(id)
   const db = createAdminClient()
-  const userId = sub.metadata?.user_id
-    ?? (await db.from('profiles').select('id').eq('stripe_customer_id', String(sub.customer)).maybeSingle()).data?.id
+  const customer = typeof sub.customer === 'string' ? sub.customer : sub.customer.id
+  let userId: string | undefined = userIdHint ?? sub.metadata?.user_id
   if (!userId) {
-    console.error('stripe webhook: no user for customer', sub.customer)
+    const { data, error } = await db.from('profiles').select('id').eq('stripe_customer_id', customer).maybeSingle()
+    if (error) throw new Error(`profile lookup failed: ${error.message}`)
+    userId = data?.id as string | undefined
+  }
+  if (!userId) {
+    console.error('stripe webhook: no user for customer', customer)
     return
   }
-  const price = sub.items.data[0]?.price
-  const interval = price?.recurring?.interval
+  // The pinned API version keeps the billing period on the item, not the subscription.
+  const item = sub.items.data[0]
+  const interval = item?.price.recurring?.interval
   const { error } = await db.from('subscriptions').upsert({
     user_id: userId,
     stripe_subscription_id: sub.id,
-    stripe_price_id: price?.id ?? null,
+    stripe_price_id: item?.price.id ?? null,
     status: sub.status,
     plan: interval === 'year' ? 'annual' : interval === 'month' ? 'monthly' : null,
-    current_period_end: sub.current_period_end ? new Date(sub.current_period_end * 1000).toISOString() : null,
+    current_period_end: item?.current_period_end ? new Date(item.current_period_end * 1000).toISOString() : null,
     cancel_at_period_end: Boolean(sub.cancel_at_period_end),
     updated_at: new Date().toISOString(),
   }, { onConflict: 'user_id' })
-  if (error) console.error('stripe webhook: subscription upsert failed', error.message)
+  if (error) throw new Error(`subscription upsert failed: ${error.message}`)
 }
 
 export async function POST(request: Request) {
@@ -52,33 +62,42 @@ export async function POST(request: Request) {
     return new Response('Invalid signature', { status: 400 })
   }
 
-  // Idempotency: Stripe retries, and a retry must not double-apply anything.
+  // Idempotency: an event is recorded only once it has been applied, so a
+  // delivery that failed halfway is processed again on Stripe's retry.
   const db = createAdminClient()
-  const { error: seen } = await db.from('stripe_events').insert({ id: event.id, type: event.type })
+  const { data: seen, error: seenError } = await db.from('stripe_events').select('id').eq('id', event.id).maybeSingle()
+  if (seenError) {
+    console.error('stripe webhook: event lookup failed', seenError.message)
+    return new Response('Webhook failed', { status: 500 })
+  }
   if (seen) return NextResponse.json({ received: true, duplicate: true })
 
-  switch (event.type) {
-    case 'checkout.session.completed': {
-      const session = event.data.object as Stripe.Checkout.Session
-      if (session.subscription) {
-        const sub = await stripe.subscriptions.retrieve(String(session.subscription))
-        await upsertFromSubscription({ ...sub, metadata: { ...sub.metadata, ...session.metadata } } as SubLike)
+  try {
+    switch (event.type) {
+      case 'checkout.session.completed': {
+        const session = event.data.object
+        if (session.subscription) {
+          const id = typeof session.subscription === 'string' ? session.subscription : session.subscription.id
+          await syncSubscription(id, session.metadata?.user_id)
+        }
+        break
       }
-      break
+      case 'customer.subscription.created':
+      case 'customer.subscription.updated':
+      case 'customer.subscription.deleted':
+        await syncSubscription(event.data.object.id)
+        break
     }
-    case 'customer.subscription.created':
-    case 'customer.subscription.updated':
-    case 'customer.subscription.deleted':
-      await upsertFromSubscription(event.data.object as SubLike)
-      break
-    case 'invoice.payment_failed': {
-      const invoice = event.data.object as Stripe.Invoice & { subscription?: string }
-      if (invoice.subscription) {
-        const sub = await stripe.subscriptions.retrieve(String(invoice.subscription))
-        await upsertFromSubscription(sub as SubLike)
-      }
-      break
-    }
+  } catch (err) {
+    console.error('stripe webhook: processing failed', event.type, event.id, err)
+    return new Response('Webhook failed', { status: 500 })
+  }
+
+  // A concurrent delivery may have recorded it first; that is the only benign error.
+  const { error: recordError } = await db.from('stripe_events').insert({ id: event.id, type: event.type })
+  if (recordError && recordError.code !== '23505') {
+    console.error('stripe webhook: event record failed', recordError.message)
+    return new Response('Webhook failed', { status: 500 })
   }
   return NextResponse.json({ received: true })
 }

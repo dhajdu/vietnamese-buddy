@@ -3,16 +3,25 @@
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { after } from 'next/server'
+import { z } from 'zod'
 import { requireAuth } from '@/lib/auth/guards'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { generateLesson, LessonGenerationError } from '@/lib/ai/generate'
 import { saveLesson } from './pipeline'
-import { recordActivity } from '@/lib/activity/actions'
+import { recordActivity, type ActivityKind } from '@/lib/activity/actions'
+import { localDate } from '@/lib/activity/streak'
 import { warmLessonAudio } from '@/lib/voice/tts'
 import type { Lesson } from '@/lib/ai/schema'
 import { getPair, type LanguagePair } from '@/lib/pairs'
 import { getEntitlement, getSettings } from '@/lib/billing/entitlement'
-import { t } from '@/lib/i18n'
+import { weekStart, zonedMidnightUtc } from '@/lib/billing/week'
+import { t, type Dictionary } from '@/lib/i18n'
+
+// Arguments arrive from the browser, so they are checked before they reach Postgres or the model.
+const LessonId = z.uuid()
+const Situation = z.string().trim().min(1).max(500)
+const AdjustNote = z.string().trim().min(1).max(300)
 
 /** Every string in the language being learned, for speech pre-warming. */
 function lessonTexts(l: Lesson, pair: LanguagePair) {
@@ -23,49 +32,88 @@ function lessonTexts(l: Lesson, pair: LanguagePair) {
 async function ctx() {
   const user = await requireAuth()
   const db = await createClient()
-  const { data: profile } = await db.from('profiles').select('timezone, pair, is_admin').eq('id', user.id).single()
+  const { data: profile, error } = await db.from('profiles').select('timezone, pair, is_admin').eq('id', user.id).single()
+  if (error) throw new Error(`profile read failed: ${error.message}`)
   const tz = (profile?.timezone as string) ?? 'Asia/Ho_Chi_Minh'
   return { user, db, tz, pair: getPair(profile?.pair), isAdmin: Boolean(profile?.is_admin) }
 }
+type Ctx = Awaited<ReturnType<typeof ctx>>
 
-async function generateAndSave(situation: string, parentLessonId: string | null, adjustment?: string) {
-  const { user, db, tz, pair, isAdmin } = await ctx()
+/** Streak bookkeeping must never turn a saved lesson into an error. */
+async function logActivity(c: Ctx, kind: ActivityKind) {
+  await recordActivity(c.db, kind, c.tz).catch(err => console.error('recordActivity failed', err))
+}
 
-  const ent = await getEntitlement(db, user.id, { pair: pair.id, timezone: tz, isAdmin })
-  if (!ent.canCreate) {
-    const d = t(pair.uiLocale)
-    return { error: ent.reason === 'weekly' ? d.weeklyLimitReached : d.dailyLimitReached, upgrade: ent.reason === 'weekly' && ent.monetised }
-  }
-  if (adjustment && !ent.canAdjust) return { error: t(pair.uiLocale).adjustIsPro, upgrade: true }
+function limitError(d: Dictionary, reason: 'weekly' | 'daily', monetised: boolean) {
+  return { error: reason === 'weekly' ? d.weeklyLimitReached : d.dailyLimitReached, upgrade: reason === 'weekly' && monetised }
+}
 
-  const { data: recent } = await db.from('lessons').select('grammar_topic')
-    .eq('user_id', user.id).eq('pair', pair.id).order('created_at', { ascending: false }).limit(5)
+async function generateAndSave(c: Ctx, pair: LanguagePair, situation: string, parentLessonId: string | null, adjustment?: string) {
+  const { user, db, tz, isAdmin } = c
+  const d = t(pair.uiLocale)
 
+  let reservationId: string | null = null
   let lessonId: string
+  let lesson: Lesson
   try {
+    // Checked first for the friendly message; the reservation below is what enforces it.
+    const ent = await getEntitlement(db, user.id, { pair: pair.id, timezone: tz, isAdmin })
+    if (!ent.canCreate) return limitError(d, ent.reason === 'weekly' ? 'weekly' : 'daily', ent.monetised)
+    if (adjustment && !ent.canAdjust) return { error: d.adjustIsPro, upgrade: ent.monetised }
+
+    const { data: recent, error: recentError } = await db.from('lessons').select('grammar_topic')
+      .eq('user_id', user.id).eq('pair', pair.id).order('created_at', { ascending: false }).limit(5)
+    if (recentError) throw new Error(`recent lessons read failed: ${recentError.message}`)
     const settings = await getSettings(db)
-    const { lesson } = await generateLesson({
+
+    // Claim the slot atomically before paying for the model, so parallel requests cannot all pass the check.
+    const { data: reserved, error: reserveError } = await createAdminClient().rpc('reserve_lesson_generation', {
+      p_user_id: user.id,
+      p_pair: pair.id,
+      p_week_start: zonedMidnightUtc(weekStart(localDate(tz)), tz),
+      p_weekly_limit: Number.isFinite(ent.weeklyLimit) ? ent.weeklyLimit : null,
+      p_daily_limit: Number.isFinite(ent.dailyLimit) ? ent.dailyLimit : null,
+    })
+    if (reserveError) throw new Error(`reserve_lesson_generation failed: ${reserveError.message}`)
+    if (!reserved) {
+      // Another request took the last slot. Name whichever cap had less room left.
+      const weekly = ent.weeklyLimit - ent.lessonsThisWeek <= ent.dailyLimit - ent.lessonsToday
+      return limitError(d, weekly ? 'weekly' : 'daily', ent.monetised)
+    }
+    reservationId = reserved as string
+
+    ;({ lesson } = await generateLesson({
       pair, situation, adjustment,
       recentGrammar: (recent ?? []).map(r => r.grammar_topic as string),
       modelSpec: `${settings.aiProvider}/${settings.aiModel}`,
-    })
+    }))
     ;({ lessonId } = await saveLesson(db, user.id, { lesson, situation, source: 'ai', pair, parentLessonId }))
-    await recordActivity(db, 'lesson_created', tz)
-    after(() => warmLessonAudio(lessonTexts(lesson, pair), pair.id))
+
+    const { error: linkError } = await createAdminClient().from('lesson_generations')
+      .update({ lesson_id: lessonId }).eq('id', reservationId)
+    if (linkError) console.error('lesson_generations link failed', linkError)
   } catch (err) {
+    // Nothing was delivered, so the slot goes back.
+    if (reservationId) {
+      const { error: releaseError } = await createAdminClient().from('lesson_generations').delete().eq('id', reservationId)
+      if (releaseError) console.error('lesson_generations release failed', releaseError)
+    }
     if (err instanceof LessonGenerationError) return { error: err.message }
     console.error('createLesson failed', err)
     return { error: 'Something went wrong saving the lesson. Try again.' }
   }
+  await logActivity(c, 'lesson_created')
+  after(() => warmLessonAudio(lessonTexts(lesson, pair), pair.id))
   revalidatePath('/app')
   revalidatePath('/app/lessons')
   redirect(`/app/lessons/${lessonId}`)
 }
 
 export async function createLesson(_prev: { error?: string; upgrade?: boolean } | null, formData: FormData) {
-  const situation = String(formData.get('situation') ?? '').trim()
-  if (!situation) return { error: 'Describe a situation first.' }
-  return generateAndSave(situation, null)
+  const situation = Situation.safeParse(formData.get('situation'))
+  if (!situation.success) return { error: 'Describe a situation first, in 500 characters or fewer.' }
+  const c = await ctx()
+  return generateAndSave(c, c.pair, situation.data, null)
 }
 
 /**
@@ -74,17 +122,18 @@ export async function createLesson(_prev: { error?: string; upgrade?: boolean } 
  * that rarely produced a better lesson, so the Regenerate button is gone.
  */
 export async function adjustLesson(lessonId: string, adjustment: string) {
-  const note = adjustment.trim()
-  const { user, db, tz, pair, isAdmin } = await ctx()
-  const d = t(pair.uiLocale)
-  if (!note) return { error: d.sayWhatChanged }
-  const ent = await getEntitlement(db, user.id, { pair: pair.id, timezone: tz, isAdmin })
-  if (!ent.canAdjust) return { error: d.adjustIsPro, upgrade: ent.monetised }
-  const { data: original, error } = await db.from('lessons').select('situation, parent_lesson_id')
-    .eq('id', lessonId).eq('user_id', user.id).single()
+  const id = LessonId.safeParse(lessonId)
+  const note = AdjustNote.safeParse(adjustment)
+  if (!id.success) return { error: 'Lesson not found.' }
+  const c = await ctx()
+  const { data: original, error } = await c.db.from('lessons').select('situation, parent_lesson_id, pair')
+    .eq('id', id.data).eq('user_id', c.user.id).single()
   if (error || !original) return { error: 'Lesson not found.' }
-  const parent = (original.parent_lesson_id as string | null) ?? lessonId
-  return generateAndSave(original.situation as string, parent, note)
+  // A lesson is rewritten in the direction it was written in, not the learner's current one.
+  const pair = getPair(original.pair)
+  if (!note.success) return { error: t(pair.uiLocale).sayWhatChanged }
+  const parent = (original.parent_lesson_id as string | null) ?? id.data
+  return generateAndSave(c, pair, original.situation as string, parent, note.data)
 }
 
 /**
@@ -94,47 +143,59 @@ export async function adjustLesson(lessonId: string, adjustment: string) {
  * database function does both steps in one transaction.
  */
 export async function deleteLesson(lessonId: string) {
+  if (!LessonId.safeParse(lessonId).success) return { error: 'Lesson not found.' }
   const { user, db } = await ctx()
   const { data: owned, error: findError } = await db.from('lessons')
     .select('id').eq('id', lessonId).eq('user_id', user.id).maybeSingle()
-  if (findError) return { error: findError.message }
+  if (findError) {
+    console.error('deleteLesson lookup failed', findError)
+    return { error: 'Could not delete the lesson. Try again.' }
+  }
   if (!owned) return { error: 'Lesson not found.' }
 
-  const { data, error } = await db.rpc('delete_lesson', { p_lesson_id: lessonId })
-  if (error) return { error: error.message }
-  const deletedWords = Array.isArray(data) ? (data[0]?.deleted_words ?? 0) : 0
+  const { error } = await db.rpc('delete_lesson', { p_lesson_id: lessonId })
+  if (error) {
+    console.error('delete_lesson failed', error)
+    return { error: 'Could not delete the lesson. Try again.' }
+  }
 
   revalidatePath('/app')
   revalidatePath('/app/lessons')
   revalidatePath('/app/vocabulary')
   revalidatePath('/app/flashcards')
   redirect('/app/lessons')
-  return { ok: true, deletedWords }
 }
 
 export async function completeLesson(lessonId: string) {
-  const { user, db, tz } = await ctx()
-  const { error } = await db.from('lessons').update({ completed_at: new Date().toISOString() })
-    .eq('id', lessonId).eq('user_id', user.id).is('completed_at', null)
-  if (error) return { error: error.message }
-  await recordActivity(db, 'lesson_completed', tz)
+  if (!LessonId.safeParse(lessonId).success) return { error: 'Lesson not found.' }
+  const c = await ctx()
+  const { data: updated, error } = await c.db.from('lessons').update({ completed_at: new Date().toISOString() })
+    .eq('id', lessonId).eq('user_id', c.user.id).is('completed_at', null).select('id')
+  if (error) {
+    console.error('completeLesson failed', error)
+    return { error: 'Could not mark the lesson complete. Try again.' }
+  }
+  // Only a lesson that was actually completed now counts toward the streak.
+  if (updated?.length) await logActivity(c, 'lesson_completed')
   revalidatePath(`/app/lessons/${lessonId}`)
   revalidatePath('/app/progress')
   return { ok: true }
 }
 
-/** Imports the three bundled sample lessons into the current account. Skips if any lesson already exists. */
+/** Imports the bundled sample lessons into the current account, skipping any already loaded. */
 export async function loadSampleLessons() {
   const { user, db, pair } = await ctx()
-  const { count } = await db.from('lessons').select('id', { count: 'exact', head: true })
-    .eq('user_id', user.id).eq('pair', pair.id)
-  if ((count ?? 0) > 0) return { error: 'You already have lessons.' }
-  const { loadSeedLessons } = await import('./seeds')
-  const seeds = loadSeedLessons(pair.id)
-  for (const lesson of seeds) {
-    await saveLesson(db, user.id, { lesson, situation: lesson.situation, source: 'seed', pair })
+  try {
+    const { missingSeedLessons } = await import('./seeds')
+    const seeds = await missingSeedLessons(db, user.id, pair.id)
+    for (const lesson of seeds) {
+      await saveLesson(db, user.id, { lesson, situation: lesson.situation, source: 'seed', pair })
+    }
+    after(() => warmLessonAudio(seeds.flatMap(l => lessonTexts(l, pair)), pair.id))
+  } catch (err) {
+    console.error('loadSampleLessons failed', err)
+    return { error: 'Could not load the sample lessons. Try again.' }
   }
-  after(() => warmLessonAudio(seeds.flatMap(l => lessonTexts(l, pair)), pair.id))
   revalidatePath('/app')
   revalidatePath('/app/lessons')
   return { ok: true }

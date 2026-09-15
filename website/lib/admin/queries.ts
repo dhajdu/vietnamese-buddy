@@ -22,23 +22,29 @@ export async function listUsers(search: string, sort: string) {
 
 export async function getUser(id: string) {
   const db = createAdminClient()
-  const [{ data: overview }, { data: lessons }] = await Promise.all([
-    db.from('admin_user_overview').select('*').eq('id', id).single(),
+  const [{ data: overview, error: overviewError }, { data: lessons, error: lessonsError }] = await Promise.all([
+    db.from('admin_user_overview').select('*').eq('id', id).maybeSingle(),
     db.from('lessons').select('id, title, pair, source, created_at, completed_at').eq('user_id', id).order('created_at', { ascending: false }).limit(50),
   ])
+  const error = overviewError ?? lessonsError
+  // An id that is not a uuid is a 404, not a failure.
+  if (error?.code === '22P02') return null
+  if (error) throw new Error(`admin user read failed: ${error.message}`)
   if (!overview) return null
   return { user: overview as UserRow, lessons: (lessons ?? []) as { id: string; title: string; pair: string; source: string; created_at: string; completed_at: string | null }[] }
 }
 
 export async function getPlans() {
   const db = createAdminClient()
-  const { data } = await db.from('plans').select('*').order('pair')
+  const { data, error } = await db.from('plans').select('*').order('pair')
+  if (error) throw new Error(`admin plans read failed: ${error.message}`)
   return (data ?? []) as { pair: string; stripe_price_monthly: string | null; stripe_price_annual: string | null; monetised: boolean }[]
 }
 
 export async function recentModelTests(limit = 10) {
   const db = createAdminClient()
-  const { data } = await db.from('model_tests').select('*').order('created_at', { ascending: false }).limit(limit)
+  const { data, error } = await db.from('model_tests').select('*').order('created_at', { ascending: false }).limit(limit)
+  if (error) throw new Error(`admin model tests read failed: ${error.message}`)
   return (data ?? []) as {
     id: string; pair: string; provider: string; model: string; situation: string
     passed: boolean; latency_ms: number | null; input_tokens: number | null; output_tokens: number | null

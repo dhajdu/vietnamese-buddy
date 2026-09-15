@@ -1,12 +1,10 @@
 // app/(marketing)/layout.tsx — the public shell. No auth, no database, cacheable.
 import Link from 'next/link'
-import { getOptionalUser } from '@/lib/auth/guards'
 import { Wordmark } from '@/components/app/Wordmark'
 
-export default async function MarketingLayout({ children }: { children: React.ReactNode }) {
-  // The only thing auth changes out here is the call to action, so a signed-in
-  // visitor is offered their app rather than being bounced away from the page.
-  const user = await getOptionalUser()
+export default function MarketingLayout({ children }: { children: React.ReactNode }) {
+  // Everyone sees the same call to action: /signup sends a signed-in visitor on to
+  // /app. Reading the session here would make every public page dynamic.
   return (
     <div className="flex min-h-full flex-col">
       <header className="bg-ink-warm">
@@ -14,9 +12,7 @@ export default async function MarketingLayout({ children }: { children: React.Re
           <div className="mr-auto"><Wordmark href="/" /></div>
           <Link href="/pricing" className="text-sm font-semibold text-sand-70 hover:text-sand">Pricing</Link>
           <Link href="/vi" lang="vi" className="text-sm font-semibold text-sand-70 hover:text-sand">Tiếng Việt</Link>
-          {user
-            ? <Link href="/app" className="btn-red-dark px-4 py-2 text-sm">Continue learning →</Link>
-            : <Link href="/signup" className="btn-red-dark px-4 py-2 text-sm">Start free</Link>}
+          <Link href="/signup" className="btn-red-dark px-4 py-2 text-sm">Start free</Link>
         </nav>
       </header>
       <main className="flex-1">{children}</main>

@@ -1,12 +1,14 @@
 // app/(marketing)/vi/page.tsx — the Vietnamese landing page.
 import type { Metadata } from 'next'
-import { getOptionalUser } from '@/lib/auth/guards'
 import { BASE_URL, SITE_NAME } from '@/lib/seo/metadata'
 import { VI } from '@/lib/marketing/content'
 import { loadSample } from '@/lib/marketing/sample'
 import { getSettings } from '@/lib/billing/entitlement'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { Hero, Contrast, Steps, Sample, Accumulate, Faq, Closing, LandingJsonLd } from '@/components/marketing/Sections'
+
+// Static, and rebuilt at most every five minutes so an admin change to the free allowance shows up.
+export const revalidate = 300
 
 export const metadata: Metadata = {
   title: { absolute: VI.titleTag },
@@ -17,20 +19,19 @@ export const metadata: Metadata = {
 }
 
 export default async function LandingViPage() {
-  const [user, settings] = await Promise.all([getOptionalUser(), getSettings(createAdminClient())])
+  const settings = await getSettings(createAdminClient())
   const freeLessons = settings.freeLessonsPerWeek
   const lesson = loadSample(VI.sampleFile)
-  const signedIn = Boolean(user)
   return (
     <div lang="vi">
       <LandingJsonLd c={VI} base={BASE_URL} freeLessons={freeLessons} />
-      <Hero c={VI} signedIn={signedIn} freeLessons={freeLessons} />
+      <Hero c={VI} signedIn={false} freeLessons={freeLessons} />
       <Contrast c={VI} />
       <Steps c={VI} />
       <Sample c={VI} lesson={lesson} />
       <Accumulate c={VI} />
       <Faq c={VI} freeLessons={freeLessons} />
-      <Closing c={VI} signedIn={signedIn} freeLessons={freeLessons} />
+      <Closing c={VI} signedIn={false} freeLessons={freeLessons} />
     </div>
   )
 }

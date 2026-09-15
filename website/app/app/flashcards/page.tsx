@@ -1,9 +1,10 @@
 // app/(app)/flashcards/page.tsx
 import Link from 'next/link'
-import { requireAuth } from '@/lib/auth/guards'
+import { notFound } from 'next/navigation'
+import { requireAuth, getCurrentProfile } from '@/lib/auth/guards'
 import { createClient } from '@/lib/supabase/server'
-import { getProfile } from '@/lib/lessons/queries'
 import { computeStreak, localDate } from '@/lib/activity/streak'
+import { getPair } from '@/lib/pairs'
 import { t } from '@/lib/i18n'
 import { ReviewSession, type Card } from '@/components/app/ReviewSession'
 
@@ -14,34 +15,46 @@ export default async function FlashcardsPage({ searchParams }: PageProps<'/app/f
   const { lesson, deck } = await searchParams
   const user = await requireAuth()
   const db = await createClient()
-  const { timezone, pair } = await getProfile(db, user.id)
+  const { timezone, pair } = await getCurrentProfile(user.id)
   const d = t(pair.uiLocale)
 
   if (lesson || deck === 'due') {
-    let q = db.from('flashcards').select('id, type, front, back, status, lessons!inner(pair)').eq('user_id', user.id).eq('lessons.pair', pair.id)
-    q = lesson ? q.eq('lesson_id', String(lesson)) : q.neq('status', 'known')
-    const [{ data }, { data: act }, { data: l }] = await Promise.all([
-      q,
+    const lessonId = lesson ? String(lesson) : null
+    const [cardsRes, actRes, lessonRes] = await Promise.all([
+      // A lesson's deck is that lesson's cards, whichever direction the learner is on now.
+      lessonId
+        ? db.from('flashcards').select('id, type, front, back, status').eq('user_id', user.id).eq('lesson_id', lessonId)
+        : db.from('flashcards').select('id, type, front, back, status, lessons!inner(pair)').eq('user_id', user.id).eq('lessons.pair', pair.id).neq('status', 'known'),
       db.from('daily_activity').select('activity_date').eq('user_id', user.id),
-      lesson ? db.from('lessons').select('title').eq('id', String(lesson)).single() : Promise.resolve({ data: null }),
+      lessonId ? db.from('lessons').select('title, pair').eq('id', lessonId).maybeSingle() : Promise.resolve({ data: null, error: null }),
     ])
-    const cards = ((data ?? []) as unknown as (Card & { status: keyof typeof ORDER })[]).sort((a, b) => ORDER[a.status] - ORDER[b.status])
+    const failed = cardsRes.error ?? actRes.error ?? lessonRes.error
+    if (failed) throw new Error(`flashcards: deck read failed: ${failed.message}`)
+    const l = lessonRes.data
+    if (lessonId && !l) notFound()
+    const deckPair = l ? getPair(l.pair) : pair
+    const dd = t(deckPair.uiLocale)
+    const cards = ((cardsRes.data ?? []) as unknown as (Card & { status: keyof typeof ORDER })[]).sort((a, b) => ORDER[a.status] - ORDER[b.status])
     if (!cards.length) {
-      return <div className="mx-auto max-w-3xl px-6 pt-12"><div className="rounded-card border border-dashed border-sand px-4 py-8 text-center text-sm text-stone">{d.noCardsDue} <Link href="/app" className="font-semibold text-red hover:underline">{d.createALesson}</Link></div></div>
+      return <div className="mx-auto max-w-3xl px-6 pt-12"><div className="rounded-card border border-dashed border-sand px-4 py-8 text-center text-sm text-stone">{dd.noCardsDue} <Link href="/app" className="font-semibold text-red hover:underline">{dd.createALesson}</Link></div></div>
     }
-    const streak = computeStreak((act ?? []).map(r => r.activity_date as string), localDate(timezone))
+    const streak = computeStreak((actRes.data ?? []).map(r => r.activity_date as string), localDate(timezone))
     return (
       <div className="mx-auto max-w-3xl sm:px-6 sm:pt-8">
-        <ReviewSession cards={cards} backHref={lesson ? `/app/lessons/${lesson}` : '/app'} title={(l?.title as string) ?? d.allDueCards}
-          streakBefore={streak.current} pair={pair.id} locale={pair.uiLocale} />
+        <ReviewSession cards={cards} backHref={lessonId ? `/app/lessons/${lessonId}` : '/app'} title={(l?.title as string) ?? dd.allDueCards}
+          streakBefore={streak.current} pair={deckPair.id} locale={deckPair.uiLocale} />
       </div>
     )
   }
 
-  const [{ count: due }, { data: lessons }] = await Promise.all([
+  const [dueRes, lessonsRes] = await Promise.all([
     db.from('flashcards').select('id, lessons!inner(pair)', { count: 'exact', head: true }).eq('user_id', user.id).neq('status', 'known').eq('lessons.pair', pair.id),
     db.from('lessons').select('id, title, flashcards(status)').eq('user_id', user.id).eq('pair', pair.id).order('created_at', { ascending: false }),
   ])
+  const failed = dueRes.error ?? lessonsRes.error
+  if (failed) throw new Error(`flashcards: deck list read failed: ${failed.message}`)
+  const due = dueRes.count
+  const lessons = lessonsRes.data
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 px-4 pt-8 sm:px-6 sm:pt-12">

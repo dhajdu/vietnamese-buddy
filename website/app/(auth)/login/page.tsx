@@ -1,12 +1,14 @@
 // app/(auth)/login/page.tsx
 import { getOptionalUser } from '@/lib/auth/guards'
+import { appPath } from '@/lib/auth/validate'
 import { redirect } from 'next/navigation'
 import { LoginForm } from '@/components/auth/LoginForm'
 
 export default async function LoginPage({ searchParams }: PageProps<'/login'>) {
   const { next } = await searchParams
+  const target = appPath(next)
   const user = await getOptionalUser()
-  if (user) redirect(typeof next === 'string' && next.startsWith('/app') ? next : '/app')
+  if (user) redirect(target ?? '/app')
 
   return (
     <div className="flex min-h-screen items-center justify-center px-6">
@@ -15,7 +17,7 @@ export default async function LoginPage({ searchParams }: PageProps<'/login'>) {
           <h1 className="t-title text-3xl">Vietnamese Buddy</h1>
           <p className="gloss text-[15px] italic">Sign in to continue.</p>
         </div>
-        <LoginForm />
+        <LoginForm next={target ?? undefined} />
       </div>
     </div>
   )

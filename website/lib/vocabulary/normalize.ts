@@ -1,5 +1,6 @@
 // lib/vocabulary/normalize.ts
-const EDGE = /^[\s.,!?;:"'()\[\]…]+|[\s.,!?;:"'()\[\]…]+$/g
+// Also curly quotes, guillemets, and en and em dashes, which models write as often as the ASCII forms.
+const EDGE = /^[\s.,!?;:"'()\[\]…“”‘’«»–—]+|[\s.,!?;:"'()\[\]…“”‘’«»–—]+$/g
 
 /**
  * Dedupe key for a word or short phrase in either language.

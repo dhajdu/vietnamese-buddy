@@ -3,6 +3,7 @@
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 
 export function createAdminClient() {
+  // SUPABASE_SECRET is the old name, still read so existing environments keep working.
   const key = process.env.SUPABASE_SECRET_KEY ?? process.env.SUPABASE_SECRET
   if (!key) throw new Error('SUPABASE_SECRET_KEY is not set')
   return createSupabaseClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, key, {

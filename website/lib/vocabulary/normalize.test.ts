@@ -14,4 +14,17 @@ describe('normalizeTerm', () => {
     expect(n('  Would you mind…? ')).toBe('would you mind')
     expect(n('Pick Up')).toBe('pick up')
   })
+  it('strips curly quotes and guillemets at the edges', () => {
+    expect(n('“Hông”')).toBe('hông')
+    expect(n('‘nha’')).toBe('nha')
+    expect(n('«coi phim»')).toBe('coi phim')
+  })
+  it('strips en and em dashes at the edges', () => {
+    expect(n('— hông –')).toBe('hông')
+  })
+  it('keeps inner apostrophes and dashes', () => {
+    expect(n('“Don’t”')).toBe('don’t')
+    expect(n('check–in')).toBe('check–in')
+  })
+  it('keeps tone-mark placement as written', () => expect(n('khỏe')).not.toBe(n('khoẻ')))
 })

@@ -50,7 +50,7 @@ export function LessonActions({ lessonId, completed, cardCount, locale = 'en', c
       </div>
       {adjusting && (
         <form className="flex gap-2" onSubmit={e => { e.preventDefault(); run(() => adjustLesson(lessonId, note)) }}>
-          <input value={note} onChange={e => setNote(e.target.value)} placeholder={d.adjustPlaceholder} required autoFocus
+          <input value={note} onChange={e => setNote(e.target.value)} placeholder={d.adjustPlaceholder} required maxLength={300} autoFocus
             className="input flex-1 border-on-dark-line bg-on-dark-soft text-sand placeholder:text-sand-70" />
           <button type="submit" disabled={pending || !note.trim()} className="btn-ghost-dark">{d.rewrite}</button>
         </form>

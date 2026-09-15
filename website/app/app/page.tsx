@@ -1,8 +1,8 @@
 // app/(app)/page.tsx — Today
 import Link from 'next/link'
-import { requireAuth } from '@/lib/auth/guards'
+import { requireAuth, getCurrentProfile } from '@/lib/auth/guards'
 import { createClient } from '@/lib/supabase/server'
-import { getProfile, getHomeStats, listLessons, lessonStates } from '@/lib/lessons/queries'
+import { getHomeStats, listLessons, lessonStates } from '@/lib/lessons/queries'
 import { getEntitlement } from '@/lib/billing/entitlement'
 import { pickSuggestions, greeting } from '@/lib/lessons/suggestions'
 import { t } from '@/lib/i18n'
@@ -18,15 +18,16 @@ export const maxDuration = 180
 export default async function HomePage() {
   const user = await requireAuth()
   const db = await createClient()
-  const { timezone, displayName, pair, isAdmin } = await getProfile(db, user.id)
+  const { timezone, displayName, pair, isAdmin } = await getCurrentProfile(user.id)
   const d = t(pair.uiLocale)
-  const [ent, stats, lessons, states, all] = await Promise.all([
+  const [ent, stats, [lessons, states], all] = await Promise.all([
     getEntitlement(db, user.id, { pair: pair.id, timezone, isAdmin }),
     getHomeStats(db, user.id, timezone, pair.id),
-    listLessons(db, user.id, pair.id, 5),
-    lessonStates(db, user.id, pair.id),
+    // States are read only for the lessons shown, so they wait on the list, not on everything else.
+    listLessons(db, user.id, pair.id, 5).then(async ls => [ls, await lessonStates(db, user.id, ls)] as const),
     db.from('lessons').select('situation').eq('user_id', user.id).eq('pair', pair.id),
   ])
+  if (all.error) throw new Error(`home: lesson situations read failed: ${all.error.message}`)
   const dayNumber = stats.streak.current + (stats.activeToday ? 0 : 1)
   const suggestions = pickSuggestions(pair, (all.data ?? []).map(r => r.situation as string), Number(stats.today.slice(-2)))
 
