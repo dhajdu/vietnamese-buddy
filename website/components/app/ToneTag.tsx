@@ -6,5 +6,6 @@ const CLS: Record<Tone, string> = {
 }
 export function ToneTag({ tone }: { tone?: Tone }) {
   if (!tone) return null
-  return <span className={`tone ${CLS[tone]}`}>{tone}</span>
+  // Tone names are English in both interfaces.
+  return <span lang="en" className={`tone ${CLS[tone]}`}>{tone}</span>
 }

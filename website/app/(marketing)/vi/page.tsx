@@ -25,13 +25,13 @@ export default async function LandingViPage() {
   return (
     <div lang="vi">
       <LandingJsonLd c={VI} base={BASE_URL} freeLessons={freeLessons} />
-      <Hero c={VI} signedIn={false} freeLessons={freeLessons} />
+      <Hero c={VI} freeLessons={freeLessons} />
       <Contrast c={VI} />
       <Steps c={VI} />
       <Sample c={VI} lesson={lesson} />
       <Accumulate c={VI} />
       <Faq c={VI} freeLessons={freeLessons} />
-      <Closing c={VI} signedIn={false} freeLessons={freeLessons} />
+      <Closing c={VI} freeLessons={freeLessons} />
     </div>
   )
 }

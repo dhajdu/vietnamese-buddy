@@ -34,12 +34,12 @@ export default async function BillingPage({ searchParams }: PageProps<'/app/bill
       </header>
 
       <dl className="card grid grid-cols-2 gap-x-6 gap-y-2 px-5 py-4 text-sm">
-        <dt className="text-stone">Plan</dt>
+        <dt className="text-body">Plan</dt>
         <dd className="font-semibold text-ink">{ent.unlimited ? 'Unlimited' : ent.plan === 'pro' ? (sub?.plan ?? 'pro') : 'Free'}</dd>
-        <dt className="text-stone">This week</dt>
+        <dt className="text-body">This week</dt>
         <dd className="tabular font-semibold text-ink">{ent.lessonsThisWeek}{Number.isFinite(ent.weeklyLimit) ? ` / ${ent.weeklyLimit}` : ''}</dd>
         {sub?.current_period_end && (<>
-          <dt className="text-stone">{sub.cancel_at_period_end ? 'Ends' : 'Renews'}</dt>
+          <dt className="text-body">{sub.cancel_at_period_end ? 'Ends' : 'Renews'}</dt>
           <dd className="font-semibold text-ink">{String(sub.current_period_end).slice(0, 10)}</dd>
         </>)}
       </dl>

@@ -17,7 +17,7 @@ export function LessonList({ lessons, tz, states, phrases, locale = 'en', detail
   const label = (s: LessonState) =>
     s.kind === 'reviewed' ? d.reviewed : s.kind === 'new' ? `${s.count} ${d.newWords}` : s.kind === 'due' ? `${s.count} ${d.due}` : ''
 
-  if (!lessons.length) return <div className="rounded-card border border-dashed border-sand px-4 py-6 text-center text-sm text-stone">{d.emptyLessons}</div>
+  if (!lessons.length) return <div className="rounded-card border border-dashed border-sand px-4 py-6 text-center text-sm text-body">{d.emptyLessons}</div>
   return (
     <ul className="flex flex-col gap-2">
       {lessons.map(l => {
@@ -27,8 +27,9 @@ export function LessonList({ lessons, tz, states, phrases, locale = 'en', detail
             <Link href={`/app/lessons/${l.id}`} className={`card flex items-center gap-3 px-3.5 py-3 hover:border-ink ${l.parent_lesson_id ? 'border-dashed' : ''}`}>
               <span className={`w-1.5 self-stretch rounded-[3px] ${STRIPE[s.kind]}`} />
               <span className="min-w-0 flex-1">
-                <b className="block truncate font-vn text-[15px] font-bold text-ink">{l.parent_lesson_id ? '↳ ' : ''}{l.title}</b>
-                <small className="gloss block text-[13px] text-stone">
+                {/* Titles are written in the language being learned, the opposite of the UI locale. */}
+                <b lang={locale === 'en' ? 'vi' : 'en'} className="block truncate font-vn text-[15px] font-bold text-ink">{l.parent_lesson_id ? '↳ ' : ''}{l.title}</b>
+                <small className="gloss block text-[13px] text-body">
                   {formatDate(l.created_at, tz, locale)}{l.source === 'seed' ? ` · ${d.sample}` : ''} · {l.grammar_topic}
                   {detailed && <> · {phrases?.get(l.id) ?? 0} {d.phrases.toLowerCase()}</>}
                 </small>

@@ -1,4 +1,5 @@
-// app/apple-icon.tsx — 180px home-screen icon, same mark as app/icon.tsx.
+// app/apple-icon.tsx: 180px home-screen icon, same mark as app/icon.tsx.
+// Hex values mirror the tokens in app/globals.css (the source); ImageResponse cannot read CSS variables.
 import { ImageResponse } from 'next/og'
 import { loadGoogleFont } from '@/lib/seo/og-font'
 

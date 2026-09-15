@@ -1,4 +1,5 @@
-// app/icon.tsx — favicon. A capital Đ, the letter English keyboards can't type, on the accent green.
+// app/icon.tsx: favicon. A capital Đ, the letter English keyboards can't type, on the brand red.
+// Hex values mirror the tokens in app/globals.css (the source); ImageResponse cannot read CSS variables.
 import { ImageResponse } from 'next/og'
 import { loadGoogleFont } from '@/lib/seo/og-font'
 

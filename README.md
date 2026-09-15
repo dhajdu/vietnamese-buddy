@@ -1,92 +1,29 @@
 # Vietnamese Buddy
 
-**Vietnamese Buddy**: a web app for learning conversational Southern Vietnamese through daily, situation-based lessons. You type what you expect to talk about today ("asking a coworker to dinner", "talking to a Grab driver"), the app generates a lesson in real Ho Chi Minh City Vietnamese, turns it into flashcards, and rolls every word into one persistent vocabulary store with a streak. Plan: `docs/plans/build-plan.md`.
+A web app for learning conversational Southern Vietnamese, one real situation a day. You describe what you expect to talk about ("asking a coworker to dinner", "talking to a Grab driver"). The app writes a lesson in Ho Chi Minh City Vietnamese, turns it into flashcards with a Southern voice, and adds every word to one vocabulary store with a streak.
 
-> Scaffolded with [Infinite Leverage](https://github.com/talentedgeai/infinite-leverage)
-> (`/il-project`) — a 4-agent team lives in `.claude/`; say what you need and the
-> right agent picks it up (see `CLAUDE.md`).
+Start with [`CLAUDE.md`](./CLAUDE.md). It opens with the map: design tokens, component reference, domain logic, database, and ship flow. The app lives in [`website/`](./website) (Next.js 16, Supabase, Tailwind v4).
 
-## Getting started
-
-The scaffold already ran `create-next-app` into `website/` and made the first
-commit. Three steps to a live site:
-
-### 1 · Supabase (database + auth)
-
-Create a project at [supabase.com](https://supabase.com), then:
+## Run locally
 
 ```bash
 cd website
-cat > .env.local <<'EOF'
-NEXT_PUBLIC_SUPABASE_URL=https://<project-ref>.supabase.co
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<publishable-key>
-SUPABASE_SECRET_KEY=<secret-key>            # server-side only — never NEXT_PUBLIC
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-ANTHROPIC_API_KEY=<anthropic-key>           # server-side only
-AI_MODEL=anthropic/claude-sonnet-5            # or openai/<model> with OPENAI_API_KEY
-FPT_AI_API_KEY=<fpt-ai-key>                 # Southern Vietnamese voice (console.fpt.ai); optional
-TTS_VOICE=lannhi                            # FPT.AI Southern female; or linhsan
-DEFAULT_TIMEZONE=Asia/Ho_Chi_Minh
-EOF
-```
-
-`website/.env.local.example` is the authoritative list. Apply the migrations (starter chat/notifications tables plus the Vietnamese Buddy schema):
-
-```bash
+cp .env.local.example .env.local   # the authoritative env list: Supabase, AI model, optional FPT.AI voice
 npx supabase link --project-ref <project-ref>
 npx supabase db push
-```
-
-Enable **Email** under Supabase → Authentication → Providers (email + password; confirmation emails link back to `/auth/callback`) and add `http://localhost:3000/auth/callback` plus `https://vietnamese-buddy.com/auth/callback` to the redirect allow-list.
-
-### 2 · Run locally
-
-```bash
-cd website
 npm run dev
 ```
 
-Create an account with email and password (confirm via the emailed link), then sign in. On an empty account, Home offers a button to load the three bundled sample lessons (dinner, movie night, internship), so the app is usable before an API key is added. From the CLI:
+In Supabase, enable the Email provider and allow `http://localhost:3000/auth/callback` as a redirect. On an empty account, Home offers a button to load the bundled sample lessons, so the app works before an AI key is set. From the CLI: `npx tsx --env-file=.env.local scripts/seed.ts you@example.com`.
+
+## Checks
 
 ```bash
-npx tsx --env-file=.env.local scripts/seed.ts you@example.com
+npm run lint
+npm run typecheck
+npm test
 ```
 
-Tests: `npx vitest run`.
+## Ship
 
-### 3 · Vercel (deploy)
-
-```bash
-cd website
-npx vercel link          # create/link the Vercel project (root directory: website)
-```
-
-Set the same env vars in Vercel (Project → Settings → Environment Variables), with `NEXT_PUBLIC_SITE_URL` pointed at the production domain (`https://…`). Deploys happen on merge to `main` via PR; nobody pushes to `main` directly.
-
-## How it works
-
-1. You describe a situation on Home.
-2. A Server Action calls the model with a strict JSON schema (`lib/ai/schema.ts`) and validates the result twice.
-3. The lesson is saved; vocabulary is normalised (`lib/vocabulary/normalize.ts`) and deduped per user; flashcards are created (phrase deck + vocabulary deck, skipping words you already know).
-4. You review cards. Know it / Review again update the card and the word.
-5. Today's activity row is upserted in your local timezone and the streak is computed from it.
-6. Every Vietnamese phrase, word, and card has a speaker button. With an FPT.AI key the app synthesises a Southern female voice server-side, caches the mp3 in the public `audio` storage bucket, and pre-warms a lesson's audio right after it is created. Without a key it falls back to the browser's Vietnamese voice.
-
-## Design
-
-Tokens live in `website/app/globals.css`; the spec is `docs/brand/DESIGN.md` with a live twin at `docs/brand/design-system.html`. Palette is ĀRCA Wellness (cream, warm black, one red). Be Vietnam Pro carries the Vietnamese, Playfair Display the English, Inter the UI.
-
-## Building features
-
-Ask Claude Code from the repo root — the agent team routes the work
-(`CLAUDE.md` has the table). Typical first moves:
-
-- `@product-manager` + `pm-client-interview` — capture what you're building
-- "add an epic for <feature>" — PM writes the spec, developer builds from it
-- The `website/` app ships Supabase auth, lesson generation, flashcards, voice,
-  Stripe billing, and vitest tests to build on. `CLAUDE.md` has the map.
-
-## Folder structure
-
-See `FOLDER-STRUCTURE.md` (canonical layout — agents honor it) and `CLAUDE.md`
-(roles + workflows).
+Branch, PR, merge to `main`, and Vercel auto-deploys. Nobody pushes to `main` directly.

@@ -4,6 +4,8 @@ import { appPath } from '@/lib/auth/validate'
 import { redirect } from 'next/navigation'
 import { LoginForm } from '@/components/auth/LoginForm'
 
+export const metadata = { title: 'Sign in' }
+
 export default async function LoginPage({ searchParams }: PageProps<'/login'>) {
   const { next } = await searchParams
   const target = appPath(next)

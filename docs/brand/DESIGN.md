@@ -47,7 +47,7 @@ Rules of thumb:
 | `--white` | `#FFFFFF` | Cards, inputs |
 | `--sand` | `#EEE6DC` | Vietnamese text on dark, borders, soft accent |
 | `--sand-deep` | `#E3D7C6` | Strong lines, pressed sand, calendar "studied" cell |
-| `--stone` | `#9E9A93` | Muted labels, placeholders, meta |
+| `--stone` | `#9E9A93` | Input placeholders and decorative separators only. Fails AA as text, so never for text that carries meaning (see §9) |
 | `--paper` | `#F4F3F3` | Neutral inset (pattern chip) |
 
 ### On-dark helpers
@@ -78,7 +78,7 @@ Functional only. Never used as decoration.
 | `--elevation-1` | `0 1px 2px rgba(28,26,23,.06), 0 1px 3px rgba(28,26,23,.08)` |
 | `--elevation-2` | `0 6px 24px rgba(28,26,23,.10)` |
 | `--elevation-dark` | `0 12px 32px rgba(0,0,0,.40)` |
-| `--focus-ring` | `rgba(175,13,14,.25)` |
+| `--focus-ring` | `rgba(175,13,14,.25)`, Speak playing halo only (focus rings are solid, see §9) |
 
 ## 3. Type
 
@@ -93,9 +93,9 @@ Functional only. Never used as decoration.
 | English gloss | Playfair Display | 16 to 17px | 400 | body colour |
 | Explanation | Inter | 14.5px | 400 | body colour, line-height 1.5 |
 | UI, buttons, nav | Inter | 14 to 15px | 600 | |
-| Eyebrow / label | Inter | 11px | 600 | uppercase, tracking 0.18em, red (70% sand on dark) |
-| Stat | Be Vietnam Pro | 24 to 56px | 800 | tabular numerals, 11px uppercase stone label |
-| Note / meta | Inter | 12 to 13px | 400 | stone |
+| Eyebrow / label | Inter | 11px | 600 | uppercase, tracking 0.18em, red (70% sand on dark). Vietnamese: no uppercase, tracking 0.05em |
+| Stat | Be Vietnam Pro | 24 to 56px | 800 | tabular numerals, 11px uppercase body label |
+| Note / meta | Inter | 12 to 13px | 400 | body (stone fails AA as text) |
 
 Fonts via `next/font/google` with the `vietnamese` subset on all three.
 Fallbacks: Georgia for Playfair, system-ui for the sans faces.
@@ -125,13 +125,13 @@ and glosses; Inter does the quiet UI work. Each has one job.
 | Dark pill | Ink fill, white text. Secondary actions on light. |
 | Ghost on dark | Transparent, sand text, 1.5px sand border at 35%. |
 | Quiet button | Transparent, body text, 1px sand border. Tertiary. |
-| Eyebrow | 11px Inter 600 uppercase tracking 0.18em, red. |
+| Eyebrow | 11px Inter 600 uppercase tracking 0.18em, red. Vietnamese eyebrows keep their written case (§9). |
 | Streak pill | Red fill, white, 🔥 + number, Be Vietnam Pro 800. The only red on Home until the user types. |
 | Input card | White, radius 12, elevation-2, floats 40px over the hero. Serif placeholder in stone. Suggestion chips (cream-warm pill, 12px) beneath. |
-| Stat tile | White, sand border, radius 12. Value Be Vietnam Pro 800 24px tabular; label 10.5px uppercase stone. Cards-due tile flips to amber when above zero. |
+| Stat tile | White, sand border, radius 12. Value Be Vietnam Pro 800 24px tabular; label 10.5px uppercase body. Cards-due tile flips to amber when above zero. |
 | Lesson row | White, sand border, radius 12, 6px left stripe: ok = reviewed, amber = new words waiting, red = cards due. |
 | Phrase row | Tone tag (status pill, 10.5px uppercase), Vietnamese 22/800 ink, gloss Playfair 16 body, explanation Inter 14.5 body. Sand hairline between rows. |
-| Grammar block | Ink-warm, radius 12. Eyebrow 70% sand. Pattern chip red-bright text on `--on-dark-soft`. Explanation sand-70 Playfair. |
+| Grammar block | Ink-warm, radius 12. Eyebrow 70% sand. Pattern chip sand text on `--on-dark-soft` with a 3px red-bright left rule (red-bright text fails 3:1 on ink-warm). Explanation sand-70 Playfair. |
 | Flashcard | White card on ink-warm room, radius 20, elevation-dark. Front: Vietnamese 34/800 ink. Back: Playfair gloss, hairline, Inter explanation. Know it = red pill; Again = ghost on dark; Skip = 70% sand text. |
 | Calendar | 10-column grid, 6px radius cells. Empty = white with sand border; studied = sand-deep; full day (lesson + review) = ink; today = red. |
 | Nav (desktop) | Ink-warm, 60px, wordmark in sand; active item sand with red 3px underline. |
@@ -157,3 +157,20 @@ what happens: "Create today's lesson", "Know it", "Mark complete".
 - Component reference: `website/components/app/`
 - Live swatches and specimens: `docs/brand/design-system.html`
 - Applied mockup: `docs/features/vibrant-redesign/mockup.html`
+
+## 9. Accessibility decisions
+
+- **Contrast.** `--stone` fails WCAG AA as text on cream and white, so text that
+  carries meaning (hints, counts, dates, helper copy, `.meta`) uses `--body`.
+  Stone stays for input placeholders and decorative separators; its value is unchanged.
+- **Focus.** Focus is a solid 2px ring with a 2px offset: `--red` on light
+  surfaces, `--sand` on dark rooms (offset in ink-warm). The 25% alpha
+  `--focus-ring` is too faint for focus.
+- **Inputs.** `.input` text is 16px on phones so iOS Safari does not zoom on
+  focus, and 15px from the `sm` breakpoint up.
+- **Tap targets.** Controls are at least 44px tall on phones (`.chip` uses
+  `min-h-11`) and may return to their compact size from `sm` up (`md` for
+  controls in the app header, which only shows from `md`).
+- **Vietnamese eyebrows.** Uppercase crowds tone marks, so `.eyebrow` and
+  `.eyebrow-dark` keep their written case (tracking 0.05em) under `:lang(vi)`.
+  English stays uppercase. Set `lang="vi"` on the Vietnamese UI's wrapper.

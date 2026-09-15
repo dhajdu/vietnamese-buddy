@@ -85,22 +85,29 @@ body {
   .t-title { @apply font-serif font-normal text-ink leading-[1.1]; }
   .eyebrow { @apply font-ui text-[11px] font-semibold uppercase tracking-[0.18em] text-red; }
   .eyebrow-dark { @apply font-ui text-[11px] font-semibold uppercase tracking-[0.18em] text-sand-70; }
-  .meta { @apply text-xs text-stone; }
+  /* Uppercase crowds Vietnamese tone marks, so Vietnamese eyebrows keep their written case. */
+  .eyebrow:lang(vi), .eyebrow-dark:lang(vi) { @apply normal-case tracking-wider; }
+  /* Meta carries information, so it reads in body: stone fails WCAG AA as text. */
+  .meta { @apply text-xs text-body; }
 
   /* Surfaces */
   .card { @apply rounded-card border border-sand bg-white; }
   .room { @apply rounded-card bg-ink-warm text-sand; }
 
-  /* Buttons: pills. One red per view. */
-  .btn-red { @apply inline-flex items-center justify-center gap-2 rounded-pill px-5 py-3 text-[15px] font-semibold transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-[color:var(--focus-ring)] disabled:cursor-not-allowed disabled:opacity-50 bg-red text-white hover:bg-red-deep; }
-  .btn-red-dark { @apply inline-flex items-center justify-center gap-2 rounded-pill px-5 py-3 text-[15px] font-semibold transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-[color:var(--focus-ring)] disabled:cursor-not-allowed disabled:opacity-50 bg-red-bright text-white hover:bg-red; }
-  .btn-ink { @apply inline-flex items-center justify-center gap-2 rounded-pill px-5 py-3 text-[15px] font-semibold transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-[color:var(--focus-ring)] disabled:cursor-not-allowed disabled:opacity-50 bg-ink text-white hover:bg-ink-warm; }
-  .btn-quiet { @apply inline-flex items-center justify-center gap-2 rounded-pill px-5 py-3 text-[15px] font-semibold transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-[color:var(--focus-ring)] disabled:cursor-not-allowed disabled:opacity-50 border border-sand bg-transparent text-body hover:bg-cream-warm; }
-  .btn-ghost-dark { @apply inline-flex items-center justify-center gap-2 rounded-pill px-5 py-3 text-[15px] font-semibold transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-[color:var(--focus-ring)] disabled:cursor-not-allowed disabled:opacity-50 border-[1.5px] border-sand-35 bg-transparent text-sand hover:bg-on-dark-soft; }
-  .chip { @apply inline-flex items-center rounded-pill bg-cream-warm px-3 py-1 text-xs font-semibold text-body hover:bg-sand; }
+  /* Buttons: pills. One red per view. Shared base, then one colour rule per variant.
+     Focus is a solid 2px ring with a 2px offset: red on light, sand on dark rooms. */
+  .btn-red, .btn-red-dark, .btn-ink, .btn-quiet, .btn-ghost-dark { @apply inline-flex items-center justify-center gap-2 rounded-pill px-5 py-3 text-[15px] font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50; }
+  .btn-red { @apply bg-red text-white hover:bg-red-deep focus-visible:ring-red; }
+  .btn-red-dark { @apply bg-red-bright text-white hover:bg-red focus-visible:ring-sand focus-visible:ring-offset-ink-warm; }
+  .btn-ink { @apply bg-ink text-white hover:bg-ink-warm focus-visible:ring-red; }
+  .btn-quiet { @apply border border-sand bg-transparent text-body hover:bg-cream-warm focus-visible:ring-red; }
+  .btn-ghost-dark { @apply border-[1.5px] border-sand-35 bg-transparent text-sand hover:bg-on-dark-soft focus-visible:ring-sand focus-visible:ring-offset-ink-warm; }
+  /* 44px tap height on phones; the desktop chip keeps its compact size. */
+  .chip { @apply inline-flex min-h-11 items-center rounded-pill bg-cream-warm px-3 py-1 text-xs font-semibold text-body hover:bg-sand sm:min-h-0; }
   .tone { @apply inline-block rounded-pill px-2 py-[2px] text-[10.5px] font-semibold uppercase tracking-[0.06em]; }
 
-  .input { @apply w-full rounded-card border border-sand bg-white px-3 py-2.5 text-[15px] text-ink placeholder:text-stone focus:outline-none focus:ring-4 focus:ring-[color:var(--focus-ring)]; }
+  /* 16px on phones so iOS Safari does not zoom on focus; 15px from sm up. */
+  .input { @apply w-full rounded-card border border-sand bg-white px-3 py-2.5 text-[16px] text-ink placeholder:text-stone focus:outline-none focus:ring-2 focus:ring-red sm:text-[15px]; }
   .alert { @apply rounded-card bg-err-bg px-3 py-2 text-sm text-err-ink; }
 }
 

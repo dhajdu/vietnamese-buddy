@@ -69,6 +69,10 @@ export async function syncTimezone(tz: string) {
 
 export async function logout() {
   const supabase = await createClient()
-  await supabase.auth.signOut()
+  const { error } = await supabase.auth.signOut()
+  if (error) {
+    console.error('sign-out failed:', error.message)
+    return { error: 'Could not sign you out. Try again.' }
+  }
   redirect('/login')
 }
