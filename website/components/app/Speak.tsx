@@ -6,6 +6,9 @@ import { Volume2, Loader2 } from 'lucide-react'
 import { PAIRS, DEFAULT_PAIR, type PairId } from '@/lib/pairs'
 
 const urlCache = new Map<string, string>()
+// 10ms of silent WAV. Starting it inside the tap unlocks the element on iOS, so the real
+// clip can still play after the fetch resolves and the gesture is over.
+const SILENCE = 'data:audio/wav;base64,UklGRnQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YVAAAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA=='
 
 /** Fallback when no provider is configured. Picks a voice in the target language. */
 function speakInBrowser(text: string, pair: PairId) {
@@ -23,51 +26,69 @@ function speakInBrowser(text: string, pair: PairId) {
 
 export function Speak({ text, pair = DEFAULT_PAIR, size = 'md', className = '', dark = false, autoPlay = false }: { text: string; pair?: PairId; size?: 'sm' | 'md' | 'lg'; className?: string; dark?: boolean; autoPlay?: boolean }) {
   const [state, setState] = useState<'idle' | 'loading' | 'playing'>('idle')
+  // One element for the life of the button: iOS unlocks an element, not the page.
   const audio = useRef<HTMLAudioElement | null>(null)
-  const px = size === 'sm' ? 'h-6 w-6' : size === 'lg' ? 'h-10 w-10' : 'h-8 w-8'
+  // Bumped by every play and by cleanup, so a slow fetch for an old card never plays over the new one.
+  const run = useRef(0)
+  // The ::after box widens the phone hit area to 44px without changing the circle.
+  const px = size === 'sm' ? 'h-6 w-6 after:-inset-2.5' : size === 'lg' ? 'h-10 w-10 after:-inset-0.5' : 'h-8 w-8 after:-inset-1.5'
   const icon = size === 'sm' ? 12 : size === 'lg' ? 18 : 15
 
-  async function play(e?: React.MouseEvent) {
-    e?.preventDefault(); e?.stopPropagation()
-    if (state === 'loading') return
-    audio.current?.pause()
+  /** `tap` is true inside a click. iOS only starts media in the gesture, so the unlock runs before any await. */
+  async function play(tap: boolean) {
+    const id = run.current + 1
+    run.current = id
+    const a = (audio.current ??= new Audio())
+    a.pause()
+    a.onended = null
+    a.onerror = null
+    const cacheKey = `${pair}:${text}`
+    let url = urlCache.get(cacheKey)
+    if (tap && !url) {
+      a.src = SILENCE
+      a.play().catch(() => {})
+      // Browser speech needs the same unlock in case the server sends us there.
+      if (typeof speechSynthesis !== 'undefined') speechSynthesis.speak(new SpeechSynthesisUtterance(''))
+    }
     try {
-      const cacheKey = `${pair}:${text}`
-      let url = urlCache.get(cacheKey)
       if (!url) {
         setState('loading')
         const res = await fetch(`/api/tts?pair=${pair}&text=${encodeURIComponent(text)}`)
+        if (id !== run.current) return
         if (res.status === 503) { speakInBrowser(text, pair); setState('idle'); return }
         if (!res.ok) throw new Error(String(res.status))
         url = (await res.json()).url as string
         urlCache.set(cacheKey, url)
+        if (id !== run.current) return
       }
-      const a = new Audio(url)
-      audio.current = a
-      setState('playing')
+      a.src = url
       a.onended = () => setState('idle')
       a.onerror = () => setState('idle')
+      setState('playing')
       await a.play()
-    } catch {
+    } catch (err) {
+      if (id !== run.current) return
       setState('idle')
-      speakInBrowser(text, pair)
+      // A refused autoplay or an interrupted clip stays quiet rather than falling back to browser speech.
+      const quiet = err instanceof DOMException && (err.name === 'NotAllowedError' || err.name === 'AbortError')
+      if (!quiet) speakInBrowser(text, pair)
     }
   }
 
   useEffect(() => {
     if (!autoPlay) return
-    const t = setTimeout(() => { play() }, 250)
-    return () => { clearTimeout(t); audio.current?.pause() }
+    const t = setTimeout(() => { play(false) }, 250)
+    return () => { clearTimeout(t); run.current += 1; audio.current?.pause() }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [text, autoPlay])
 
   const skin = dark
-    ? 'border-on-dark-line bg-on-dark-soft text-sand hover:bg-on-dark-line'
-    : 'border-sand bg-cream-warm text-red hover:bg-sand'
+    ? 'border-on-dark-line bg-on-dark-soft text-sand hover:bg-on-dark-line focus-visible:ring-sand'
+    : 'border-sand bg-cream-warm text-red hover:bg-sand focus-visible:ring-red'
   return (
-    <button type="button" onClick={play} aria-label={`Play “${text}”`}
-      className={`inline-grid shrink-0 place-items-center rounded-full border focus:outline-none focus-visible:ring-4 focus-visible:ring-[color:var(--focus-ring)] ${skin} ${px} ${state === 'playing' ? 'ring-4 ring-[color:var(--focus-ring)]' : ''} ${className}`}>
-      {state === 'loading' ? <Loader2 size={icon} className="animate-spin" /> : <Volume2 size={icon} />}
+    <button type="button" onClick={e => { e.preventDefault(); e.stopPropagation(); play(true) }} aria-label={`Play “${text}”`}
+      className={`relative inline-grid shrink-0 place-items-center rounded-full border after:absolute sm:after:hidden focus:outline-none focus-visible:ring-2 ${skin} ${px} ${state === 'playing' ? 'ring-4 ring-[color:var(--focus-ring)]' : ''} ${className}`}>
+      {state === 'loading' ? <Loader2 size={icon} className="motion-safe:animate-spin" /> : <Volume2 size={icon} />}
     </button>
   )
 }

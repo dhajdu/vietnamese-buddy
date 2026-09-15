@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export function Wordmark({ dark = true, href = '/app' }: { dark?: boolean; href?: string }) {
   return (
-    <Link href={href} className={`flex items-center gap-2 font-serif text-[17px] ${dark ? 'text-sand' : 'text-ink'}`}>
+    <Link href={href} className={`flex items-center gap-2 font-serif text-[17px] focus-visible:outline-2 focus-visible:outline-offset-2 ${dark ? 'text-sand focus-visible:outline-sand' : 'text-ink focus-visible:outline-red'}`}>
       <span className="grid h-[26px] w-[26px] place-items-center rounded-[7px] bg-red pb-[2px] font-vn text-base font-extrabold text-white">Đ</span>
       Vietnamese Buddy
     </Link>

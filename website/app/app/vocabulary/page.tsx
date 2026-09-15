@@ -54,21 +54,22 @@ export default async function VocabularyPage({ searchParams }: PageProps<'/app/v
       </header>
 
       <form className="flex gap-2" method="get">
-        <input type="search" name="q" defaultValue={q} placeholder={d.searchPlaceholder} className="input flex-1" />
+        <input type="search" name="q" defaultValue={q} placeholder={d.searchPlaceholder} aria-label={d.searchPlaceholder} className="input min-w-0 flex-1" />
         {status !== 'all' && <input type="hidden" name="status" value={status} />}
         <button type="submit" className="btn-quiet">{d.search}</button>
       </form>
       <div className="flex flex-wrap gap-1.5">
         {FILTERS.map(f => (
           <Link key={f} href={`/app/vocabulary?${new URLSearchParams({ ...(q ? { q } : {}), ...(f !== 'all' ? { status: f } : {}) })}`}
-            className={`rounded-pill px-3 py-1 text-xs font-semibold capitalize ${status === f ? 'bg-ink text-white' : 'bg-cream-warm text-body hover:bg-sand'}`}>
+            aria-current={status === f ? 'page' : undefined}
+            className={`chip ${status === f ? 'bg-ink text-white hover:bg-ink' : ''}`}>
             {filterLabel[f]}
           </Link>
         ))}
       </div>
 
       {!rows.length ? (
-        <div className="rounded-card border border-dashed border-sand px-4 py-8 text-center text-sm text-stone">{d.nothingYet}</div>
+        <div className="rounded-card border border-dashed border-sand px-4 py-8 text-center text-sm text-body">{d.nothingYet}</div>
       ) : (
         <ul className="flex flex-col gap-2">
           {(rows as unknown as Row[]).map(r => {
@@ -78,9 +79,9 @@ export default async function VocabularyPage({ searchParams }: PageProps<'/app/v
                 <div className="flex items-center justify-between gap-3">
                   <span className="flex items-center gap-2">
                     <Speak text={r[pair.targetField]} pair={pair.id} size="sm" />
-                    <span className="font-vn text-[16px] font-bold text-ink">{r[pair.targetField]}</span>
+                    <span lang={pair.targetField === 'vietnamese' ? 'vi' : 'en'} className="font-vn text-[16px] font-bold text-ink">{r[pair.targetField]}</span>
                   </span>
-                  <StatusToggle id={r.id} status={r.status} locale={pair.uiLocale} />
+                  <StatusToggle id={r.id} status={r.status} word={r[pair.targetField]} locale={pair.uiLocale} />
                 </div>
                 <p className="gloss text-[14px]">{r[pair.sourceField]}</p>
                 {intro && <p className="meta"><Link href={`/app/lessons/${intro.id}`} className="hover:text-ink">{intro.title}</Link> · {formatDate(intro.created_at, timezone, pair.uiLocale)}</p>}

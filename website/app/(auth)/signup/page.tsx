@@ -4,6 +4,8 @@ import { checkoutPath } from '@/lib/auth/validate'
 import { redirect } from 'next/navigation'
 import { SignupForm } from '@/components/auth/SignupForm'
 
+export const metadata = { title: 'Create account' }
+
 export default async function SignupPage({ searchParams }: PageProps<'/signup'>) {
   const { plan } = await searchParams
   const user = await getOptionalUser()

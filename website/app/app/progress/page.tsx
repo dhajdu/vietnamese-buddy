@@ -1,9 +1,11 @@
 // app/(app)/progress/page.tsx — Streak
+import Link from 'next/link'
 import { requireAuth, getCurrentProfile } from '@/lib/auth/guards'
 import { createClient } from '@/lib/supabase/server'
 import { computeStreak, lastNDates, localDate } from '@/lib/activity/streak'
 import { t } from '@/lib/i18n'
 import { StatTiles } from '@/components/app/StatTiles'
+import { PairSwitcher } from '@/components/app/PairSwitcher'
 import { LogoutButton } from '@/components/auth/LogoutButton'
 
 export const metadata = { title: 'Streak' }
@@ -36,9 +38,9 @@ export default async function ProgressPage() {
   return (
     <div className="mx-auto max-w-3xl space-y-5 px-4 pt-8 sm:px-6 sm:pt-12">
       <div className="room flex items-center gap-5 px-5 py-5">
-        <b className="font-vn text-[56px] font-extrabold leading-none tracking-[-0.04em] text-sand">🔥 {streak.current}</b>
+        <b aria-hidden="true" className="font-vn text-[56px] font-extrabold leading-none tracking-[-0.04em] text-sand">🔥 {streak.current}</b>
         <div>
-          <div className="text-[15px] font-semibold text-sand">{d.dayStreak}</div>
+          <h1 className="text-[15px] font-semibold text-sand"><span className="sr-only">{streak.current} </span>{d.dayStreak}</h1>
           <span className="gloss text-[15px] text-sand-70">{d.longest} {streak.longest} · {streak.totalDays} {d.learningDays}</span>
         </div>
       </div>
@@ -69,7 +71,14 @@ export default async function ProgressPage() {
         <p className="font-vn text-[18px] font-extrabold text-ink">{milestone} {d.statWords.toLowerCase()} · {milestone - words} {d.toGo}</p>
         <p className="gloss text-[14px]">{d.aboutNLessons(lessonsToGo)}</p>
       </div>
-      <div className="pt-2 sm:hidden"><LogoutButton label={d.signOut} /></div>
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-2">
+        <Link href="/app/billing" className="inline-flex min-h-11 items-center text-sm font-semibold text-ink underline sm:min-h-0">{d.planAndBilling}</Link>
+        {/* The app header (switcher and sign out) only shows from md, so phones and small tablets get them here. */}
+        <div className="flex flex-wrap items-center gap-4 md:hidden">
+          <span className="flex items-center gap-3 text-sm font-semibold text-body">{d.direction} <PairSwitcher pair={pair.id} label={d.switchDirection} /></span>
+          <LogoutButton label={d.signOut} />
+        </div>
+      </div>
     </div>
   )
 }

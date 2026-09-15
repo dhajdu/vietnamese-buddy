@@ -1,6 +1,7 @@
 // app/(app)/flashcards/page.tsx
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { z } from 'zod'
 import { requireAuth, getCurrentProfile } from '@/lib/auth/guards'
 import { createClient } from '@/lib/supabase/server'
 import { computeStreak, localDate } from '@/lib/activity/streak'
@@ -20,6 +21,8 @@ export default async function FlashcardsPage({ searchParams }: PageProps<'/app/f
 
   if (lesson || deck === 'due') {
     const lessonId = lesson ? String(lesson) : null
+    // A malformed id is a missing deck, not a Postgres cast error for the error boundary.
+    if (lessonId && !z.uuid().safeParse(lessonId).success) notFound()
     const [cardsRes, actRes, lessonRes] = await Promise.all([
       // A lesson's deck is that lesson's cards, whichever direction the learner is on now.
       lessonId
@@ -36,13 +39,15 @@ export default async function FlashcardsPage({ searchParams }: PageProps<'/app/f
     const dd = t(deckPair.uiLocale)
     const cards = ((cardsRes.data ?? []) as unknown as (Card & { status: keyof typeof ORDER })[]).sort((a, b) => ORDER[a.status] - ORDER[b.status])
     if (!cards.length) {
-      return <div className="mx-auto max-w-3xl px-6 pt-12"><div className="rounded-card border border-dashed border-sand px-4 py-8 text-center text-sm text-stone">{dd.noCardsDue} <Link href="/app" className="font-semibold text-red hover:underline">{dd.createALesson}</Link></div></div>
+      return <div className="mx-auto max-w-3xl px-6 pt-12"><div className="rounded-card border border-dashed border-sand px-4 py-8 text-center text-sm text-body">{dd.noCardsDue} <Link href="/app" className="font-semibold text-red hover:underline">{dd.createALesson}</Link></div></div>
     }
-    const streak = computeStreak((actRes.data ?? []).map(r => r.activity_date as string), localDate(timezone))
+    const today = localDate(timezone)
+    const dates = (actRes.data ?? []).map(r => r.activity_date as string)
+    const streak = computeStreak(dates, today)
     return (
       <div className="mx-auto max-w-3xl sm:px-6 sm:pt-8">
         <ReviewSession cards={cards} backHref={lessonId ? `/app/lessons/${lessonId}` : '/app'} title={(l?.title as string) ?? dd.allDueCards}
-          streakBefore={streak.current} pair={deckPair.id} locale={deckPair.uiLocale} />
+          streakBefore={streak.current} activeToday={dates.includes(today)} pair={deckPair.id} locale={deckPair.uiLocale} />
       </div>
     )
   }
@@ -63,7 +68,7 @@ export default async function FlashcardsPage({ searchParams }: PageProps<'/app/f
         <h2 className="eyebrow">{d.dueToday}</h2>
         <Link href="/app/flashcards?deck=due" className="card flex items-center justify-between px-4 py-3 hover:border-ink">
           <span className="font-vn text-[15px] font-bold text-ink">{d.allDueCards}</span>
-          <span className={`tabular text-sm font-semibold ${due ? 'text-amber-ink' : 'text-stone'}`}>{due ?? 0}</span>
+          <span className={`tabular text-sm font-semibold ${due ? 'text-amber-ink' : 'text-body'}`}>{due ?? 0}</span>
         </Link>
       </section>
       <section className="space-y-2">
@@ -76,7 +81,7 @@ export default async function FlashcardsPage({ searchParams }: PageProps<'/app/f
               <li key={l.id}>
                 <Link href={`/app/flashcards?lesson=${l.id}`} className="card flex items-center justify-between px-4 py-3 hover:border-ink">
                   <span className="font-vn text-[15px] font-bold text-ink">{l.title as string}</span>
-                  <span className={`tabular text-sm font-semibold ${open ? 'text-amber-ink' : 'text-ok-ink'}`}>{open ? `${open} ${d.due}` : d.done} <span className="text-stone">· {cards.length}</span></span>
+                  <span className={`tabular text-sm font-semibold ${open ? 'text-amber-ink' : 'text-ok-ink'}`}>{open ? `${open} ${d.due}` : d.done} <span className="text-body">· {cards.length}</span></span>
                 </Link>
               </li>
             )

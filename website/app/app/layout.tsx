@@ -10,10 +10,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   const user = await requireAuth()
   const { pair, timezone } = await getCurrentProfile(user.id)
   return (
-    <div className="flex min-h-full flex-col">
+    // The root <html> stays lang="en"; the app interface speaks the learner's own language.
+    <div lang={pair.uiLocale} className="flex min-h-full flex-col">
       {timezone === DEFAULT_TZ && <TimezoneSync stored={timezone} />}
       <Nav pair={pair.id} locale={pair.uiLocale} />
-      <main className="flex-1 pb-24 sm:pb-16">{children}</main>
+      <main className="flex-1 pb-24 md:pb-16">{children}</main>
     </div>
   )
 }

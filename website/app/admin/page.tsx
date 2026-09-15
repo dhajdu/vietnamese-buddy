@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { requireAdmin } from '@/lib/auth/guards'
 import { listUsers } from '@/lib/admin/queries'
 
+export const metadata = { title: 'Users' }
+
 const SORTS = [
   { key: 'created_at', label: 'Newest' },
   { key: 'lessons', label: 'Lessons' },
@@ -36,7 +38,7 @@ export default async function AdminUsersPage({ searchParams }: PageProps<'/admin
           <p className="meta mt-1">{pro} on a paid or comped plan</p>
         </div>
         <form method="get" className="flex gap-2">
-          <input type="search" name="q" defaultValue={search} placeholder="Search email" className="input w-56" />
+          <input type="search" name="q" defaultValue={search} placeholder="Search email" aria-label="Search email" className="input w-56" />
           <input type="hidden" name="sort" value={sort} />
           <button className="btn-quiet">Search</button>
         </form>
@@ -45,7 +47,8 @@ export default async function AdminUsersPage({ searchParams }: PageProps<'/admin
       <div className="flex flex-wrap gap-1.5">
         {SORTS.map(s => (
           <Link key={s.key} href={`/admin?${new URLSearchParams({ ...(search ? { q: search } : {}), sort: s.key })}`}
-            className={`rounded-pill px-3 py-1 text-xs font-semibold ${sort === s.key ? 'bg-ink text-white' : 'bg-cream-warm text-body hover:bg-sand'}`}>
+            aria-current={sort === s.key ? 'page' : undefined}
+            className={`chip ${sort === s.key ? 'bg-ink text-white hover:bg-ink' : ''}`}>
             {s.label}
           </Link>
         ))}
@@ -54,7 +57,7 @@ export default async function AdminUsersPage({ searchParams }: PageProps<'/admin
       <div className="overflow-x-auto rounded-card border border-sand bg-white">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-cream-warm text-[11px] uppercase tracking-[0.1em] text-stone">
+            <tr className="bg-cream-warm text-[11px] uppercase tracking-[0.1em] text-body">
               <th className="p-3 text-left font-semibold">Email</th>
               <th className="p-3 text-left font-semibold">Plan</th>
               <th className="p-3 text-left font-semibold">Direction</th>
@@ -73,17 +76,17 @@ export default async function AdminUsersPage({ searchParams }: PageProps<'/admin
                 <tr key={u.id} className="border-t border-sand hover:bg-cream-warm">
                   <td className="p-3"><Link href={`/admin/users/${u.id}`} className="font-semibold text-red hover:underline">{u.email ?? u.id.slice(0, 8)}</Link></td>
                   <td className="p-3"><span className={`rounded-pill px-2 py-0.5 text-[11px] font-semibold ${p.cls}`}>{p.text}</span></td>
-                  <td className="p-3 text-stone">{u.pair}</td>
+                  <td className="p-3 text-body">{u.pair}</td>
                   <td className="tabular p-3 text-right">{u.lessons}</td>
                   <td className="tabular p-3 text-right">{u.words}</td>
                   <td className="tabular p-3 text-right">{u.words_known}</td>
                   <td className="tabular p-3 text-right">{u.learning_days}</td>
-                  <td className="p-3 text-stone">{u.last_active ?? '—'}</td>
-                  <td className="p-3 text-stone">{u.created_at.slice(0, 10)}</td>
+                  <td className="p-3 text-body">{u.last_active ?? '—'}</td>
+                  <td className="p-3 text-body">{u.created_at.slice(0, 10)}</td>
                 </tr>
               )
             })}
-            {!users.length && <tr><td colSpan={9} className="p-8 text-center text-stone">No signups match.</td></tr>}
+            {!users.length && <tr><td colSpan={9} className="p-8 text-center text-body">No signups match.</td></tr>}
           </tbody>
         </table>
       </div>

@@ -26,13 +26,13 @@ export default async function LandingPage() {
   return (
     <>
       <LandingJsonLd c={EN} base={BASE_URL} freeLessons={freeLessons} />
-      <Hero c={EN} signedIn={false} freeLessons={freeLessons} />
+      <Hero c={EN} freeLessons={freeLessons} />
       <Contrast c={EN} />
       <Steps c={EN} />
       <Sample c={EN} lesson={lesson} />
       <Accumulate c={EN} />
       <Faq c={EN} freeLessons={freeLessons} />
-      <Closing c={EN} signedIn={false} freeLessons={freeLessons} />
+      <Closing c={EN} freeLessons={freeLessons} />
     </>
   )
 }

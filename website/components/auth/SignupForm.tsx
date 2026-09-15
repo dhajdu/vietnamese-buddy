@@ -95,8 +95,8 @@ export function SignupForm({ plan }: { plan?: string }) {
         )}
       </form.Subscribe>
 
-      <p className="text-center text-sm text-stone">
-        Already have an account? <a href={checkout ? `/login?next=${encodeURIComponent(checkout)}` : '/login'} className="font-semibold text-red hover:underline">Sign in</a>
+      <p className="text-center text-sm text-body">
+        Already have an account? <a href={checkout ? `/login?next=${encodeURIComponent(checkout)}` : '/login'} className="font-semibold text-ink underline">Sign in</a>
       </p>
     </form>
   )

@@ -52,7 +52,7 @@ export default async function AdminSettingsPage() {
         <h2 className="t-title text-xl">Recent model tests</h2>
         <div className="overflow-x-auto rounded-card border border-sand bg-white">
           <table className="w-full text-sm">
-            <thead><tr className="bg-cream-warm text-[11px] uppercase tracking-[0.1em] text-stone">
+            <thead><tr className="bg-cream-warm text-[11px] uppercase tracking-[0.1em] text-body">
               <th className="p-3 text-left font-semibold">Model</th><th className="p-3 text-left font-semibold">Direction</th>
               <th className="p-3 text-left font-semibold">Result</th><th className="p-3 text-right font-semibold">Latency</th>
               <th className="p-3 text-right font-semibold">Tokens in/out</th><th className="p-3 text-right font-semibold">Cost</th>
@@ -62,20 +62,20 @@ export default async function AdminSettingsPage() {
               {tests.map(t => (
                 <tr key={t.id} className="border-t border-sand align-top">
                   <td className="p-3 font-semibold text-ink">{t.provider}/{t.model}</td>
-                  <td className="p-3 text-stone">{t.pair}</td>
+                  <td className="p-3 text-body">{t.pair}</td>
                   <td className="p-3">
                     {t.passed
                       ? <span className="rounded-pill bg-ok-bg px-2 py-0.5 text-[11px] font-semibold text-ok-ink">passed</span>
                       : <span className="rounded-pill bg-err-bg px-2 py-0.5 text-[11px] font-semibold text-err-ink" title={t.error ?? ''}>failed</span>}
-                    {!t.passed && t.error && <p className="mt-1 max-w-[40ch] text-xs text-stone">{t.error}</p>}
+                    {!t.passed && t.error && <p className="mt-1 max-w-[40ch] text-xs text-body">{t.error}</p>}
                   </td>
                   <td className="tabular p-3 text-right">{t.latency_ms ? `${(t.latency_ms / 1000).toFixed(1)}s` : '—'}</td>
                   <td className="tabular p-3 text-right">{t.input_tokens ?? '—'} / {t.output_tokens ?? '—'}</td>
                   <td className="tabular p-3 text-right">{t.cost_usd ? `$${Number(t.cost_usd).toFixed(4)}` : '—'}</td>
-                  <td className="p-3 text-stone">{new Date(t.created_at).toLocaleString('en-GB')}</td>
+                  <td className="p-3 text-body">{new Date(t.created_at).toLocaleString('en-GB')}</td>
                 </tr>
               ))}
-              {!tests.length && <tr><td colSpan={7} className="p-8 text-center text-stone">No tests run yet.</td></tr>}
+              {!tests.length && <tr><td colSpan={7} className="p-8 text-center text-body">No tests run yet.</td></tr>}
             </tbody>
           </table>
         </div>

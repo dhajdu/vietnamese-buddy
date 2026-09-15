@@ -1,4 +1,5 @@
-// app/opengraph-image.tsx — 1200×630 social card. Also reused by app/twitter-image.tsx.
+// app/opengraph-image.tsx: 1200×630 social card. Also reused by app/twitter-image.tsx.
+// Hex values mirror the tokens in app/globals.css (the source); ImageResponse cannot read CSS variables.
 import { ImageResponse } from 'next/og'
 import { loadGoogleFont } from '@/lib/seo/og-font'
 import { SITE_NAME, SITE_TAGLINE } from '@/lib/seo/metadata'
@@ -12,8 +13,9 @@ const GLOSS = 'Want to grab dinner tonight?'
 const NOTE = 'hông, not không. That’s how Saigon actually says it.'
 
 export default async function OgImage() {
-  const [display, body] = await Promise.all([
-    loadGoogleFont('Be Vietnam Pro', 700, PHRASE + SITE_NAME + 'Đ'),
+  const [hero, display, body] = await Promise.all([
+    loadGoogleFont('Be Vietnam Pro', 800, PHRASE),
+    loadGoogleFont('Be Vietnam Pro', 700, SITE_NAME + 'Đ' + 'vietnamese-buddy.com'),
     loadGoogleFont('Playfair Display', 400, GLOSS + NOTE + SITE_TAGLINE),
   ])
   return new ImageResponse(
@@ -31,7 +33,7 @@ export default async function OgImage() {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          <div style={{ fontFamily: 'Be Vietnam Pro', fontSize: 104, fontWeight: 700, color: '#111111', letterSpacing: -3, lineHeight: 1.05 }}>{PHRASE}</div>
+          <div style={{ fontFamily: 'Be Vietnam Pro', fontSize: 104, fontWeight: 800, color: '#111111', letterSpacing: -3, lineHeight: 1.05 }}>{PHRASE}</div>
           <div style={{ fontSize: 40, color: '#3D3A37' }}>{GLOSS}</div>
           <div style={{ fontSize: 28, color: '#9E9A93', marginTop: 6 }}>{NOTE}</div>
         </div>
@@ -45,6 +47,7 @@ export default async function OgImage() {
     {
       ...size,
       fonts: [
+        { name: 'Be Vietnam Pro', data: hero, weight: 800, style: 'normal' },
         { name: 'Be Vietnam Pro', data: display, weight: 700, style: 'normal' },
         { name: 'Playfair Display', data: body, weight: 400, style: 'normal' },
       ],

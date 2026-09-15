@@ -98,8 +98,8 @@ export function LoginForm({ next }: { next?: string }) {
         )}
       </form.Subscribe>
 
-      <p className="text-center text-sm text-stone">
-        No account? <a href="/signup" className="font-semibold text-red hover:underline">Sign up</a>
+      <p className="text-center text-sm text-body">
+        No account? <a href="/signup" className="font-semibold text-ink underline">Sign up</a>
       </p>
     </form>
   )
