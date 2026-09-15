@@ -1,5 +1,5 @@
 // lib/ai/generate.ts
-import { generateObject } from 'ai'
+import { generateObject, NoObjectGeneratedError } from 'ai'
 import { createOpenAI } from '@ai-sdk/openai'
 import { createAnthropic } from '@ai-sdk/anthropic'
 import { createOpenRouter } from '@openrouter/ai-sdk-provider'
@@ -10,7 +10,10 @@ import type { LanguagePair } from '@/lib/pairs'
 
 export class LessonGenerationError extends Error {}
 
-const TIMEOUT_MS = 170_000 // pages hosting the action set maxDuration = 180
+// One budget for every attempt: pages hosting the action set maxDuration = 180.
+const DEADLINE_MS = 165_000
+// A lesson usually lands in 30 to 60s, so a retry with less time left would only time out.
+const MIN_RETRY_MS = 60_000
 
 export const DEFAULT_MODEL_SPEC = 'anthropic/claude-sonnet-5'
 
@@ -41,7 +44,11 @@ export function resolveModel(spec: string) {
   throw new LessonGenerationError(`Unknown provider "${provider}". Use anthropic, openai or openrouter.`)
 }
 
-/** Dedupe vocabulary inside one lesson on the language being learned, and tidy edges. Pure. */
+/**
+ * Dedupe vocabulary inside one lesson on the language being learned, and tidy edges. Pure.
+ * Phrase and example text is trimmed too: /api/tts trims the text it is asked for and
+ * matches it exactly against the saved lesson.
+ */
 export function tidyLesson(lesson: Lesson, situation: string, pair: LanguagePair): Lesson {
   const seen = new Set<string>()
   const vocabulary = lesson.vocabulary
@@ -52,7 +59,23 @@ export function tidyLesson(lesson: Lesson, situation: string, pair: LanguagePair
       seen.add(k)
       return true
     })
-  return { ...lesson, vocabulary, situation: lesson.situation || situation }
+  const trimText = <T extends { vietnamese: string; english: string }>(p: T): T =>
+    ({ ...p, vietnamese: p.vietnamese.trim(), english: p.english.trim() })
+  return {
+    ...lesson,
+    phrases: lesson.phrases.map(trimText),
+    vocabulary,
+    grammar: { ...lesson.grammar, examples: lesson.grammar.examples.map(trimText) },
+    situation: lesson.situation || situation,
+  }
+}
+
+/** The schema problems behind a rejected object, short enough to hand back to the model. */
+function validationFeedback(err: NoObjectGeneratedError): string {
+  const cause = err.cause as { cause?: { issues?: { path: PropertyKey[]; message: string }[] }; message?: string } | undefined
+  const issues = cause?.cause?.issues
+  if (issues?.length) return issues.map(i => `${i.path.join('.')}: ${i.message}`).join('; ')
+  return err.message
 }
 
 export interface GenerationResult {
@@ -79,37 +102,43 @@ export async function generateLesson(opts: {
   const m = resolveModel(modelSpec)
   let prompt = userPrompt(situation, opts.recentGrammar ?? [], opts.adjustment)
   const started = Date.now()
+  const deadline = started + DEADLINE_MS
   let inputTokens = 0
   let outputTokens = 0
 
   for (let attempt = 0; attempt < 2; attempt++) {
-    const { object, usage } = await generateObject({
-      model: m,
-      schema: LessonSchema,
-      system: systemPrompt(opts.pair),
-      prompt,
-      temperature: 0.7,
-      abortSignal: AbortSignal.timeout(TIMEOUT_MS),
-      // Routine structured task: low effort keeps Claude's thinking short so a lesson lands in ~30–60s.
-      providerOptions: { anthropic: { effort: 'low' } },
-    }).catch(err => {
+    if (attempt > 0 && deadline - Date.now() < MIN_RETRY_MS) break
+    let object: Lesson
+    try {
+      const r = await generateObject({
+        model: m,
+        schema: LessonSchema,
+        system: systemPrompt(opts.pair),
+        prompt,
+        temperature: 0.7,
+        abortSignal: AbortSignal.timeout(deadline - Date.now()),
+        // Routine structured task: low effort keeps Claude's thinking short so a lesson lands in ~30–60s.
+        providerOptions: { anthropic: { effort: 'low' } },
+      })
+      object = r.object
+      inputTokens += r.usage?.inputTokens ?? 0
+      outputTokens += r.usage?.outputTokens ?? 0
+    } catch (err) {
       if (err instanceof Error && err.name === 'TimeoutError') {
         throw new LessonGenerationError('The lesson took too long to write. Try again in a moment.')
       }
-      throw err
-    })
-    inputTokens += usage?.inputTokens ?? 0
-    outputTokens += usage?.outputTokens ?? 0
-    const parsed = LessonSchema.safeParse(object)
-    if (parsed.success) {
-      const tidy = tidyLesson(parsed.data, situation, opts.pair)
-      if (tidy.vocabulary.length >= 12) {
-        return { lesson: tidy, modelSpec, inputTokens, outputTokens, latencyMs: Date.now() - started }
-      }
-      prompt += `\n\nPrevious attempt had too few unique vocabulary items after deduplication. Provide at least 14 distinct items.`
+      // generateObject throws, rather than returning, when the object does not match the schema.
+      if (!NoObjectGeneratedError.isInstance(err)) throw err
+      inputTokens += err.usage?.inputTokens ?? 0
+      outputTokens += err.usage?.outputTokens ?? 0
+      prompt += `\n\nPrevious attempt failed validation: ${validationFeedback(err)}. Fix these and return the full lesson again.`
       continue
     }
-    prompt += `\n\nPrevious attempt failed validation: ${parsed.error.issues.map(i => `${i.path.join('.')}: ${i.message}`).join('; ')}. Fix these and return the full lesson again.`
+    const tidy = tidyLesson(object, situation, opts.pair)
+    if (tidy.vocabulary.length >= 12) {
+      return { lesson: tidy, modelSpec, inputTokens, outputTokens, latencyMs: Date.now() - started }
+    }
+    prompt += `\n\nPrevious attempt had too few unique vocabulary items after deduplication. Provide at least 14 distinct items.`
   }
   throw new LessonGenerationError('The lesson came back malformed. Try again or rephrase the situation.')
 }

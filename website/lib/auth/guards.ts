@@ -1,6 +1,17 @@
 // lib/auth/guards.ts
+import { cache } from 'react'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { getProfile } from '@/lib/lessons/queries'
+
+// cache() lasts one server request, so a layout and its page share one Auth
+// round trip and one profile read instead of each paying for their own.
+const currentUser = cache(async () => {
+  const supabase = await createClient()
+  const { data: { user }, error } = await supabase.auth.getUser()
+  // Signed out also comes back as an error, so any error means no user.
+  return error ? null : user
+})
 
 /**
  * Use in Server Components and layouts to protect routes.
@@ -8,9 +19,8 @@ import { createClient } from '@/lib/supabase/server'
  * Always uses getUser() — never getSession() — for server-side auth.
  */
 export async function requireAuth(redirectTo = '/login') {
-  const supabase = await createClient()
-  const { data: { user }, error } = await supabase.auth.getUser()
-  if (error || !user) redirect(redirectTo)
+  const user = await currentUser()
+  if (!user) redirect(redirectTo)
   return user
 }
 
@@ -18,10 +28,11 @@ export async function requireAuth(redirectTo = '/login') {
  * Returns the current user without redirecting. Returns null if unauthenticated.
  */
 export async function getOptionalUser() {
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-  return user
+  return currentUser()
 }
+
+/** The signed-in learner's profile, read once per request however many components ask. */
+export const getCurrentProfile = cache(async (userId: string) => getProfile(await createClient(), userId))
 
 /**
  * Gate for every admin page and action. Must be the FIRST statement in each one:
@@ -30,12 +41,12 @@ export async function getOptionalUser() {
  * A non-admin gets 404, not a redirect, so the route's existence is not
  * confirmed to someone who should not know about it.
  */
-export async function requireAdmin(): Promise<{ id: string; email: string | null }> {
+export const requireAdmin = cache(async (): Promise<{ id: string; email: string | null }> => {
   const { notFound } = await import('next/navigation')
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
+  const user = await currentUser()
   if (!user) return notFound()
+  const supabase = await createClient()
   const { data, error } = await supabase.from('profiles').select('is_admin, email').eq('id', user.id).single()
   if (error || !data?.is_admin) return notFound()
   return { id: user.id, email: (data.email as string | null) ?? null }
-}
+})

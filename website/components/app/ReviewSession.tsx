@@ -32,11 +32,12 @@ export function ReviewSession({ cards, backHref, title, streakBefore, pair = DEF
 
   const card = cards[i]
   const next = () => { setFlipped(false); setI(n => n + 1) }
-  const answer = (result: 'known' | 'again') => start(async () => {
-    await reviewCard(card.id, result)
+  // Advance before the save lands; reviewCard returns { error } rather than throwing.
+  const answer = (result: 'known' | 'again') => {
     setTally(t => ({ ...t, [result]: t[result] + 1, run: result === 'known' ? t.run + 1 : 0 }))
     next()
-  })
+    start(async () => { await reviewCard(card.id, result) })
+  }
   const cheers = CHEER[pair]
   const cheer = tally.run >= 3 ? cheers[Math.min(Math.floor(tally.run / 3) - 1, cheers.length - 1)] : null
 

@@ -54,13 +54,19 @@ export async function savePlan(formData: FormData) {
   return { ok: true }
 }
 
-/** Grants or removes free access without involving Stripe. */
+/**
+ * Grants or removes free access without involving Stripe. Only comped is written:
+ * status belongs to the webhook, so removing a comp never cancels a paying subscriber.
+ */
 export async function setComped(userId: string, comped: boolean) {
   await requireAdmin()
   const db = createAdminClient()
   const { error } = await db.from('subscriptions')
-    .upsert({ user_id: userId, comped, status: comped ? 'active' : 'canceled', updated_at: new Date().toISOString() }, { onConflict: 'user_id' })
-  if (error) return { error: error.message }
+    .upsert({ user_id: userId, comped, updated_at: new Date().toISOString() }, { onConflict: 'user_id' })
+  if (error) {
+    console.error('admin: setComped failed', error.message)
+    return { error: 'Could not change comp access. Try again.' }
+  }
   revalidatePath(`/admin/users/${userId}`)
   revalidatePath('/admin')
   return { ok: true }

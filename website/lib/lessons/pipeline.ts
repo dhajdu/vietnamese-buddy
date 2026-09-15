@@ -31,10 +31,14 @@ export async function saveLesson(
   if (lErr || !row) throw new Error(`lesson insert failed: ${lErr?.message}`)
   const lessonId = row.id as string
 
+  // Words this save created, so a failed save can take them back out.
+  let created: string[] = []
   try {
-    // Vocabulary: insert only the ones that don't exist yet, then read back all.
+    // Vocabulary: insert the words that don't exist yet, then read back all of them.
     // The dedupe key is the language being learned, so the two directions keep
-    // separate stores and never collide.
+    // separate stores and never collide. Duplicates are skipped on the unique key
+    // rather than checked first, so a lesson saving at the same moment with the
+    // same new word cannot make this insert fail.
     const items = lesson.vocabulary.map(v => ({
       user_id: userId,
       pair: pair.id,
@@ -42,20 +46,15 @@ export async function saveLesson(
       english: v.english,
       normalized: normalizeTerm(v[pair.targetField]),
     }))
-    const keys = items.map(i => i.normalized)
-    const { data: existing, error: eErr } = await db.from('vocabulary')
-      .select('id, normalized, status').eq('user_id', userId).eq('pair', pair.id).in('normalized', keys)
-    if (eErr) throw new Error(`vocabulary read failed: ${eErr.message}`)
-    const existingByKey = new Map((existing ?? []).map(r => [r.normalized as string, r]))
-    const fresh = items.filter(i => !existingByKey.has(i.normalized))
+    const { data: inserted, error: iErr } = await db.from('vocabulary')
+      .upsert(items, { onConflict: 'user_id,pair,normalized', ignoreDuplicates: true }).select('id')
+    if (iErr) throw new Error(`vocabulary insert failed: ${iErr.message}`)
+    created = (inserted ?? []).map(r => r.id as string)
 
-    let inserted: { id: string; normalized: string; status: string }[] = []
-    if (fresh.length) {
-      const { data, error } = await db.from('vocabulary').insert(fresh).select('id, normalized, status')
-      if (error) throw new Error(`vocabulary insert failed: ${error.message}`)
-      inserted = data ?? []
-    }
-    const all = [...(existing ?? []), ...inserted] as { id: string; normalized: string; status: string }[]
+    const { data: words, error: wErr } = await db.from('vocabulary')
+      .select('id, normalized, status').eq('user_id', userId).eq('pair', pair.id).in('normalized', items.map(i => i.normalized))
+    if (wErr) throw new Error(`vocabulary read failed: ${wErr.message}`)
+    const all = (words ?? []) as { id: string; normalized: string; status: string }[]
 
     const { error: jErr } = await db.from('lesson_vocabulary')
       .insert(all.map(v => ({ lesson_id: lessonId, vocabulary_id: v.id })))
@@ -80,9 +79,30 @@ export async function saveLesson(
     const { error: cErr } = await db.from('flashcards').insert(cards)
     if (cErr) throw new Error(`flashcards insert failed: ${cErr.message}`)
 
-    return { lessonId, newWords: inserted.length }
+    return { lessonId, newWords: created.length }
   } catch (err) {
-    await db.from('lessons').delete().eq('id', lessonId)
+    await rollback(db, lessonId, created)
     throw err
   }
+}
+
+/**
+ * Undoes a failed save: the lesson row (its join rows and cards cascade) and the
+ * words it created. A word another lesson has linked in the meantime stays.
+ * Failures here are logged, and the caller still sees the original error.
+ */
+async function rollback(db: SupabaseClient, lessonId: string, createdWordIds: string[]) {
+  const { error: lErr } = await db.from('lessons').delete().eq('id', lessonId)
+  if (lErr) return console.error('saveLesson rollback: lesson delete failed', lErr)
+  if (!createdWordIds.length) return
+
+  const { data: linked, error: jErr } = await db.from('lesson_vocabulary')
+    .select('vocabulary_id').in('vocabulary_id', createdWordIds)
+  if (jErr) return console.error('saveLesson rollback: link read failed', jErr)
+  const inUse = new Set((linked ?? []).map(r => r.vocabulary_id as string))
+  const orphans = createdWordIds.filter(id => !inUse.has(id))
+  if (!orphans.length) return
+
+  const { error: vErr } = await db.from('vocabulary').delete().in('id', orphans)
+  if (vErr) console.error('saveLesson rollback: vocabulary delete failed', vErr)
 }

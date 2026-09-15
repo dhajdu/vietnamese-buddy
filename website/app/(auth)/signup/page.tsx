@@ -1,12 +1,14 @@
 // app/(auth)/signup/page.tsx
 import { getOptionalUser } from '@/lib/auth/guards'
+import { checkoutPath } from '@/lib/auth/validate'
 import { redirect } from 'next/navigation'
 import { SignupForm } from '@/components/auth/SignupForm'
 
 export default async function SignupPage({ searchParams }: PageProps<'/signup'>) {
   const { plan } = await searchParams
   const user = await getOptionalUser()
-  if (user) redirect('/app')
+  // Signed-in visitors arrive here from every public "Start free" button, so send them on, plan included.
+  if (user) redirect(checkoutPath(plan) ?? '/app')
 
   return (
     <div className="flex min-h-screen items-center justify-center px-6">

@@ -1,8 +1,9 @@
 // scripts/seed.ts — load the three sample lessons into one account via the service-role client.
 // Usage: npx tsx --env-file=.env.local scripts/seed.ts you@example.com
+// Safe to re-run: sample lessons the account already has are skipped.
 import { createAdminClient } from '../lib/supabase/admin'
 import { saveLesson } from '../lib/lessons/pipeline'
-import { loadSeedLessons } from '../lib/lessons/seeds'
+import { missingSeedLessons } from '../lib/lessons/seeds'
 import { getPair, isPairId, DEFAULT_PAIR } from '../lib/pairs'
 
 async function main() {
@@ -22,7 +23,9 @@ async function main() {
     console.log('created user', email)
   }
 
-  for (const lesson of loadSeedLessons(pairId)) {
+  const lessons = await missingSeedLessons(db, user.id, pairId)
+  if (!lessons.length) console.log(`${email} already has every ${pairId} sample lesson`)
+  for (const lesson of lessons) {
     const { lessonId, newWords } = await saveLesson(db, user.id, { lesson, situation: lesson.situation, source: 'seed', pair })
     console.log(`seeded "${lesson.title}" → ${lessonId} (${newWords} new words)`)
   }

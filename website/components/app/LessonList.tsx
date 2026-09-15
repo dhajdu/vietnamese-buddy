@@ -10,8 +10,8 @@ export type LessonState = { kind: 'reviewed' } | { kind: 'new'; count: number } 
 const STRIPE: Record<LessonState['kind'], string> = { reviewed: 'bg-ok-ink', new: 'bg-amber-ink', due: 'bg-red', none: 'bg-sand-deep' }
 const TEXT: Record<LessonState['kind'], string> = { reviewed: 'text-ok-ink', new: 'text-amber-ink', due: 'text-red', none: 'text-stone' }
 
-export function LessonList({ lessons, tz, states, locale = 'en', detailed = false }: {
-  lessons: LessonRow[]; tz: string; states?: Map<string, LessonState>; locale?: Locale; detailed?: boolean
+export function LessonList({ lessons, tz, states, phrases, locale = 'en', detailed = false }: {
+  lessons: LessonRow[]; tz: string; states?: Map<string, LessonState>; phrases?: Map<string, number>; locale?: Locale; detailed?: boolean
 }) {
   const d = t(locale)
   const label = (s: LessonState) =>
@@ -30,7 +30,7 @@ export function LessonList({ lessons, tz, states, locale = 'en', detailed = fals
                 <b className="block truncate font-vn text-[15px] font-bold text-ink">{l.parent_lesson_id ? '↳ ' : ''}{l.title}</b>
                 <small className="gloss block text-[13px] text-stone">
                   {formatDate(l.created_at, tz, locale)}{l.source === 'seed' ? ` · ${d.sample}` : ''} · {l.grammar_topic}
-                  {detailed && <> · {l.lesson_json.phrases.length} {d.phrases.toLowerCase()}</>}
+                  {detailed && <> · {phrases?.get(l.id) ?? 0} {d.phrases.toLowerCase()}</>}
                 </small>
               </span>
               <em className={`shrink-0 text-xs font-semibold not-italic ${TEXT[s.kind]}`}>{label(s)}</em>

@@ -11,7 +11,10 @@ export async function setPair(pair: string) {
   const user = await requireAuth()
   const db = await createClient()
   const { error } = await db.from('profiles').update({ pair }).eq('id', user.id)
-  if (error) return { error: error.message }
+  if (error) {
+    console.error('pair switch failed:', error.message)
+    return { error: 'Could not switch direction. Try again.' }
+  }
   revalidatePath('/', 'layout')
   return { ok: true }
 }
