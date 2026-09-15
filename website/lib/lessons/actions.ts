@@ -59,7 +59,7 @@ async function generateAndSave(situation: string, parentLessonId: string | null,
   }
   revalidatePath('/app')
   revalidatePath('/app/lessons')
-  redirect(`/lessons/${lessonId}`)
+  redirect(`/app/lessons/${lessonId}`)
 }
 
 export async function createLesson(_prev: { error?: string; upgrade?: boolean } | null, formData: FormData) {

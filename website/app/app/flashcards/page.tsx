@@ -32,7 +32,7 @@ export default async function FlashcardsPage({ searchParams }: PageProps<'/app/f
     const streak = computeStreak((act ?? []).map(r => r.activity_date as string), localDate(timezone))
     return (
       <div className="mx-auto max-w-3xl sm:px-6 sm:pt-8">
-        <ReviewSession cards={cards} backHref={lesson ? `/lessons/${lesson}` : '/'} title={(l?.title as string) ?? d.allDueCards}
+        <ReviewSession cards={cards} backHref={lesson ? `/app/lessons/${lesson}` : '/app'} title={(l?.title as string) ?? d.allDueCards}
           streakBefore={streak.current} pair={pair.id} locale={pair.uiLocale} />
       </div>
     )

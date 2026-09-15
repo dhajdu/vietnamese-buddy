@@ -83,8 +83,8 @@ Ask Claude Code from the repo root — the agent team routes the work
 
 - `@product-manager` + `pm-client-interview` — capture what you're building
 - "add an epic for <feature>" — PM writes the spec, developer builds from it
-- The `website/` starter kit already ships auth-ready Supabase clients, chat,
-  notifications, markdown rendering, and vitest tests to build on.
+- The `website/` app ships Supabase auth, lesson generation, flashcards, voice,
+  Stripe billing, and vitest tests to build on. `CLAUDE.md` has the map.
 
 ## Folder structure
 
