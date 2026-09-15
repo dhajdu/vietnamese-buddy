@@ -111,14 +111,14 @@ These files have hard-coded names that skills and agents reference by path:
 ├── resources/                                  ← Design system, brand assets, masters
 │   └── README.md
 │
-├── website/                                    ← Next.js app: starter kit (chat, notifications,
-│   ├── app/                                     markdown, Supabase migrations, tests) merged with a
-│   ├── components/                              fresh create-next-app install (--no-src-dir) — see
-│   ├── lib/                                     il-project SKILL.md Step 9
+├── website/                                    ← Next.js app (Vietnamese Buddy): App Router, Supabase
+│   ├── app/                                     migrations, vitest tests. Map in the root CLAUDE.md
+│   ├── components/
+│   ├── lib/
 │   ├── supabase/
-│   ├── docs/
-│   ├── vitest.config.mts                        [ESM — .mts, not .ts; see Step 9]
-│   ├── vitest.setup.ts
+│   ├── data/
+│   ├── scripts/
+│   ├── vitest.config.mts                        [ESM: .mts, not .ts]
 │   ├── AGENTS.md                                [create-next-app generates this — NOT IL-owned]
 │   ├── CLAUDE.md                                [create-next-app: just `@AGENTS.md` — NOT the root CLAUDE.md]
 │   └── README.md

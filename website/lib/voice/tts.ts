@@ -69,6 +69,14 @@ async function synthesizeOpenAI(text: string, voice: string): Promise<ArrayBuffe
 
 const inflight = new Map<string, Promise<string>>()
 
+/** Public mp3 URL when the text is already cached, otherwise null. Never synthesises. */
+export async function cachedAudioUrl(text: string, pairId: PairId): Promise<string | null> {
+  const v = voiceFor(pairId)
+  if (!v) return null
+  const url = publicUrl(keyFor(v.voice, text))
+  return (await exists(url)) ? url : null
+}
+
 /** Public mp3 URL for the text, synthesising and caching on first request. */
 export async function getAudioUrl(text: string, pairId: PairId): Promise<string> {
   const v = voiceFor(pairId)

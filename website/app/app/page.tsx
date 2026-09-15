@@ -65,9 +65,9 @@ export default async function HomePage() {
 
         <div className="mt-6 space-y-6">
           <StatTiles cols="grid-cols-3 sm:grid-cols-4" stats={[
-            { label: d.statCardsDue, value: stats.due, href: '/flashcards?deck=due', tone: stats.due > 0 ? 'amber' : undefined },
+            { label: d.statCardsDue, value: stats.due, href: '/app/flashcards?deck=due', tone: stats.due > 0 ? 'amber' : undefined },
             { label: d.statWords, value: stats.vocabTotal, href: '/app/vocabulary' },
-            { label: d.statKnown, value: stats.vocabKnown, href: '/vocabulary?status=known' },
+            { label: d.statKnown, value: stats.vocabKnown, href: '/app/vocabulary?status=known' },
             { label: d.statLearningDays, value: stats.streak.totalDays, href: '/app/progress' },
           ]} />
           <section className="space-y-3">
