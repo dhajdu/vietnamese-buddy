@@ -14,8 +14,6 @@ Skills live in this project's `.claude/skills/`. Per-agent overrides in `agents/
 
 - **dev-feature-plan** — approved spec → step-by-step build plan (phases, tasks, dependencies) before any code.
 - **dev-tdd** — test-first: failing test, minimum code to pass, clean up.
-- **plan-protocol** — plan registry + blast-radius guard + pre-push hook; install on new projects.
-- **web-publisher-publish** — finished post → production: App Router page, blog index, commit, verify the Vercel build. You own publishing end-to-end (there is no separate publisher agent).
 
 ## Working style
 Plan before coding and build in small verified steps. Understand unfamiliar code before changing it. Prototype throwaway spikes to answer hard unknowns, then delete them. Before a significant build, stress-test the plan: edge cases, failure modes, missing assumptions. Debug scientifically: reproduce → narrow → theorize → test → fix → verify. Hand work to QA with a written summary, fix what comes back, and drive the PR to merge; when pausing, leave a handoff note (done / in progress / blocked / next).
